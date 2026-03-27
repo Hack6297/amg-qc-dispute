@@ -141,7 +141,7 @@ body {
 
 <div class="header">
   <h1>AMG US TECHNOLOGY</h1>
-  <p>QC Inspection Dispute Form v3.0</p>
+  <p>QC Inspection Dispute Form v4.0</p>
   <div class="badge">1099 Independent Contractor</div>
 </div>
 
@@ -234,7 +234,7 @@ body {
 <button class="btn btn-clear" onclick="clearForm()">Clear Form</button>
 
 <div class="disclaimer">
-  AMG US TECHNOLOGY - QC Dispute Form v3.0<br>
+  AMG US TECHNOLOGY - QC Dispute Form v4.0<br>
   For 1099 Independent Contractors - Frontier FTR CA SWC<br>
   <span style="color:#556677">Disputes are submitted securely to management for review.</span>
 </div>
@@ -243,7 +243,6 @@ body {
 
 <script>
 // === CONFIGURATION ===
-// Supabase project URL and anon key (public - safe to expose)
 const SUPABASE_URL = 'https://jffahgasqvtxigvlwznb.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmZmFoZ2FzcXZ0eGlndmx3em5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1OTM1MjQsImV4cCI6MjA5MDE2OTUyNH0.dsGRZy7WOQmVMQABs2epp-04Fx0xoEykx2C4M4b72h4';
 const SUBMIT_FUNCTION_URL = SUPABASE_URL + '/functions/v1/submit-dispute';
@@ -255,23 +254,7 @@ function addJobCode() {
   const div = document.createElement('div');
   div.className = 'jc-row';
   div.dataset.idx = jcCounter++;
-  div.innerHTML = `
-    <select>
-      <option value="F006">F006 - Aerial Drop</option>
-      <option value="F011">F011 - Trip Charge</option>
-      <option value="F014-7">F014-7 - Drop Removal</option>
-      <option value="F014-10">F014-10 - UG Drop/ft</option>
-      <option value="F014-1">F014-1 - Fiber Install</option>
-      <option value="1-F014-5">1-F014-5 - Fiber Service</option>
-      <option value="2-F014-5">2-F014-5 - Adtl Fiber</option>
-      <option value="F007">F007 - Service Aerial</option>
-      <option value="F008">F008 - Trouble Ticket</option>
-      <option value="F009">F009 - TT Return</option>
-    </select>
-    <div class="lbl">Qty:</div>
-    <input type="number" value="1" min="0" style="max-width:70px">
-    <button class="jc-remove" onclick="this.parentElement.remove()">x</button>
-  `;
+  div.innerHTML = '<select><option value="F006">F006 - Aerial Drop</option><option value="F011">F011 - Trip Charge</option><option value="F014-7">F014-7 - Drop Removal</option><option value="F014-10">F014-10 - UG Drop/ft</option><option value="F014-1">F014-1 - Fiber Install</option><option value="1-F014-5">1-F014-5 - Fiber Service</option><option value="2-F014-5">2-F014-5 - Adtl Fiber</option><option value="F007">F007 - Service Aerial</option><option value="F008">F008 - Trouble Ticket</option><option value="F009">F009 - TT Return</option></select><div class="lbl">Qty:</div><input type="number" value="1" min="0" style="max-width:70px"><button class="jc-remove" onclick="this.parentElement.remove()">x</button>';
   list.appendChild(div);
 }
 
@@ -309,7 +292,7 @@ function handleFiles(files) {
       const wrap = document.createElement('div');
       wrap.className = 'thumb-wrap';
       wrap.dataset.idx = idx;
-      wrap.innerHTML = `<img class="thumb" src="${e.target.result}"><button class="remove-btn" onclick="removePhoto(${idx}, this)">x</button>`;
+      wrap.innerHTML = '<img class="thumb" src="' + e.target.result + '"><button class="remove-btn" onclick="removePhoto(' + idx + ', this)">x</button>';
       photoPreviews.appendChild(wrap);
     };
     reader.readAsDataURL(f);
@@ -319,7 +302,35 @@ function handleFiles(files) {
 function removePhoto(idx, btn) { btn.parentElement.remove(); photos[idx] = null; updatePhotoCount(); }
 function updatePhotoCount() {
   const count = photos.filter(p => p).length;
-  photoCount.textContent = count > 0 ? `${count} photo(s) attached` : '';
+  photoCount.textContent = count > 0 ? count + ' photo(s) attached' : '';
+}
+
+// Compress photo to JPEG, max 1200px, quality 0.7
+function compressPhoto(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX = 1200;
+        let w = img.width, h = img.height;
+        if (w > MAX || h > MAX) {
+          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+          else { w = Math.round(w * MAX / h); h = MAX; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+        resolve(dataUrl.split(',')[1]);
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
 }
 
 // === GENERATE MESSAGE ===
@@ -343,38 +354,33 @@ function generateMessage() {
   }
 
   const fmtDate = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'}) : 'N/A';
-  const jcText = jobCodes.map(j => `  ${j.code} x${j.qty}`).join('\n');
+  const jcText = jobCodes.map(j => '  ' + j.code + ' x' + j.qty).join('\n');
 
-  let msg = `QC INSPECTION DISPUTE - AMG US TECHNOLOGY
-
-==================
-TECH: ${name} (${id || 'N/A'})
-DATE: ${fmtDate}
-WORK ORDER: ${wo}
-ADDRESS: ${addr || 'N/A'}
-==================
-
-JOB CODES PERFORMED:
-${jcText}
-
-SPAN COUNT DISPUTE:
-* Tech claimed: ${claimed || 'N/A'} spans
-* Inspector reported: ${inspected || 'N/A'} spans
-* Difference: ${(claimed && inspected) ? (claimed - inspected) : 'N/A'} spans
-* QC Status: ${status}
-`;
+  let msg = 'QC INSPECTION DISPUTE - AMG US TECHNOLOGY\n\n';
+  msg += '==================\n';
+  msg += 'TECH: ' + name + ' (' + (id || 'N/A') + ')\n';
+  msg += 'DATE: ' + fmtDate + '\n';
+  msg += 'WORK ORDER: ' + wo + '\n';
+  msg += 'ADDRESS: ' + (addr || 'N/A') + '\n';
+  msg += '==================\n\n';
+  msg += 'JOB CODES PERFORMED:\n' + jcText + '\n\n';
+  msg += 'SPAN COUNT DISPUTE:\n';
+  msg += '* Tech claimed: ' + (claimed || 'N/A') + ' spans\n';
+  msg += '* Inspector reported: ' + (inspected || 'N/A') + ' spans\n';
+  msg += '* Difference: ' + ((claimed && inspected) ? (claimed - inspected) : 'N/A') + ' spans\n';
+  msg += '* QC Status: ' + status + '\n';
 
   if (inspNotes) {
-    msg += `\nINSPECTOR NOTES:\n"${inspNotes}"\n`;
+    msg += '\nINSPECTOR NOTES:\n"' + inspNotes + '"\n';
   }
 
-  msg += `\nDISPUTE REASON:\n${reason}\n`;
+  msg += '\nDISPUTE REASON:\n' + reason + '\n';
 
   if (photoN > 0) {
-    msg += `\nEVIDENCE: ${photoN} photo(s) - sending in next message\n`;
+    msg += '\nEVIDENCE: ' + photoN + ' photo(s) attached\n';
   }
 
-  msg += `\n==================\nPlease review and re-inspect if needed.\n- ${name}, AMG US TECHNOLOGY`;
+  msg += '\n==================\nPlease review and re-inspect if needed.\n- ' + name + ', AMG US TECHNOLOGY';
 
   document.getElementById('previewText').textContent = msg;
   document.getElementById('previewBox').classList.add('visible');
@@ -407,7 +413,25 @@ async function submitDispute() {
   if (!text) { alert('Generate the message first!'); return; }
 
   const statusEl = document.getElementById('sendStatus');
-  statusEl.innerHTML = '<span class="spinner"></span><span style="color:#5eaaf0">Submitting dispute...</span>';
+  const activePhotos = photos.filter(p => p);
+
+  // Step 1: Compress photos
+  let photosBase64 = [];
+  if (activePhotos.length > 0) {
+    try {
+      for (let i = 0; i < activePhotos.length; i++) {
+        statusEl.innerHTML = '<span class="spinner"></span><span style="color:#5eaaf0">Compressing photo ' + (i+1) + '/' + activePhotos.length + '...</span>';
+        const b64 = await compressPhoto(activePhotos[i]);
+        photosBase64.push(b64);
+      }
+    } catch (err) {
+      statusEl.innerHTML = '<span style="color:#f87171">Failed to compress photos. Try removing large images.</span>';
+      return;
+    }
+  }
+
+  // Step 2: Submit
+  statusEl.innerHTML = '<span class="spinner"></span><span style="color:#5eaaf0">Submitting dispute' + (activePhotos.length > 0 ? ' with ' + activePhotos.length + ' photo(s)' : '') + '...</span>';
 
   const formData = {
     tech_name: document.getElementById('techName').value.trim(),
@@ -421,7 +445,8 @@ async function submitDispute() {
     qc_status: document.getElementById('qcStatus').value,
     inspector_notes: document.getElementById('inspNotes').value.trim(),
     dispute_reason: document.getElementById('disputeReason').value.trim(),
-    photo_count: photos.filter(p => p).length,
+    photo_count: activePhotos.length,
+    photos_base64: photosBase64,
     message_text: text
   };
 
@@ -441,11 +466,12 @@ async function submitDispute() {
       let channels = [];
       if (result.teams_sent) channels.push('Microsoft Teams');
       if (result.telegram_sent) channels.push('Telegram');
-      const chText = channels.length > 0 ? ` Sent to: ${channels.join(' + ')}` : '';
-      statusEl.innerHTML = `<span style="color:#4ade80; font-weight:bold">Dispute submitted successfully!${chText}</span>`;
+      const chText = channels.length > 0 ? ' Sent to: ' + channels.join(' + ') : '';
+      const photoText = result.photos_uploaded > 0 ? ' (' + result.photos_uploaded + ' photos)' : '';
+      statusEl.innerHTML = '<span style="color:#4ade80; font-weight:bold">Dispute submitted successfully!' + chText + photoText + '</span>';
       showToast('Dispute submitted!');
     } else {
-      statusEl.innerHTML = `<span style="color:#f87171">Submission failed: ${result.error || 'Unknown error'}. Copy the message and send manually.</span>`;
+      statusEl.innerHTML = '<span style="color:#f87171">Submission failed: ' + (result.error || 'Unknown error') + '. Copy the message and send manually.</span>';
     }
   } catch (err) {
     statusEl.innerHTML = '<span style="color:#f87171">Network error. Copy the message and send via Telegram/Teams manually.</span>';
@@ -454,7 +480,7 @@ async function submitDispute() {
 
 function shareToTelegram() {
   const text = document.getElementById('previewText').textContent;
-  window.open(`https://t.me/share/url?url=&text=${encodeURIComponent(text)}`, '_blank');
+  window.open('https://t.me/share/url?url=&text=' + encodeURIComponent(text), '_blank');
 }
 
 function clearForm() {
@@ -462,22 +488,7 @@ function clearForm() {
   document.getElementById('workDate').value = '';
   document.getElementById('previewBox').classList.remove('visible');
   const list = document.getElementById('jcList');
-  list.innerHTML = `<div class="jc-row" data-idx="0">
-    <select>
-      <option value="F006">F006 - Aerial Drop</option>
-      <option value="F011">F011 - Trip Charge</option>
-      <option value="F014-7">F014-7 - Drop Removal</option>
-      <option value="F014-10">F014-10 - UG Drop/ft</option>
-      <option value="F014-1">F014-1 - Fiber Install</option>
-      <option value="1-F014-5">1-F014-5 - Fiber Service</option>
-      <option value="2-F014-5">2-F014-5 - Adtl Fiber</option>
-      <option value="F007">F007 - Service Aerial</option>
-      <option value="F008">F008 - Trouble Ticket</option>
-      <option value="F009">F009 - TT Return</option>
-    </select>
-    <div class="lbl">Qty:</div>
-    <input type="number" value="1" min="0" style="max-width:70px">
-  </div>`;
+  list.innerHTML = '<div class="jc-row" data-idx="0"><select><option value="F006">F006 - Aerial Drop</option><option value="F011">F011 - Trip Charge</option><option value="F014-7">F014-7 - Drop Removal</option><option value="F014-10">F014-10 - UG Drop/ft</option><option value="F014-1">F014-1 - Fiber Install</option><option value="1-F014-5">1-F014-5 - Fiber Service</option><option value="2-F014-5">2-F014-5 - Adtl Fiber</option><option value="F007">F007 - Service Aerial</option><option value="F008">F008 - Trouble Ticket</option><option value="F009">F009 - TT Return</option></select><div class="lbl">Qty:</div><input type="number" value="1" min="0" style="max-width:70px"></div>';
   photos = []; photoPreviews.innerHTML = ''; photoCount.textContent = '';
   document.getElementById('sendStatus').textContent = '';
 }
