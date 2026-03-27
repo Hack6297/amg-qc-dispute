@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AMG Admin Panel вЂ” QC Dispute Config</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0a0f18; color: #fff; min-height: 100vh; padding: 20px;
+  max-width: 700px; margin: 0 auto;
+}
+.header {
+  text-align: center; padding: 20px 0;
+  border-bottom: 2px solid #c0392b; margin-bottom: 24px;
+}
+.header h1 { font-size: 22px; color: #e74c3c; }
+.header p { font-size: 12px; color: #888; margin-top: 4px; }
+.badge-admin {
+  display: inline-block; background: #c0392b; color: #fff;
+  padding: 3px 12px; border-radius: 12px; font-size: 11px;
+  margin-top: 8px; letter-spacing: 1px; font-weight: 700;
+}
+
+/* Login */
+.login-box {
+  background: #111a27; border: 1px solid #2b3e50; border-radius: 14px;
+  padding: 30px; text-align: center; max-width: 400px; margin: 60px auto;
+}
+.login-box h2 { color: #e74c3c; margin-bottom: 16px; }
+.login-box input {
+  width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #2b3e50;
+  background: #0a0f18; color: #fff; font-size: 16px; margin-bottom: 12px; text-align: center;
+}
+.login-box input:focus { border-color: #e74c3c; outline: none; }
+.login-box .btn-login {
+  width: 100%; padding: 14px; background: #c0392b; color: #fff;
+  border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer;
+}
+.login-error { color: #e74c3c; font-size: 13px; margin-top: 8px; display: none; }
+
+/* Admin content */
+.admin-content { display: none; }
+.card {
+  background: #111a27; border: 1px solid #2b3e50; border-radius: 14px;
+  padding: 20px; margin-bottom: 20px;
+}
+.card h3 { color: #5eaaf0; font-size: 16px; margin-bottom: 14px; }
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 12px; color: #8899aa; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; }
+.field input, .field select {
+  width: 100%; padding: 10px 12px; border-radius: 8px;
+  border: 1px solid #2b3e50; background: #0a0f18; color: #fff; font-size: 14px;
+}
+.field input:focus { border-color: #5eaaf0; outline: none; }
+.field .help { font-size: 11px; color: #556677; margin-top: 4px; }
+
+.toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid #1a2535;
+}
+.toggle-row:last-child { border-bottom: none; }
+.toggle-row .label { font-size: 14px; }
+.toggle-row .status { font-size: 12px; }
+.toggle-row .status.on { color: #4ade80; }
+.toggle-row .status.off { color: #888; }
+
+.switch { position: relative; width: 48px; height: 26px; }
+.switch input { display: none; }
+.switch .slider {
+  position: absolute; cursor: pointer; inset: 0;
+  background: #333; border-radius: 13px; transition: 0.3s;
+}
+.switch .slider:before {
+  content: ''; position: absolute; width: 20px; height: 20px;
+  left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.3s;
+}
+.switch input:checked + .slider { background: #4ade80; }
+.switch input:checked + .slider:before { transform: translateX(22px); }
+
+.btn-save {
+  width: 100%; padding: 14px; background: linear-gradient(135deg, #1f4e79, #2e75b6); color: #fff;
+  border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px;
+}
+.btn-save:hover { opacity: 0.9; }
+
+.btn-test {
+  padding: 10px 20px; background: #2b3e50; color: #5eaaf0;
+  border: 1px solid #5eaaf0; border-radius: 8px; font-size: 13px;
+  cursor: pointer; font-weight: 600;
+}
+
+.btn-logout {
+  width: 100%; padding: 12px; background: transparent; color: #888;
+  border: 1px solid #333; border-radius: 10px; cursor: pointer; margin-top: 20px;
+}
+
+#saveStatus { text-align: center; margin-top: 12px; font-size: 14px; }
+
+/* Log table */
+.log-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.log-table th { text-align: left; color: #8899aa; font-size: 11px; padding: 8px; border-bottom: 1px solid #2b3e50; }
+.log-table td { padding: 8px; border-bottom: 1px solid #1a2535; color: #ccc; }
+.log-table tr:hover td { background: rgba(94,170,240,0.05); }
+</style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h2>ADMIN ACCESS</h2>
+    <p style="color:#888; margin-bottom:20px;">AMG QC Dispute System</p>
+    <input type="password" id="adminPassword" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="btn-login" onclick="doLogin()">Login</button>
+    <div class="login-error" id="loginError">Invalid password. Try again.</div>
+  </div>
+</div>
+
+<!-- Admin Panel -->
+<div class="admin-content" id="adminPanel">
+  <div class="header">
+    <h1>AMG ADMIN PANEL</h1>
+    <p>QC Dispute Form вЂ” Channel Configuration</p>
+    <div class="badge-admin">ADMIN ONLY</div>
+  </div>
+
+  <!-- Channel Config -->
+  <div class="card">
+    <h3>Notification Channels</h3>
+
+    <div class="toggle-row">
+      <div>
+        <div class="label">Microsoft Teams</div>
+        <div class="status" id="teamsStatus">Not configured</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="teamsEnabled" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="field" style="margin-top:12px;">
+      <label>Teams Incoming Webhook URL</label>
+      <input type="url" id="teamsUrl" placeholder="https://xxx.webhook.office.com/webhookb2/...">
+      <div class="help">Create in Teams: Channel Settings > Connectors > Incoming Webhook</div>
+    </div>
+
+    <hr style="border-color:#1a2535; margin: 16px 0;">
+
+    <div class="toggle-row">
+      <div>
+        <div class="label">Telegram Bot</div>
+        <div class="status" id="tgStatus">Not configured</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="tgEnabled">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="field" style="margin-top:12px;">
+      <label>Telegram Bot Token</label>
+      <input type="text" id="tgBotToken" placeholder="123456789:ABCdefGHI...">
+      <div class="help">Get from @BotFather on Telegram</div>
+    </div>
+    <div class="field">
+      <label>Telegram Chat ID</label>
+      <input type="text" id="tgChatId" placeholder="-1001234567890">
+      <div class="help">Group/channel ID where disputes are sent</div>
+    </div>
+  </div>
+
+  <!-- Admin Password -->
+  <div class="card">
+    <h3>Security</h3>
+    <div class="field">
+      <label>Admin Password</label>
+      <input type="password" id="newPassword" placeholder="Change admin password">
+      <div class="help">Leave empty to keep current password</div>
+    </div>
+  </div>
+
+  <!-- Save -->
+  <button class="btn-save" onclick="saveConfig()">Save Configuration</button>
+  <div style="display:flex; gap:10px; margin-top:12px;">
+    <button class="btn-test" onclick="testTeams()">Test Teams</button>
+    <button class="btn-test" onclick="testTelegram()">Test Telegram</button>
+  </div>
+  <div id="saveStatus"></div>
+
+  <!-- Recent Disputes -->
+  <div class="card" style="margin-top:24px;">
+    <h3>Recent Disputes</h3>
+    <div id="disputeLog" style="color:#888; font-size:13px;">Loading...</div>
+  </div>
+
+  <button class="btn-logout" onclick="doLogout()">Logout</button>
+</div>
+
+<script>
+// в”Ђв”Ђв”Ђ CONFIG в”Ђв”Ђв”Ђ
+const SUPABASE_URL = 'https://jffahgasqvtxigvlwznb.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmZmFoZ2FzcXZ0eGlndmx3em5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1OTM1MjQsImV4cCI6MjA5MDE2OTUyNH0.dsGRZy7WOQmVMQABs2epp-04Fx0xoEykx2C4M4b72h4';
+
+let adminToken = null;
+
+// в”Ђв”Ђв”Ђ LOGIN в”Ђв”Ђв”Ђ
+async function doLogin() {
+  const pw = document.getElementById('adminPassword').value;
+  if (!pw) return;
+
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/admin-auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY },
+      body: JSON.stringify({ password: pw })
+    });
+    const data = await res.json();
+    if (res.ok && data.token) {
+      adminToken = data.token;
+      sessionStorage.setItem('amg_admin_token', adminToken);
+      showAdmin();
+      loadConfig();
+      loadDisputes();
+    } else {
+      document.getElementById('loginError').style.display = 'block';
+    }
+  } catch (e) {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('loginError').textContent = 'Connection error. Check Supabase URL.';
+  }
+}
+
+function doLogout() {
+  adminToken = null;
+  sessionStorage.removeItem('amg_admin_token');
+  document.getElementById('loginScreen').style.display = '';
+  document.getElementById('adminPanel').style.display = 'none';
+}
+
+function showAdmin() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+}
+
+// в”Ђв”Ђв”Ђ LOAD CONFIG в”Ђв”Ђв”Ђ
+async function loadConfig() {
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/admin-config', {
+      method: 'GET',
+      headers: { 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'X-Admin-Token': adminToken }
+    });
+    const cfg = await res.json();
+    if (cfg.teams_webhook) document.getElementById('teamsUrl').value = cfg.teams_webhook;
+    document.getElementById('teamsEnabled').checked = cfg.teams_enabled !== false;
+    if (cfg.tg_bot_token) document.getElementById('tgBotToken').value = cfg.tg_bot_token;
+    if (cfg.tg_chat_id) document.getElementById('tgChatId').value = cfg.tg_chat_id;
+    document.getElementById('tgEnabled').checked = !!cfg.tg_enabled;
+    updateStatuses();
+  } catch (e) {
+    console.error('Load config error:', e);
+  }
+}
+
+function updateStatuses() {
+  const teamsUrl = document.getElementById('teamsUrl').value;
+  const tgToken = document.getElementById('tgBotToken').value;
+  const teamsOn = document.getElementById('teamsEnabled').checked;
+  const tgOn = document.getElementById('tgEnabled').checked;
+
+  const ts = document.getElementById('teamsStatus');
+  if (teamsUrl && teamsOn) { ts.textContent = 'Active'; ts.className = 'status on'; }
+  else if (teamsUrl) { ts.textContent = 'Configured (disabled)'; ts.className = 'status off'; }
+  else { ts.textContent = 'Not configured'; ts.className = 'status off'; }
+
+  const tgs = document.getElementById('tgStatus');
+  if (tgToken && tgOn) { tgs.textContent = 'Active'; tgs.className = 'status on'; }
+  else if (tgToken) { tgs.textContent = 'Configured (disabled)'; tgs.className = 'status off'; }
+  else { tgs.textContent = 'Not configured'; tgs.className = 'status off'; }
+}
+
+// в”Ђв”Ђв”Ђ SAVE CONFIG в”Ђв”Ђв”Ђ
+async function saveConfig() {
+  const cfg = {
+    teams_webhook: document.getElementById('teamsUrl').value.trim(),
+    teams_enabled: document.getElementById('teamsEnabled').checked,
+    tg_bot_token: document.getElementById('tgBotToken').value.trim(),
+    tg_chat_id: document.getElementById('tgChatId').value.trim(),
+    tg_enabled: document.getElementById('tgEnabled').checked
+  };
+  const newPw = document.getElementById('newPassword').value;
+  if (newPw) cfg.new_password = newPw;
+
+  const statusEl = document.getElementById('saveStatus');
+  statusEl.innerHTML = '<span style="color:#5eaaf0">Saving...</span>';
+
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/admin-config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'X-Admin-Token': adminToken },
+      body: JSON.stringify(cfg)
+    });
+    if (res.ok) {
+      statusEl.innerHTML = '<span style="color:#4ade80; font-weight:bold">Configuration saved!</span>';
+      updateStatuses();
+      if (newPw) document.getElementById('newPassword').value = '';
+    } else {
+      const err = await res.json();
+      statusEl.innerHTML = `<span style="color:#f87171">Error: ${err.error || 'Save failed'}</span>`;
+    }
+  } catch (e) {
+    statusEl.innerHTML = '<span style="color:#f87171">Network error</span>';
+  }
+}
+
+// в”Ђв”Ђв”Ђ TEST CHANNELS в”Ђв”Ђв”Ђ
+async function testTeams() {
+  const statusEl = document.getElementById('saveStatus');
+  statusEl.innerHTML = '<span style="color:#5eaaf0">Sending test to Teams...</span>';
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/admin-config', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'X-Admin-Token': adminToken },
+      body: JSON.stringify({ test_channel: 'teams' })
+    });
+    const data = await res.json();
+    if (data.success) statusEl.innerHTML = '<span style="color:#4ade80">Teams test sent! Check your channel.</span>';
+    else statusEl.innerHTML = `<span style="color:#f87171">Teams test failed: ${data.error}</span>`;
+  } catch (e) {
+    statusEl.innerHTML = '<span style="color:#f87171">Test failed</span>';
+  }
+}
+
+async function testTelegram() {
+  const statusEl = document.getElementById('saveStatus');
+  statusEl.innerHTML = '<span style="color:#5eaaf0">Sending test to Telegram...</span>';
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/admin-config', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'X-Admin-Token': adminToken },
+      body: JSON.stringify({ test_channel: 'telegram' })
+    });
+    const data = await res.json();
+    if (data.success) statusEl.innerHTML = '<span style="color:#4ade80">Telegram test sent! Check your chat.</span>';
+    else statusEl.innerHTML = `<span style="color:#f87171">Telegram test failed: ${data.error}</span>`;
+  } catch (e) {
+    statusEl.innerHTML = '<span style="color:#f87171">Test failed</span>';
+  }
+}
+
+// в”Ђв”Ђв”Ђ LOAD DISPUTES в”Ђв”Ђв”Ђ
+async function loadDisputes() {
+  try {
+    const res = await fetch(SUPABASE_URL + '/functions/v1/admin-disputes', {
+      headers: { 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'X-Admin-Token': adminToken }
+    });
+    const data = await res.json();
+    if (!data.disputes || data.disputes.length === 0) {
+      document.getElementById('disputeLog').innerHTML = '<span style="color:#556677">No disputes submitted yet.</span>';
+      return;
+    }
+
+    let html = '<table class="log-table"><tr><th>Date</th><th>Tech</th><th>WO#</th><th>Status</th><th>Channels</th></tr>';
+    data.disputes.forEach(d => {
+      const dt = new Date(d.created_at).toLocaleDateString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+      const ch = [];
+      if (d.teams_sent) ch.push('Teams');
+      if (d.telegram_sent) ch.push('TG');
+      html += `<tr><td>${dt}</td><td>${d.tech_name}</td><td>${d.work_order}</td><td>${d.qc_status}</td><td>${ch.join(', ') || 'вЂ”'}</td></tr>`;
+    });
+    html += '</table>';
+    document.getElementById('disputeLog').innerHTML = html;
+  } catch (e) {
+    document.getElementById('disputeLog').innerHTML = 'Error loading disputes';
+  }
+}
+
+// Check saved session
+const savedToken = sessionStorage.getItem('amg_admin_token');
+if (savedToken) { adminToken = savedToken; showAdmin(); loadConfig(); loadDisputes(); }
+
+// Update statuses on change
+['teamsUrl', 'tgBotToken', 'teamsEnabled', 'tgEnabled'].forEach(id => {
+  document.getElementById(id).addEventListener('change', updateStatuses);
+  document.getElementById(id).addEventListener('input', updateStatuses);
+});
+</script>
+</body>
+</html>
