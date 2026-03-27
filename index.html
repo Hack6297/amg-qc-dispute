@@ -1,257 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>AMG QC Dispute Form</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #0e1621; color: #fff;
-  min-height: 100vh; padding: 16px;
-  max-width: 600px; margin: 0 auto;
-}
-.header {
-  text-align: center; padding: 20px 0 12px;
-  border-bottom: 2px solid #1f4e79;
-  margin-bottom: 20px;
-}
-.header h1 { font-size: 20px; color: #5eaaf0; letter-spacing: 1px; }
-.header p { font-size: 12px; color: #8899aa; margin-top: 4px; }
-.badge {
-  display: inline-block; background: #1f4e79; color: #fff;
-  padding: 3px 10px; border-radius: 12px; font-size: 11px;
-  margin-top: 8px; letter-spacing: 0.5px;
-}
-.section { margin-bottom: 18px; }
-.section label {
-  display: block; font-size: 13px; color: #8899aa;
-  margin-bottom: 6px; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.section input, .section textarea, .section select {
-  width: 100%; padding: 12px 14px; border-radius: 10px;
-  border: 1px solid #2b3e50; background: #17212b; color: #fff;
-  font-size: 16px; outline: none; transition: border 0.2s;
-}
-.section input:focus, .section textarea:focus, .section select:focus {
-  border-color: #5eaaf0;
-}
-.section textarea { resize: vertical; min-height: 100px; }
-.row { display: flex; gap: 12px; }
-.row .section { flex: 1; }
-
-/* Job code entries */
-.jc-list { display: flex; flex-direction: column; gap: 8px; }
-.jc-row {
-  display: flex; gap: 8px; align-items: center;
-  background: #17212b; border-radius: 10px;
-  padding: 10px 12px; border: 1px solid #2b3e50;
-}
-.jc-row select { flex: 2; padding: 10px; font-size: 15px; background: #17212b; color: #fff; border: 1px solid #2b3e50; border-radius: 8px; }
-.jc-row input { flex: 1; padding: 10px; font-size: 15px; text-align: center; background: #17212b; color: #fff; border: 1px solid #2b3e50; border-radius: 8px; }
-.jc-row .lbl { color: #8899aa; font-size: 12px; min-width: 40px; text-align: center; }
-.jc-remove {
-  background: #e74c3c; color: #fff; border: none; border-radius: 50%;
-  width: 28px; height: 28px; font-size: 16px; cursor: pointer; flex-shrink: 0;
-}
-.jc-add {
-  display: flex; align-items: center; justify-content: center;
-  gap: 6px; background: transparent; color: #5eaaf0;
-  border: 1px dashed #5eaaf0; border-radius: 10px;
-  padding: 10px; cursor: pointer; font-size: 14px; font-weight: 600;
-}
-.jc-add:hover { background: rgba(94,170,240,0.08); }
-
-/* Photo upload */
-.photo-area {
-  border: 2px dashed #2b3e50; border-radius: 14px;
-  padding: 30px 16px; text-align: center; cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
-}
-.photo-area:hover, .photo-area.dragover {
-  border-color: #5eaaf0; background: rgba(94,170,240,0.05);
-}
-.photo-area .icon { font-size: 40px; margin-bottom: 8px; }
-.photo-area p { color: #8899aa; font-size: 14px; }
-.photo-area input { display: none; }
-.photo-previews { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.thumb-wrap { position: relative; width: 70px; height: 70px; border-radius: 8px; overflow: hidden; }
-.thumb { width: 100%; height: 100%; object-fit: cover; }
-.remove-btn {
-  position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7);
-  color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px;
-  font-size: 14px; cursor: pointer;
-}
-#photoCount { color: #8899aa; font-size: 12px; margin-top: 8px; }
-
-/* Preview */
-.preview-box {
-  background: #17212b; border-radius: 14px; padding: 16px;
-  margin-top: 20px; display: none; border: 1px solid #2b3e50;
-}
-.preview-box.visible { display: block; }
-.preview-box h3 { font-size: 14px; color: #5eaaf0; margin-bottom: 10px; }
-.preview-text {
-  white-space: pre-wrap; font-family: monospace; font-size: 13px;
-  color: #d0d8e0; line-height: 1.5; max-height: 300px; overflow-y: auto;
-  padding: 12px; background: #0e1621; border-radius: 8px;
-}
-
-/* Buttons */
-.btn {
-  width: 100%; padding: 14px; border: none; border-radius: 12px;
-  font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px;
-  transition: transform 0.1s, opacity 0.2s; letter-spacing: 0.5px;
-}
-.btn:active { transform: scale(0.98); }
-.btn-gen { background: linear-gradient(135deg, #1f4e79, #2e75b6); color: #fff; }
-.btn-copy { background: #2b3e50; color: #fff; }
-.btn-teams { background: linear-gradient(135deg, #5558af, #7b83eb); color: #fff; }
-.btn-tg { background: linear-gradient(135deg, #0088cc, #29b6f6); color: #fff; }
-.btn-clear { background: transparent; color: #667788; border: 1px solid #2b3e50; margin-top: 20px; }
-
-.btn-row { display: flex; gap: 10px; }
-.btn-row .btn { flex: 1; }
-
-#sendStatus { text-align: center; margin-top: 10px; font-size: 14px; }
-
-/* Toast */
-.toast {
-  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(60px);
-  background: #4ade80; color: #000; padding: 12px 24px; border-radius: 12px;
-  font-weight: 700; opacity: 0; transition: all 0.3s; z-index: 9999; pointer-events: none;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* Spinner */
-.spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* Disclaimer */
-.disclaimer {
-  text-align: center; font-size: 11px; color: #556677;
-  margin-top: 30px; padding-top: 16px; border-top: 1px solid #1f2d3d;
-  line-height: 1.5;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AMG QC Dispute Form</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0e1621; color: #fff;
+      min-height: 100vh; padding: 16px;
+      max-width: 600px; margin: 0 auto;
+    }
+    .header { text-align: center; padding: 20px 0 12px; border-bottom: 2px solid #1f4e79; margin-bottom: 20px; }
+    .header h1 { font-size: 20px; color: #5eaaf0; letter-spacing: 1px; }
+    .header p { font-size: 12px; color: #8899aa; margin-top: 4px; }
+    .badge { display: inline-block; background: #1f4e79; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 11px; margin-top: 8px; letter-spacing: 0.5px; }
+    .section { margin-bottom: 18px; }
+    .section label { display: block; font-size: 13px; color: #8899aa; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .section input, .section textarea, .section select { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #2b3e50; background: #17212b; color: #fff; font-size: 16px; outline: none; transition: border 0.2s; }
+    .section input:focus, .section textarea:focus, .section select:focus { border-color: #5eaaf0; }
+    .section textarea { resize: vertical; min-height: 100px; }
+    .row { display: flex; gap: 12px; }
+    .row .section { flex: 1; }
+    .jc-list { display: flex; flex-direction: column; gap: 8px; }
+    .jc-row { display: flex; gap: 8px; align-items: center; background: #17212b; border-radius: 10px; padding: 10px 12px; border: 1px solid #2b3e50; }
+    .jc-row select { flex: 2; padding: 10px; font-size: 15px; background: #17212b; color: #fff; border: 1px solid #2b3e50; border-radius: 8px; }
+    .jc-row input { flex: 1; padding: 10px; font-size: 15px; text-align: center; background: #17212b; color: #fff; border: 1px solid #2b3e50; border-radius: 8px; }
+    .jc-row .lbl { color: #8899aa; font-size: 12px; min-width: 40px; text-align: center; }
+    .jc-remove { background: #e74c3c; color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 16px; cursor: pointer; flex-shrink: 0; }
+    .jc-add { display: flex; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #5eaaf0; border: 1px dashed #5eaaf0; border-radius: 10px; padding: 10px; cursor: pointer; font-size: 14px; font-weight: 600; }
+    .jc-add:hover { background: rgba(94,170,240,0.08); }
+    .photo-area { border: 2px dashed #2b3e50; border-radius: 14px; padding: 30px 16px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .photo-area:hover, .photo-area.dragover { border-color: #5eaaf0; background: rgba(94,170,240,0.05); }
+    .photo-area .icon { font-size: 40px; margin-bottom: 8px; }
+    .photo-area p { color: #8899aa; font-size: 14px; }
+    .photo-area .limit-note { color: #556677; font-size: 11px; margin-top: 4px; }
+    .photo-area input { display: none; }
+    .photo-previews { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .thumb-wrap { position: relative; width: 70px; height: 70px; border-radius: 8px; overflow: hidden; }
+    .thumb { width: 100%; height: 100%; object-fit: cover; }
+    .remove-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; cursor: pointer; }
+    #photoCount { color: #8899aa; font-size: 12px; margin-top: 8px; }
+    .preview-box { background: #17212b; border-radius: 14px; padding: 16px; margin-top: 20px; display: none; border: 1px solid #2b3e50; }
+    .preview-box.visible { display: block; }
+    .preview-box h3 { font-size: 14px; color: #5eaaf0; margin-bottom: 10px; }
+    .preview-text { white-space: pre-wrap; font-family: monospace; font-size: 13px; color: #d0d8e0; line-height: 1.5; max-height: 300px; overflow-y: auto; padding: 12px; background: #0e1621; border-radius: 8px; }
+    .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: transform 0.1s, opacity 0.2s; letter-spacing: 0.5px; }
+    .btn:active { transform: scale(0.98); }
+    .btn-gen { background: linear-gradient(135deg, #1f4e79, #2e75b6); color: #fff; }
+    .btn-copy { background: #2b3e50; color: #fff; }
+    .btn-teams { background: linear-gradient(135deg, #5558af, #7b83eb); color: #fff; }
+    .btn-tg { background: linear-gradient(135deg, #0088cc, #29b6f6); color: #fff; }
+    .btn-clear { background: transparent; color: #667788; border: 1px solid #2b3e50; margin-top: 20px; }
+    .btn-row { display: flex; gap: 10px; }
+    .btn-row .btn { flex: 1; }
+    #sendStatus { text-align: center; margin-top: 10px; font-size: 14px; }
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(60px); background: #4ade80; color: #000; padding: 12px 24px; border-radius: 12px; font-weight: 700; opacity: 0; transition: all 0.3s; z-index: 9999; pointer-events: none; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .disclaimer { text-align: center; font-size: 11px; color: #556677; margin-top: 30px; padding-top: 16px; border-top: 1px solid #1f2d3d; line-height: 1.5; }
+    .admin-link { display: inline-block; margin-top: 10px; color: #3a6a99; font-size: 11px; text-decoration: none; border-bottom: 1px dashed #3a6a99; }
+    .admin-link:hover { color: #5eaaf0; border-color: #5eaaf0; }
+    .progress-bar-wrap { width: 100%; height: 6px; background: #2b3e50; border-radius: 3px; margin-top: 8px; overflow: hidden; display: none; }
+    .progress-bar-wrap.visible { display: block; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, #5eaaf0, #4ade80); border-radius: 3px; transition: width 0.3s; width: 0%; }
+  </style>
 </head>
 <body>
+  <div class="header">
+    <h1>AMG US TECHNOLOGY</h1>
+    <p>QC Inspection Dispute Form v5.0</p>
+    <div class="badge">1099 Independent Contractor</div>
+  </div>
 
-<div class="header">
-  <h1>AMG US TECHNOLOGY</h1>
-  <p>QC Inspection Dispute Form v4.0</p>
-  <div class="badge">1099 Independent Contractor</div>
-</div>
+  <div class="row">
+    <div class="section"><label>Your Name *</label><input type="text" id="techName" placeholder="Full Name"></div>
+    <div class="section"><label>Tech ID</label><input type="text" id="techId" placeholder="ID / CESWC#"></div>
+  </div>
+  <div class="row">
+    <div class="section"><label>Work Date *</label><input type="date" id="workDate"></div>
+    <div class="section"><label>Work Order # *</label><input type="text" id="workOrder" placeholder="WO number"></div>
+  </div>
+  <div class="section"><label>Address</label><input type="text" id="address" placeholder="Job address"></div>
 
-<!-- Tech Info -->
-<div class="row">
-  <div class="section"><label>Your Name *</label><input type="text" id="techName" placeholder="Full Name"></div>
-  <div class="section"><label>Tech ID</label><input type="text" id="techId" placeholder="ID / CESWC#"></div>
-</div>
-
-<!-- Work Details -->
-<div class="row">
-  <div class="section"><label>Work Date *</label><input type="date" id="workDate"></div>
-  <div class="section"><label>Work Order # *</label><input type="text" id="workOrder" placeholder="WO number"></div>
-</div>
-
-<div class="section"><label>Address</label><input type="text" id="address" placeholder="Job address"></div>
-
-<!-- Job Codes -->
-<div class="section">
-  <label>Job Codes Performed</label>
-  <div class="jc-list" id="jcList">
-    <div class="jc-row" data-idx="0">
-      <select>
-        <option value="F006">F006 - Aerial Drop</option>
-        <option value="F011">F011 - Trip Charge</option>
-        <option value="F014-7">F014-7 - Drop Removal</option>
-        <option value="F014-10">F014-10 - UG Drop/ft</option>
-        <option value="F014-1">F014-1 - Fiber Install</option>
-        <option value="1-F014-5">1-F014-5 - Fiber Service</option>
-        <option value="2-F014-5">2-F014-5 - Adtl Fiber</option>
-        <option value="F007">F007 - Service Aerial</option>
-        <option value="F008">F008 - Trouble Ticket</option>
-        <option value="F009">F009 - TT Return</option>
-      </select>
-      <div class="lbl">Qty:</div>
-      <input type="number" value="1" min="0" style="max-width:70px">
+  <div class="section">
+    <label>Job Codes Performed</label>
+    <div class="jc-list" id="jcList">
+      <div class="jc-row" data-idx="0">
+        <select>
+          <option value="F006">F006 - Aerial Drop</option>
+          <option value="F011">F011 - Trip Charge</option>
+          <option value="F014-7">F014-7 - Drop Removal</option>
+          <option value="F014-10">F014-10 - UG Drop/ft</option>
+          <option value="F014-1">F014-1 - Fiber Install</option>
+          <option value="1-F014-5">1-F014-5 - Fiber Service</option>
+          <option value="2-F014-5">2-F014-5 - Adtl Fiber</option>
+          <option value="F007">F007 - Service Aerial</option>
+          <option value="F008">F008 - Trouble Ticket</option>
+          <option value="F009">F009 - TT Return</option>
+        </select>
+        <div class="lbl">Qty:</div>
+        <input type="number" value="1" min="0" style="max-width:70px">
+      </div>
     </div>
-  </div>
-  <button class="jc-add" onclick="addJobCode()">+ Add Job Code</button>
-</div>
-
-<!-- QC Details -->
-<div class="row">
-  <div class="section"><label>Spans Claimed</label><input type="number" id="claimed" placeholder="Your count"></div>
-  <div class="section"><label>Inspector Count</label><input type="number" id="inspected" placeholder="QC count"></div>
-</div>
-
-<div class="section">
-  <label>QC Result</label>
-  <select id="qcStatus">
-    <option value="Denied">Denied</option>
-    <option value="Partial">Partial Approval</option>
-    <option value="Approved">Approved (disputing notes)</option>
-  </select>
-</div>
-
-<div class="section"><label>Inspector Notes (if any)</label><textarea id="inspNotes" placeholder="Copy inspector's notes here..."></textarea></div>
-
-<div class="section"><label>Dispute Reason *</label><textarea id="disputeReason" placeholder="Explain why you believe the QC result is incorrect. Be specific - reference spans, photos, conditions..."></textarea></div>
-
-<!-- Photos -->
-<div class="section">
-  <label>Photo Evidence</label>
-  <div class="photo-area" id="photoArea">
-    <div class="icon">&#128247;</div>
-    <p>Tap to take photo or upload</p>
-    <input type="file" id="photoInput" accept="image/*" multiple capture="environment">
-  </div>
-  <div class="photo-previews" id="photoPreviews"></div>
-  <div id="photoCount"></div>
-</div>
-
-<!-- Actions -->
-<button class="btn btn-gen" onclick="generateMessage()">Generate Dispute Message</button>
-
-<div class="preview-box" id="previewBox">
-  <h3>Preview Message</h3>
-  <div class="preview-text" id="previewText"></div>
-
-  <button class="btn btn-copy" onclick="copyMessage()">Copy to Clipboard</button>
-
-  <div class="btn-row">
-    <button class="btn btn-teams" id="btnSubmit" onclick="submitDispute()">Submit Dispute</button>
-    <button class="btn btn-tg" onclick="shareToTelegram()">Share via Telegram</button>
+    <button class="jc-add" onclick="addJobCode()">+ Add Job Code</button>
   </div>
 
-  <div id="sendStatus"></div>
-</div>
+  <div class="row">
+    <div class="section"><label>Spans Claimed</label><input type="number" id="claimed" placeholder="Your count"></div>
+    <div class="section"><label>Inspector Count</label><input type="number" id="inspected" placeholder="QC count"></div>
+  </div>
 
-<button class="btn btn-clear" onclick="clearForm()">Clear Form</button>
+  <div class="section">
+    <label>QC Result</label>
+    <select id="qcStatus">
+      <option value="Denied">Denied</option>
+      <option value="Partial">Partial Approval</option>
+      <option value="Approved">Approved (disputing notes)</option>
+    </select>
+  </div>
 
-<div class="disclaimer">
-  AMG US TECHNOLOGY - QC Dispute Form v4.0<br>
-  For 1099 Independent Contractors - Frontier FTR CA SWC<br>
-  <span style="color:#556677">Disputes are submitted securely to management for review.</span>
-</div>
+  <div class="section"><label>Inspector Notes (if any)</label><textarea id="inspNotes" placeholder="Copy inspector's notes here..."></textarea></div>
+  <div class="section"><label>Dispute Reason *</label><textarea id="disputeReason" placeholder="Explain why you believe the QC result is incorrect. Be specific - reference spans, photos, conditions..."></textarea></div>
 
-<div class="toast" id="copyToast"></div>
+  <div class="section">
+    <label>Photo Evidence (up to 15 photos)</label>
+    <div class="photo-area" id="photoArea">
+      <div class="icon">&#128247;</div>
+      <p>Tap to take photo or upload</p>
+      <p class="limit-note">Select multiple photos at once or add one by one</p>
+      <input type="file" id="photoInput" accept="image/*" multiple>
+    </div>
+    <div class="photo-previews" id="photoPreviews"></div>
+    <div id="photoCount"></div>
+  </div>
+
+  <button class="btn btn-gen" onclick="generateMessage()">Generate Dispute Message</button>
+
+  <div class="preview-box" id="previewBox">
+    <h3>Preview Message</h3>
+    <div class="preview-text" id="previewText"></div>
+    <button class="btn btn-copy" onclick="copyMessage()">Copy to Clipboard</button>
+    <div class="btn-row">
+      <button class="btn btn-teams" id="btnSubmit" onclick="submitDispute()">Submit Dispute</button>
+      <button class="btn btn-tg" onclick="shareToTelegram()">Share via Telegram</button>
+    </div>
+    <div class="progress-bar-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div id="sendStatus"></div>
+  </div>
+
+  <button class="btn btn-clear" onclick="clearForm()">Clear Form</button>
+
+  <div class="disclaimer">
+    AMG US TECHNOLOGY - QC Dispute Form v5.0<br>
+    For 1099 Independent Contractors - Frontier FTR CA SWC<br>
+    <span style="color:#556677">Disputes are submitted securely to management for review.</span><br>
+    <a href="admin.html" class="admin-link">Admin Panel</a>
+  </div>
+
+  <div class="toast" id="copyToast"></div>
 
 <script>
-// === CONFIGURATION ===
 const SUPABASE_URL = 'https://jffahgasqvtxigvlwznb.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmZmFoZ2FzcXZ0eGlndmx3em5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1OTM1MjQsImV4cCI6MjA5MDE2OTUyNH0.dsGRZy7WOQmVMQABs2epp-04Fx0xoEykx2C4M4b72h4';
 const SUBMIT_FUNCTION_URL = SUPABASE_URL + '/functions/v1/submit-dispute';
+const MAX_PHOTOS = 15;
 
-// === MULTI JOB CODE ===
 let jcCounter = 1;
 function addJobCode() {
-  const list = document.getElementById('jcList');
-  const div = document.createElement('div');
+  var list = document.getElementById('jcList');
+  var div = document.createElement('div');
   div.className = 'jc-row';
   div.dataset.idx = jcCounter++;
   div.innerHTML = '<select><option value="F006">F006 - Aerial Drop</option><option value="F011">F011 - Trip Charge</option><option value="F014-7">F014-7 - Drop Removal</option><option value="F014-10">F014-10 - UG Drop/ft</option><option value="F014-1">F014-1 - Fiber Install</option><option value="1-F014-5">1-F014-5 - Fiber Service</option><option value="2-F014-5">2-F014-5 - Adtl Fiber</option><option value="F007">F007 - Service Aerial</option><option value="F008">F008 - Trouble Ticket</option><option value="F009">F009 - TT Return</option></select><div class="lbl">Qty:</div><input type="number" value="1" min="0" style="max-width:70px"><button class="jc-remove" onclick="this.parentElement.remove()">x</button>';
@@ -259,70 +179,90 @@ function addJobCode() {
 }
 
 function getJobCodes() {
-  const rows = document.querySelectorAll('.jc-row');
-  const codes = [];
-  rows.forEach(r => {
-    const code = r.querySelector('select').value;
-    const qty = r.querySelector('input[type=number]').value || '1';
-    codes.push({ code, qty });
+  var rows = document.querySelectorAll('.jc-row');
+  var codes = [];
+  rows.forEach(function(r) {
+    var code = r.querySelector('select').value;
+    var qty = r.querySelector('input[type=number]').value || '1';
+    codes.push({ code: code, qty: qty });
   });
   return codes;
 }
 
 // === PHOTO HANDLING ===
-const photoArea = document.getElementById('photoArea');
-const photoInput = document.getElementById('photoInput');
-const photoPreviews = document.getElementById('photoPreviews');
-const photoCount = document.getElementById('photoCount');
-let photos = [];
+var photoArea = document.getElementById('photoArea');
+var photoInput = document.getElementById('photoInput');
+var photoPreviews = document.getElementById('photoPreviews');
+var photoCount = document.getElementById('photoCount');
+var photos = [];
 
-photoArea.addEventListener('click', () => photoInput.click());
-photoArea.addEventListener('dragover', (e) => { e.preventDefault(); photoArea.classList.add('dragover'); });
-photoArea.addEventListener('dragleave', () => photoArea.classList.remove('dragover'));
-photoArea.addEventListener('drop', (e) => { e.preventDefault(); photoArea.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
-photoInput.addEventListener('change', () => handleFiles(photoInput.files));
+photoArea.addEventListener('click', function() { photoInput.click(); });
+photoArea.addEventListener('dragover', function(e) { e.preventDefault(); photoArea.classList.add('dragover'); });
+photoArea.addEventListener('dragleave', function() { photoArea.classList.remove('dragover'); });
+photoArea.addEventListener('drop', function(e) { e.preventDefault(); photoArea.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+photoInput.addEventListener('change', function() { handleFiles(photoInput.files); });
 
 function handleFiles(files) {
-  for (let f of files) {
+  var activeCount = photos.filter(function(p) { return p; }).length;
+  for (var i = 0; i < files.length; i++) {
+    if (activeCount >= MAX_PHOTOS) {
+      alert('Maximum ' + MAX_PHOTOS + ' photos allowed. Remove some to add more.');
+      break;
+    }
+    var f = files[i];
     if (!f.type.startsWith('image/')) continue;
-    const idx = photos.length;
+    var idx = photos.length;
     photos.push(f);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const wrap = document.createElement('div');
-      wrap.className = 'thumb-wrap';
-      wrap.dataset.idx = idx;
-      wrap.innerHTML = '<img class="thumb" src="' + e.target.result + '"><button class="remove-btn" onclick="removePhoto(' + idx + ', this)">x</button>';
-      photoPreviews.appendChild(wrap);
-    };
-    reader.readAsDataURL(f);
+    activeCount++;
+    (function(fileObj, index) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var wrap = document.createElement('div');
+        wrap.className = 'thumb-wrap';
+        wrap.dataset.idx = index;
+        wrap.innerHTML = '<img class="thumb" src="' + e.target.result + '"><button class="remove-btn" onclick="removePhoto(' + index + ', this)">x</button>';
+        photoPreviews.appendChild(wrap);
+      };
+      reader.readAsDataURL(fileObj);
+    })(f, idx);
   }
+  photoInput.value = '';
   updatePhotoCount();
 }
-function removePhoto(idx, btn) { btn.parentElement.remove(); photos[idx] = null; updatePhotoCount(); }
-function updatePhotoCount() {
-  const count = photos.filter(p => p).length;
-  photoCount.textContent = count > 0 ? count + ' photo(s) attached' : '';
+
+function removePhoto(idx, btn) {
+  btn.parentElement.remove();
+  photos[idx] = null;
+  updatePhotoCount();
 }
 
-// Compress photo to JPEG, max 1200px, quality 0.7
+function updatePhotoCount() {
+  var count = photos.filter(function(p) { return p; }).length;
+  if (count > 0) {
+    photoCount.textContent = count + '/' + MAX_PHOTOS + ' photo(s) attached';
+    photoCount.style.color = count >= MAX_PHOTOS ? '#f87171' : '#8899aa';
+  } else {
+    photoCount.textContent = '';
+  }
+}
+
 function compressPhoto(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = new Image();
-      img.onload = () => {
-        const MAX = 1200;
-        let w = img.width, h = img.height;
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        var MAX = 1200;
+        var w = img.width, h = img.height;
         if (w > MAX || h > MAX) {
           if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
           else { w = Math.round(w * MAX / h); h = MAX; }
         }
-        const canvas = document.createElement('canvas');
+        var canvas = document.createElement('canvas');
         canvas.width = w; canvas.height = h;
-        const ctx = canvas.getContext('2d');
+        var ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, w, h);
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+        var dataUrl = canvas.toDataURL('image/jpeg', 0.7);
         resolve(dataUrl.split(',')[1]);
       };
       img.onerror = reject;
@@ -335,28 +275,25 @@ function compressPhoto(file) {
 
 // === GENERATE MESSAGE ===
 function generateMessage() {
-  const name = document.getElementById('techName').value.trim();
-  const id = document.getElementById('techId').value.trim();
-  const date = document.getElementById('workDate').value;
-  const wo = document.getElementById('workOrder').value.trim();
-  const addr = document.getElementById('address').value.trim();
-  const claimed = document.getElementById('claimed').value;
-  const inspected = document.getElementById('inspected').value;
-  const status = document.getElementById('qcStatus').value;
-  const inspNotes = document.getElementById('inspNotes').value.trim();
-  const reason = document.getElementById('disputeReason').value.trim();
-  const jobCodes = getJobCodes();
-  const photoN = photos.filter(p => p).length;
+  var name = document.getElementById('techName').value.trim();
+  var id = document.getElementById('techId').value.trim();
+  var date = document.getElementById('workDate').value;
+  var wo = document.getElementById('workOrder').value.trim();
+  var addr = document.getElementById('address').value.trim();
+  var claimed = document.getElementById('claimed').value;
+  var inspected = document.getElementById('inspected').value;
+  var status = document.getElementById('qcStatus').value;
+  var inspNotes = document.getElementById('inspNotes').value.trim();
+  var reason = document.getElementById('disputeReason').value.trim();
+  var jobCodes = getJobCodes();
+  var photoN = photos.filter(function(p) { return p; }).length;
 
-  if (!name || !wo || !reason) {
-    alert('Please fill in: Your Name, Work Order #, and Dispute Reason');
-    return;
-  }
+  if (!name || !wo || !reason) { alert('Please fill in: Your Name, Work Order #, and Dispute Reason'); return; }
 
-  const fmtDate = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'}) : 'N/A';
-  const jcText = jobCodes.map(j => '  ' + j.code + ' x' + j.qty).join('\n');
+  var fmtDate = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'}) : 'N/A';
+  var jcText = jobCodes.map(function(j) { return '  ' + j.code + ' x' + j.qty; }).join('\n');
 
-  let msg = 'QC INSPECTION DISPUTE - AMG US TECHNOLOGY\n\n';
+  var msg = 'QC INSPECTION DISPUTE - AMG US TECHNOLOGY\n\n';
   msg += '==================\n';
   msg += 'TECH: ' + name + ' (' + (id || 'N/A') + ')\n';
   msg += 'DATE: ' + fmtDate + '\n';
@@ -369,17 +306,9 @@ function generateMessage() {
   msg += '* Inspector reported: ' + (inspected || 'N/A') + ' spans\n';
   msg += '* Difference: ' + ((claimed && inspected) ? (claimed - inspected) : 'N/A') + ' spans\n';
   msg += '* QC Status: ' + status + '\n';
-
-  if (inspNotes) {
-    msg += '\nINSPECTOR NOTES:\n"' + inspNotes + '"\n';
-  }
-
+  if (inspNotes) { msg += '\nINSPECTOR NOTES:\n"' + inspNotes + '"\n'; }
   msg += '\nDISPUTE REASON:\n' + reason + '\n';
-
-  if (photoN > 0) {
-    msg += '\nEVIDENCE: ' + photoN + ' photo(s) attached\n';
-  }
-
+  if (photoN > 0) { msg += '\nEVIDENCE: ' + photoN + ' photo(s) attached\n'; }
   msg += '\n==================\nPlease review and re-inspect if needed.\n- ' + name + ', AMG US TECHNOLOGY';
 
   document.getElementById('previewText').textContent = msg;
@@ -389,9 +318,9 @@ function generateMessage() {
 }
 
 function copyMessage() {
-  const text = document.getElementById('previewText').textContent;
-  navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!')).catch(() => {
-    const range = document.createRange();
+  var text = document.getElementById('previewText').textContent;
+  navigator.clipboard.writeText(text).then(function() { showToast('Copied to clipboard!'); }).catch(function() {
+    var range = document.createRange();
     range.selectNode(document.getElementById('previewText'));
     window.getSelection().removeAllRanges();
     window.getSelection().addRange(range);
@@ -401,39 +330,48 @@ function copyMessage() {
 }
 
 function showToast(msg) {
-  const toast = document.getElementById('copyToast');
+  var toast = document.getElementById('copyToast');
   toast.textContent = msg;
   toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
+  setTimeout(function() { toast.classList.remove('show'); }, 2500);
 }
 
-// === SUBMIT TO BACKEND (Supabase Edge Function) ===
+// === SUBMIT ===
 async function submitDispute() {
-  const text = document.getElementById('previewText').textContent;
+  var text = document.getElementById('previewText').textContent;
   if (!text) { alert('Generate the message first!'); return; }
 
-  const statusEl = document.getElementById('sendStatus');
-  const activePhotos = photos.filter(p => p);
+  var statusEl = document.getElementById('sendStatus');
+  var progressWrap = document.getElementById('progressWrap');
+  var progressBar = document.getElementById('progressBar');
+  var activePhotos = photos.filter(function(p) { return p; });
+  var totalSteps = activePhotos.length + 1;
+  var currentStep = 0;
 
-  // Step 1: Compress photos
-  let photosBase64 = [];
+  progressWrap.classList.add('visible');
+  progressBar.style.width = '0%';
+
+  var photosBase64 = [];
   if (activePhotos.length > 0) {
     try {
-      for (let i = 0; i < activePhotos.length; i++) {
+      for (var i = 0; i < activePhotos.length; i++) {
         statusEl.innerHTML = '<span class="spinner"></span><span style="color:#5eaaf0">Compressing photo ' + (i+1) + '/' + activePhotos.length + '...</span>';
-        const b64 = await compressPhoto(activePhotos[i]);
+        currentStep++;
+        progressBar.style.width = Math.round((currentStep / totalSteps) * 80) + '%';
+        var b64 = await compressPhoto(activePhotos[i]);
         photosBase64.push(b64);
       }
     } catch (err) {
       statusEl.innerHTML = '<span style="color:#f87171">Failed to compress photos. Try removing large images.</span>';
+      progressWrap.classList.remove('visible');
       return;
     }
   }
 
-  // Step 2: Submit
   statusEl.innerHTML = '<span class="spinner"></span><span style="color:#5eaaf0">Submitting dispute' + (activePhotos.length > 0 ? ' with ' + activePhotos.length + ' photo(s)' : '') + '...</span>';
+  progressBar.style.width = '85%';
 
-  const formData = {
+  var formData = {
     tech_name: document.getElementById('techName').value.trim(),
     tech_id: document.getElementById('techId').value.trim(),
     work_date: document.getElementById('workDate').value,
@@ -451,46 +389,49 @@ async function submitDispute() {
   };
 
   try {
-    const res = await fetch(SUBMIT_FUNCTION_URL, {
+    var res = await fetch(SUBMIT_FUNCTION_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
-      },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY },
       body: JSON.stringify(formData)
     });
-
-    const result = await res.json();
+    var result = await res.json();
+    progressBar.style.width = '100%';
 
     if (res.ok && result.success) {
-      let channels = [];
+      var channels = [];
       if (result.teams_sent) channels.push('Microsoft Teams');
       if (result.telegram_sent) channels.push('Telegram');
-      const chText = channels.length > 0 ? ' Sent to: ' + channels.join(' + ') : '';
-      const photoText = result.photos_uploaded > 0 ? ' (' + result.photos_uploaded + ' photos)' : '';
+      var chText = channels.length > 0 ? ' Sent to: ' + channels.join(' + ') : '';
+      var photoText = result.photos_uploaded > 0 ? ' (' + result.photos_uploaded + ' photos)' : '';
       statusEl.innerHTML = '<span style="color:#4ade80; font-weight:bold">Dispute submitted successfully!' + chText + photoText + '</span>';
       showToast('Dispute submitted!');
+      setTimeout(function() { progressWrap.classList.remove('visible'); }, 2000);
     } else {
       statusEl.innerHTML = '<span style="color:#f87171">Submission failed: ' + (result.error || 'Unknown error') + '. Copy the message and send manually.</span>';
+      progressWrap.classList.remove('visible');
     }
   } catch (err) {
     statusEl.innerHTML = '<span style="color:#f87171">Network error. Copy the message and send via Telegram/Teams manually.</span>';
+    progressWrap.classList.remove('visible');
   }
 }
 
 function shareToTelegram() {
-  const text = document.getElementById('previewText').textContent;
+  var text = document.getElementById('previewText').textContent;
   window.open('https://t.me/share/url?url=&text=' + encodeURIComponent(text), '_blank');
 }
 
 function clearForm() {
-  document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
+  document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(function(el) { el.value = ''; });
   document.getElementById('workDate').value = '';
   document.getElementById('previewBox').classList.remove('visible');
-  const list = document.getElementById('jcList');
+  var list = document.getElementById('jcList');
   list.innerHTML = '<div class="jc-row" data-idx="0"><select><option value="F006">F006 - Aerial Drop</option><option value="F011">F011 - Trip Charge</option><option value="F014-7">F014-7 - Drop Removal</option><option value="F014-10">F014-10 - UG Drop/ft</option><option value="F014-1">F014-1 - Fiber Install</option><option value="1-F014-5">1-F014-5 - Fiber Service</option><option value="2-F014-5">2-F014-5 - Adtl Fiber</option><option value="F007">F007 - Service Aerial</option><option value="F008">F008 - Trouble Ticket</option><option value="F009">F009 - TT Return</option></select><div class="lbl">Qty:</div><input type="number" value="1" min="0" style="max-width:70px"></div>';
-  photos = []; photoPreviews.innerHTML = ''; photoCount.textContent = '';
+  photos = [];
+  photoPreviews.innerHTML = '';
+  photoCount.textContent = '';
   document.getElementById('sendStatus').textContent = '';
+  document.getElementById('progressWrap').classList.remove('visible');
 }
 
 // Init
