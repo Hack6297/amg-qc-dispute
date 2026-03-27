@@ -2,250 +2,440 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>AMG QC Dispute Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMG Project SWC 1099</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0e1621; color: #fff;
-      min-height: 100vh; padding: 16px;
-      max-width: 600px; margin: 0 auto;
-    }
-    .header { text-align: center; padding: 20px 0 12px; border-bottom: 2px solid #1f4e79; margin-bottom: 20px; }
-    .header h1 { font-size: 20px; color: #5eaaf0; letter-spacing: 1px; }
-    .header p { font-size: 12px; color: #8899aa; margin-top: 4px; }
-    .badge { display: inline-block; background: #1f4e79; color: #fff; padding: 3px 10px; border-radius: 12px; font-size: 11px; margin-top: 8px; letter-spacing: 0.5px; }
-    .section { margin-bottom: 18px; }
-    .section label { display: block; font-size: 13px; color: #8899aa; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .section input, .section textarea, .section select { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #2b3e50; background: #17212b; color: #fff; font-size: 16px; outline: none; transition: border 0.2s; }
-    .section input:focus, .section textarea:focus, .section select:focus { border-color: #5eaaf0; }
-    .section textarea { resize: vertical; min-height: 100px; }
-    .row { display: flex; gap: 12px; }
-    .row .section { flex: 1; }
-    .jc-list { display: flex; flex-direction: column; gap: 8px; }
-    .jc-row { display: flex; gap: 8px; align-items: center; background: #17212b; border-radius: 10px; padding: 10px 12px; border: 1px solid #2b3e50; }
-    .jc-row select { flex: 2; padding: 10px; font-size: 15px; background: #17212b; color: #fff; border: 1px solid #2b3e50; border-radius: 8px; }
-    .jc-row input { flex: 1; padding: 10px; font-size: 15px; text-align: center; background: #17212b; color: #fff; border: 1px solid #2b3e50; border-radius: 8px; }
-    .jc-row .lbl { color: #8899aa; font-size: 12px; min-width: 40px; text-align: center; }
-    .jc-remove { background: #e74c3c; color: #fff; border: none; border-radius: 50%; width: 28px; height: 28px; font-size: 16px; cursor: pointer; flex-shrink: 0; }
-    .jc-add { display: flex; align-items: center; justify-content: center; gap: 6px; background: transparent; color: #5eaaf0; border: 1px dashed #5eaaf0; border-radius: 10px; padding: 10px; cursor: pointer; font-size: 14px; font-weight: 600; }
-    .jc-add:hover { background: rgba(94,170,240,0.08); }
-    .photo-area { border: 2px dashed #2b3e50; border-radius: 14px; padding: 30px 16px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
-    .photo-area:hover, .photo-area.dragover { border-color: #5eaaf0; background: rgba(94,170,240,0.05); }
-    .photo-area .icon { font-size: 40px; margin-bottom: 8px; }
-    .photo-area p { color: #8899aa; font-size: 14px; }
-    .photo-area .limit-note { color: #556677; font-size: 11px; margin-top: 4px; }
-    .photo-area input { display: none; }
-    .photo-previews { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-    .thumb-wrap { position: relative; width: 70px; height: 70px; border-radius: 8px; overflow: hidden; }
-    .thumb { width: 100%; height: 100%; object-fit: cover; }
-    .remove-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.7); color: #fff; border: none; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; cursor: pointer; }
-    #photoCount { color: #8899aa; font-size: 12px; margin-top: 8px; }
-    .preview-box { background: #17212b; border-radius: 14px; padding: 16px; margin-top: 20px; display: none; border: 1px solid #2b3e50; }
-    .preview-box.visible { display: block; }
-    .preview-box h3 { font-size: 14px; color: #5eaaf0; margin-bottom: 10px; }
-    .preview-text { white-space: pre-wrap; font-family: monospace; font-size: 13px; color: #d0d8e0; line-height: 1.5; max-height: 300px; overflow-y: auto; padding: 12px; background: #0e1621; border-radius: 8px; }
-    .btn { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; transition: transform 0.1s, opacity 0.2s; letter-spacing: 0.5px; }
-    .btn:active { transform: scale(0.98); }
-    .btn-gen { background: linear-gradient(135deg, #1f4e79, #2e75b6); color: #fff; }
-    .btn-copy { background: #2b3e50; color: #fff; }
-    .btn-teams { background: linear-gradient(135deg, #5558af, #7b83eb); color: #fff; }
-    .btn-tg { background: linear-gradient(135deg, #0088cc, #29b6f6); color: #fff; }
-    .btn-clear { background: transparent; color: #667788; border: 1px solid #2b3e50; margin-top: 20px; }
-    .btn-row { display: flex; gap: 10px; }
-    .btn-row .btn { flex: 1; }
-    #sendStatus { text-align: center; margin-top: 10px; font-size: 14px; }
-    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(60px); background: #4ade80; color: #000; padding: 12px 24px; border-radius: 12px; font-weight: 700; opacity: 0; transition: all 0.3s; z-index: 9999; pointer-events: none; }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .disclaimer { text-align: center; font-size: 11px; color: #556677; margin-top: 30px; padding-top: 16px; border-top: 1px solid #1f2d3d; line-height: 1.5; }
-    .admin-link { display: inline-block; margin-top: 10px; color: #3a6a99; font-size: 11px; text-decoration: none; border-bottom: 1px dashed #3a6a99; }
-    .admin-link:hover { color: #5eaaf0; border-color: #5eaaf0; }
-    .progress-bar-wrap { width: 100%; height: 6px; background: #2b3e50; border-radius: 3px; margin-top: 8px; overflow: hidden; display: none; }
-    .progress-bar-wrap.visible { display: block; }
-    .progress-bar { height: 100%; background: linear-gradient(90deg, #5eaaf0, #4ade80); border-radius: 3px; transition: width 0.3s; width: 0%; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0f18; color: #fff; min-height: 100vh; }
+    .app-header { text-align: center; padding: 18px 10px 0; }
+    .app-header h1 { font-size: 22px; color: #5eaaf0; letter-spacing: 2px; }
+    .app-header .sub { font-size: 11px; color: #667; margin-top: 2px; }
+    .badge { display: inline-block; background: #1f4e79; color: #8ecdf7; padding: 3px 14px; border-radius: 12px; font-size: 10px; margin-top: 6px; letter-spacing: 1px; font-weight: 700; }
+
+    /* === TABS === */
+    .tab-bar { display: flex; margin: 16px auto 0; max-width: 700px; padding: 0 10px; gap: 4px; }
+    .tab-btn { flex: 1; padding: 12px 6px; text-align: center; background: #111a27; border: 1px solid #2b3e50; border-bottom: none; border-radius: 12px 12px 0 0; color: #667; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; position: relative; }
+    .tab-btn:hover { color: #aab; background: #15202e; }
+    .tab-btn.active { background: #0d1520; color: #5eaaf0; border-color: #5eaaf0; }
+    .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: #0d1520; }
+    .tab-btn .tab-icon { display: block; font-size: 18px; margin-bottom: 2px; }
+    .tab-content { display: none; max-width: 700px; margin: 0 auto; padding: 0 10px 20px; border-top: 1px solid #2b3e50; }
+    .tab-content.active { display: block; }
+
+    /* === FORM STYLES === */
+    .form-section { background: #111a27; border: 1px solid #2b3e50; border-radius: 14px; padding: 16px; margin-top: 16px; }
+    .form-section h3 { color: #5eaaf0; font-size: 14px; margin-bottom: 12px; }
+    .row { display: flex; gap: 10px; margin-bottom: 12px; }
+    .row > .col { flex: 1; }
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-size: 11px; color: #8899aa; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .field input, .field select, .field textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #2b3e50; background: #0a0f18; color: #fff; font-size: 14px; }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: #5eaaf0; outline: none; }
+    .field textarea { min-height: 80px; resize: vertical; font-family: inherit; }
+    .field select { -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23667' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+
+    /* Photo upload */
+    .photo-area { border: 2px dashed #2b3e50; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 8px; cursor: pointer; transition: border-color 0.2s; }
+    .photo-area:hover { border-color: #5eaaf0; }
+    .photo-area .cam-icon { font-size: 32px; opacity: 0.5; }
+    .photo-area p { font-size: 13px; color: #667; margin-top: 4px; }
+    .photo-area .hint { font-size: 11px; color: #445; }
+    .thumbs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .thumb-wrap { position: relative; width: 70px; height: 70px; border-radius: 8px; overflow: hidden; border: 1px solid #2b3e50; }
+    .thumb-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .remove-btn { position: absolute; top: 2px; right: 2px; background: #e74c3c; color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; cursor: pointer; line-height: 18px; text-align: center; }
+    .photo-count { font-size: 12px; color: #8899aa; margin-top: 4px; }
+
+    /* Buttons */
+    .btn-primary { width: 100%; padding: 14px; background: linear-gradient(135deg, #1f4e79, #2e75b6); color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary { width: 100%; padding: 12px; background: #111a27; color: #667; border: 1px solid #2b3e50; border-radius: 12px; font-size: 14px; cursor: pointer; margin-top: 8px; }
+    .btn-green { background: linear-gradient(135deg, #1a6b3c, #27ae60); }
+    .btn-teal { background: linear-gradient(135deg, #0e7490, #06b6d4); }
+    .btn-purple { background: linear-gradient(135deg, #6b21a8, #9333ea); }
+
+    /* Preview & submit */
+    .preview-box { background: #0a0f18; border: 1px solid #2b3e50; border-radius: 10px; padding: 14px; margin-top: 12px; }
+    .preview-box h4 { color: #5eaaf0; font-size: 13px; margin-bottom: 8px; }
+    .preview-box pre { white-space: pre-wrap; font-size: 12px; color: #ccd; max-height: 200px; overflow-y: auto; line-height: 1.5; }
+    .submit-row { display: flex; gap: 8px; margin-top: 10px; }
+    .submit-row .btn-primary { flex: 1; }
+    .status-msg { text-align: center; font-size: 14px; margin-top: 8px; font-weight: 600; }
+    .status-msg.success { color: #4ade80; }
+    .status-msg.error { color: #f87171; }
+    .progress-bar-wrap { height: 4px; background: #1a2535; border-radius: 2px; margin-top: 8px; display: none; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, #5eaaf0, #4ade80); border-radius: 2px; width: 0%; transition: width 0.3s; }
+    .submit-spinner { font-size: 13px; color: #5eaaf0; text-align: center; margin-top: 6px; display: none; }
+
+    /* Checklist */
+    .checklist-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-bottom: 1px solid #1a2535; }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: #4ade80; cursor: pointer; flex-shrink: 0; }
+    .checklist-item .item-label { flex: 1; font-size: 14px; }
+    .checklist-item .item-icon { font-size: 20px; width: 28px; text-align: center; }
+    .checklist-item .item-status { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+    .checklist-item .item-status.ok { background: rgba(74,222,128,0.15); color: #4ade80; }
+    .checklist-item .item-status.miss { background: rgba(248,113,113,0.15); color: #f87171; }
+    .checklist-category { font-size: 12px; color: #5eaaf0; font-weight: 700; text-transform: uppercase; padding: 8px 0 4px; margin-top: 8px; border-bottom: 1px solid #2b3e50; letter-spacing: 1px; }
+
+    /* Coming soon */
+    .coming-soon { text-align: center; padding: 60px 20px; }
+    .coming-soon .icon { font-size: 48px; margin-bottom: 16px; }
+    .coming-soon h3 { color: #5eaaf0; margin-bottom: 8px; }
+    .coming-soon p { color: #556; font-size: 14px; }
+
+    /* Job code rows */
+    .job-code-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+    .job-code-row select { flex: 3; }
+    .job-code-row input { flex: 1; }
+    .job-code-row .remove-jc { background: #c0392b; color: #fff; border: none; border-radius: 6px; width: 28px; height: 28px; cursor: pointer; font-size: 14px; }
+    .add-jc-btn { color: #5eaaf0; background: none; border: none; font-size: 13px; cursor: pointer; font-weight: 600; padding: 4px 0; }
+
+    /* Footer */
+    .app-footer { text-align: center; padding: 20px; margin-top: 20px; border-top: 1px solid #1a2535; }
+    .app-footer p { font-size: 11px; color: #445; }
+    .app-footer a { color: #5eaaf0; text-decoration: none; font-size: 12px; }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>AMG US TECHNOLOGY</h1>
-    <p>QC Inspection Dispute Form v5.0</p>
-    <div class="badge">1099 Independent Contractor</div>
-  </div>
 
-  <div class="row">
-    <div class="section"><label>Your Name *</label><input type="text" id="techName" placeholder="Full Name"></div>
-    <div class="section"><label>Tech ID</label><input type="text" id="techId" placeholder="ID / CESWC#"></div>
-  </div>
-  <div class="row">
-    <div class="section"><label>Work Date *</label><input type="date" id="workDate"></div>
-    <div class="section"><label>Work Order # *</label><input type="text" id="workOrder" placeholder="WO number"></div>
-  </div>
-  <div class="section"><label>Address</label><input type="text" id="address" placeholder="Job address"></div>
+<div class="app-header">
+  <h1>AMG US TECHNOLOGY</h1>
+  <div class="sub">AMG Project SWC 1099</div>
+  <div class="badge">1099 Independent Contractor - Frontier FTR CA SWC</div>
+</div>
 
-  <div class="section">
-    <label>Job Codes Performed</label>
-    <div class="jc-list" id="jcList">
-      <div class="jc-row" data-idx="0">
-        <select>
-          <option value="F006">F006 - Aerial Drop</option>
-          <option value="F011">F011 - Trip Charge</option>
-          <option value="F014-7">F014-7 - Drop Removal</option>
-          <option value="F014-10">F014-10 - UG Drop/ft</option>
-          <option value="F014-1">F014-1 - Fiber Install</option>
-          <option value="1-F014-5">1-F014-5 - Fiber Service</option>
-          <option value="2-F014-5">2-F014-5 - Adtl Fiber</option>
-          <option value="F007">F007 - Service Aerial</option>
-          <option value="F008">F008 - Trouble Ticket</option>
-          <option value="F009">F009 - TT Return</option>
-        </select>
-        <div class="lbl">Qty:</div>
-        <input type="number" value="1" min="0" style="max-width:70px">
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-btn active" onclick="switchTab('qc-report')" id="tab-qc-report">
+    <span class="tab-icon">&#128203;</span>
+    SWC QC Report
+  </div>
+  <div class="tab-btn" onclick="switchTab('qc-tech')" id="tab-qc-tech">
+    <span class="tab-icon">&#128119;</span>
+    SWC QC Tech
+  </div>
+  <div class="tab-btn" onclick="switchTab('f011')" id="tab-f011">
+    <span class="tab-icon">&#128268;</span>
+    SWC F011
+  </div>
+</div>
+
+<!-- ======================= TAB 1: SWC QC REPORT ======================= -->
+<div class="tab-content active" id="content-qc-report">
+
+  <div class="form-section">
+    <h3>QC Inspection Dispute</h3>
+    <div class="row">
+      <div class="col">
+        <div class="field"><label>Your Name *</label><input type="text" id="qr_techName" placeholder="Full Name"></div>
+      </div>
+      <div class="col">
+        <div class="field"><label>Tech ID</label><input type="text" id="qr_techId" placeholder="ID / CESWC#"></div>
       </div>
     </div>
-    <button class="jc-add" onclick="addJobCode()">+ Add Job Code</button>
+    <div class="row">
+      <div class="col">
+        <div class="field"><label>Work Date *</label><input type="date" id="qr_workDate"></div>
+      </div>
+      <div class="col">
+        <div class="field"><label>Work Order # *</label><input type="text" id="qr_workOrder" placeholder="WO number"></div>
+      </div>
+    </div>
+    <div class="field"><label>Address</label><input type="text" id="qr_address" placeholder="Job address"></div>
   </div>
 
-  <div class="row">
-    <div class="section"><label>Spans Claimed</label><input type="number" id="claimed" placeholder="Your count"></div>
-    <div class="section"><label>Inspector Count</label><input type="number" id="inspected" placeholder="QC count"></div>
+  <div class="form-section">
+    <h3>Job Details</h3>
+    <div class="field">
+      <label>Job Codes Performed</label>
+      <div id="qr_jobCodes">
+        <div class="job-code-row">
+          <select>
+            <option value="F006">F006 - Aerial Drop</option>
+            <option value="F007">F007 - Underground Drop</option>
+            <option value="F008">F008 - Buried Drop</option>
+            <option value="F009">F009 - Aerial Strand</option>
+            <option value="F010">F010 - Underground Strand</option>
+            <option value="F011">F011 - Install/Repair ONT</option>
+            <option value="F012">F012 - Splice</option>
+            <option value="OTHER">Other</option>
+          </select>
+          <input type="number" value="1" min="1" placeholder="Qty" style="max-width:60px">
+        </div>
+      </div>
+      <button class="add-jc-btn" onclick="addJobCode('qr')">+ Add Job Code</button>
+    </div>
+    <div class="row">
+      <div class="col"><div class="field"><label>Spans Claimed</label><input type="number" id="qr_claimed" placeholder="Your count"></div></div>
+      <div class="col"><div class="field"><label>Inspector Count</label><input type="number" id="qr_inspected" placeholder="QC count"></div></div>
+    </div>
+    <div class="field">
+      <label>QC Result</label>
+      <select id="qr_qcStatus">
+        <option value="Denied">Denied</option>
+        <option value="Partial">Partial</option>
+        <option value="Short-Paid">Short-Paid</option>
+      </select>
+    </div>
   </div>
 
-  <div class="section">
-    <label>QC Result</label>
-    <select id="qcStatus">
-      <option value="Denied">Denied</option>
-      <option value="Partial">Partial Approval</option>
-      <option value="Approved">Approved (disputing notes)</option>
-    </select>
+  <div class="form-section">
+    <h3>Dispute Details</h3>
+    <div class="field"><label>Inspector Notes (if any)</label><textarea id="qr_inspNotes" placeholder="Copy inspector's notes here..."></textarea></div>
+    <div class="field"><label>Dispute Reason *</label><textarea id="qr_disputeReason" placeholder="Explain why you believe the QC result is incorrect. Be specific - reference spans, photos, conditions..."></textarea></div>
   </div>
 
-  <div class="section"><label>Inspector Notes (if any)</label><textarea id="inspNotes" placeholder="Copy inspector's notes here..."></textarea></div>
-  <div class="section"><label>Dispute Reason *</label><textarea id="disputeReason" placeholder="Explain why you believe the QC result is incorrect. Be specific - reference spans, photos, conditions..."></textarea></div>
-
-  <div class="section">
-    <label>Photo Evidence (up to 15 photos)</label>
-    <div class="photo-area" id="photoArea">
-      <div class="icon">&#128247;</div>
+  <div class="form-section">
+    <h3>Photo Evidence (up to 15 photos)</h3>
+    <div class="photo-area" onclick="document.getElementById('qr_photoInput').click()">
+      <div class="cam-icon">&#128247;</div>
       <p>Tap to take photo or upload</p>
-      <p class="limit-note">Select multiple photos at once or add one by one</p>
-      <input type="file" id="photoInput" accept="image/*" multiple>
+      <div class="hint">Select multiple photos at once or add one by one</div>
     </div>
-    <div class="photo-previews" id="photoPreviews"></div>
-    <div id="photoCount"></div>
+    <input type="file" id="qr_photoInput" accept="image/*" multiple capture="environment" style="display:none" onchange="handlePhotos('qr', this.files)">
+    <div class="thumbs" id="qr_thumbs"></div>
+    <div class="photo-count" id="qr_photoCount"></div>
   </div>
 
-  <button class="btn btn-gen" onclick="generateMessage()">Generate Dispute Message</button>
+  <button class="btn-primary" onclick="generateQR()">Generate Dispute Message</button>
 
-  <div class="preview-box" id="previewBox">
-    <h3>Preview Message</h3>
-    <div class="preview-text" id="previewText"></div>
-    <button class="btn btn-copy" onclick="copyMessage()">Copy to Clipboard</button>
-    <div class="btn-row">
-      <button class="btn btn-teams" id="btnSubmit" onclick="submitDispute()">Submit Dispute</button>
-      <button class="btn btn-tg" onclick="shareToTelegram()">Share via Telegram</button>
+  <div id="qr_preview" style="display:none">
+    <div class="preview-box">
+      <h4>Preview Message</h4>
+      <pre id="qr_previewText"></pre>
     </div>
-    <div class="progress-bar-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
-    <div id="sendStatus"></div>
+    <div class="submit-row">
+      <button class="btn-primary" onclick="submitForm('qr')">Submit Dispute</button>
+      <button class="btn-primary btn-teal" onclick="shareTelegram('qr')">Share via Telegram</button>
+    </div>
+    <div class="progress-bar-wrap" id="qr_progressWrap"><div class="progress-bar" id="qr_progressBar"></div></div>
+    <div class="submit-spinner" id="qr_spinner"></div>
+    <div class="status-msg" id="qr_status"></div>
   </div>
 
-  <button class="btn btn-clear" onclick="clearForm()">Clear Form</button>
+  <button class="btn-secondary" onclick="clearForm('qr')">Clear Form</button>
+</div>
 
-  <div class="disclaimer">
-    AMG US TECHNOLOGY - QC Dispute Form v5.0<br>
-    For 1099 Independent Contractors - Frontier FTR CA SWC<br>
-    <span style="color:#556677">Disputes are submitted securely to management for review.</span><br>
-    <a href="admin.html" class="admin-link">Admin Panel</a>
+<!-- ======================= TAB 2: SWC QC TECH ======================= -->
+<div class="tab-content" id="content-qc-tech">
+
+  <div class="form-section">
+    <h3>Weekly Tech Safety Report</h3>
+    <div class="row">
+      <div class="col">
+        <div class="field"><label>Tech Name *</label><input type="text" id="qt_techName" placeholder="Full Name"></div>
+      </div>
+      <div class="col">
+        <div class="field"><label>Tech ID *</label><input type="text" id="qt_techId" placeholder="CESWC#"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="field"><label>Report Date *</label><input type="date" id="qt_date"></div>
+      </div>
+      <div class="col">
+        <div class="field"><label>Week #</label><input type="number" id="qt_week" placeholder="Week number"></div>
+      </div>
+    </div>
   </div>
 
-  <div class="toast" id="copyToast"></div>
+  <div class="form-section">
+    <h3>PPE Checklist (Personal Protective Equipment)</h3>
+    <div class="checklist-category">Head & Eye Protection</div>
+    <div class="checklist-item">
+      <span class="item-icon">&#9937;</span>
+      <span class="item-label">Hard Hat (ANSI Z89.1)</span>
+      <input type="checkbox" id="qt_ppe_hardhat" onchange="updateChecklist('qt')">
+    </div>
+    <div class="checklist-item">
+      <span class="item-icon">&#128083;</span>
+      <span class="item-label">Safety Glasses / Eye Protection</span>
+      <input type="checkbox" id="qt_ppe_glasses" onchange="updateChecklist('qt')">
+    </div>
+
+    <div class="checklist-category">Body Protection</div>
+    <div class="checklist-item">
+      <span class="item-icon">&#129509;</span>
+      <span class="item-label">High-Visibility Safety Vest (ANSI Class 2+)</span>
+      <input type="checkbox" id="qt_ppe_vest" onchange="updateChecklist('qt')">
+    </div>
+    <div class="checklist-item">
+      <span class="item-icon">&#129534;</span>
+      <span class="item-label">Work Gloves</span>
+      <input type="checkbox" id="qt_ppe_gloves" onchange="updateChecklist('qt')">
+    </div>
+    <div class="checklist-item">
+      <span class="item-icon">&#128094;</span>
+      <span class="item-label">Steel-Toe / Safety Boots</span>
+      <input type="checkbox" id="qt_ppe_boots" onchange="updateChecklist('qt')">
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>Vehicle & Equipment Checklist</h3>
+    <div class="checklist-category">Vehicle Condition</div>
+    <div class="checklist-item">
+      <span class="item-icon">&#128663;</span>
+      <span class="item-label">Vehicle Clean & Presentable</span>
+      <input type="checkbox" id="qt_veh_clean" onchange="updateChecklist('qt')">
+    </div>
+    <div class="checklist-item">
+      <span class="item-icon">&#128161;</span>
+      <span class="item-label">Lights & Signals Working</span>
+      <input type="checkbox" id="qt_veh_lights" onchange="updateChecklist('qt')">
+    </div>
+    <div class="checklist-item">
+      <span class="item-icon">&#9970;</span>
+      <span class="item-label">Cones / Warning Signs Available</span>
+      <input type="checkbox" id="qt_veh_cones" onchange="updateChecklist('qt')">
+    </div>
+
+    <div class="checklist-category">Equipment</div>
+    <div class="checklist-item">
+      <span class="item-icon">&#128703;</span>
+      <span class="item-label">Ladder Secured & Good Condition</span>
+      <input type="checkbox" id="qt_eq_ladder" onchange="updateChecklist('qt')">
+    </div>
+    <div class="checklist-item">
+      <span class="item-icon">&#128295;</span>
+      <span class="item-label">Tools Organized & Complete</span>
+      <input type="checkbox" id="qt_eq_tools" onchange="updateChecklist('qt')">
+    </div>
+    <div class="checklist-item">
+      <span class="item-icon">&#128230;</span>
+      <span class="item-label">Fiber Materials Stocked</span>
+      <input type="checkbox" id="qt_eq_materials" onchange="updateChecklist('qt')">
+    </div>
+    <div class="checklist-item">
+      <span class="item-icon">&#128267;</span>
+      <span class="item-label">Test Equipment (OPM / VFL / OTDR)</span>
+      <input type="checkbox" id="qt_eq_test" onchange="updateChecklist('qt')">
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>Photo Evidence (up to 15 photos)</h3>
+    <p style="font-size:12px; color:#8899aa; margin-bottom:10px;">Take photos showing: yourself in PPE, vehicle with ladder, tools, materials</p>
+    <div class="photo-area" onclick="document.getElementById('qt_photoInput').click()">
+      <div class="cam-icon">&#128247;</div>
+      <p>Tap to take photo or upload</p>
+      <div class="hint">Selfie in vest + hard hat, vehicle, ladder, tools</div>
+    </div>
+    <input type="file" id="qt_photoInput" accept="image/*" multiple capture="environment" style="display:none" onchange="handlePhotos('qt', this.files)">
+    <div class="thumbs" id="qt_thumbs"></div>
+    <div class="photo-count" id="qt_photoCount"></div>
+  </div>
+
+  <div class="form-section">
+    <h3>Additional Notes</h3>
+    <div class="field"><label>Comments / Issues</label><textarea id="qt_notes" placeholder="Any issues, missing items, or notes for this week..."></textarea></div>
+  </div>
+
+  <button class="btn-primary btn-green" onclick="submitForm('qt')">Submit Weekly Report</button>
+  <div class="progress-bar-wrap" id="qt_progressWrap"><div class="progress-bar" id="qt_progressBar"></div></div>
+  <div class="submit-spinner" id="qt_spinner"></div>
+  <div class="status-msg" id="qt_status"></div>
+  <button class="btn-secondary" onclick="clearForm('qt')">Clear Form</button>
+</div>
+
+<!-- ======================= TAB 3: SWC F011 ======================= -->
+<div class="tab-content" id="content-f011">
+  <div class="coming-soon">
+    <div class="icon">&#128268;</div>
+    <h3>SWC F011 - Coming Soon</h3>
+    <p>ONT Install / Repair closeout form is being developed.</p>
+    <p style="margin-top:12px; color:#445; font-size:12px;">This tab will include: customer info, ONT model,<br>light levels, router setup, speed test, and photos.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="app-footer">
+  <p>AMG US TECHNOLOGY - AMG Project SWC 1099</p>
+  <p>For 1099 Independent Contractors - Frontier FTR CA SWC</p>
+  <p>All submissions are sent securely to management.</p>
+  <a href="admin.html">Admin Panel</a>
+</div>
 
 <script>
-const SUPABASE_URL = 'https://jffahgasqvtxigvlwznb.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmZmFoZ2FzcXZ0eGlndmx3em5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1OTM1MjQsImV4cCI6MjA5MDE2OTUyNH0.dsGRZy7WOQmVMQABs2epp-04Fx0xoEykx2C4M4b72h4';
-const SUBMIT_FUNCTION_URL = SUPABASE_URL + '/functions/v1/submit-dispute';
-const MAX_PHOTOS = 15;
+var SUPABASE_URL = 'https://jffahgasqvtxigvlwznb.supabase.co';
+var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmZmFoZ2FzcXZ0eGlndmx3em5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1OTM1MjQsImV4cCI6MjA5MDE2OTUyNH0.dsGRZy7WOQmVMQABs2epp-04Fx0xoEykx2C4M4b72h4';
+var MAX_PHOTOS = 15;
 
-let jcCounter = 1;
-function addJobCode() {
-  var list = document.getElementById('jcList');
-  var div = document.createElement('div');
-  div.className = 'jc-row';
-  div.dataset.idx = jcCounter++;
-  div.innerHTML = '<select><option value="F006">F006 - Aerial Drop</option><option value="F011">F011 - Trip Charge</option><option value="F014-7">F014-7 - Drop Removal</option><option value="F014-10">F014-10 - UG Drop/ft</option><option value="F014-1">F014-1 - Fiber Install</option><option value="1-F014-5">1-F014-5 - Fiber Service</option><option value="2-F014-5">2-F014-5 - Adtl Fiber</option><option value="F007">F007 - Service Aerial</option><option value="F008">F008 - Trouble Ticket</option><option value="F009">F009 - TT Return</option></select><div class="lbl">Qty:</div><input type="number" value="1" min="0" style="max-width:70px"><button class="jc-remove" onclick="this.parentElement.remove()">x</button>';
-  list.appendChild(div);
+// Photo storage per form
+var formPhotos = { qr: [], qt: [], f011: [] };
+
+// Set today's date
+var today = new Date().toISOString().split('T')[0];
+if (document.getElementById('qr_workDate')) document.getElementById('qr_workDate').value = today;
+if (document.getElementById('qt_date')) document.getElementById('qt_date').value = today;
+
+// === TAB SWITCHING ===
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('content-' + tab).classList.add('active');
 }
 
-function getJobCodes() {
-  var rows = document.querySelectorAll('.jc-row');
-  var codes = [];
-  rows.forEach(function(r) {
-    var code = r.querySelector('select').value;
-    var qty = r.querySelector('input[type=number]').value || '1';
-    codes.push({ code: code, qty: qty });
-  });
-  return codes;
+// === JOB CODES ===
+function addJobCode(prefix) {
+  var container = document.getElementById(prefix + '_jobCodes');
+  var row = document.createElement('div');
+  row.className = 'job-code-row';
+  row.innerHTML = '<select><option value="F006">F006 - Aerial Drop</option><option value="F007">F007 - Underground Drop</option><option value="F008">F008 - Buried Drop</option><option value="F009">F009 - Aerial Strand</option><option value="F010">F010 - Underground Strand</option><option value="F011">F011 - Install/Repair ONT</option><option value="F012">F012 - Splice</option><option value="OTHER">Other</option></select><input type="number" value="1" min="1" placeholder="Qty" style="max-width:60px"><button class="remove-jc" onclick="this.parentElement.remove()">x</button>';
+  container.appendChild(row);
 }
 
 // === PHOTO HANDLING ===
-var photoArea = document.getElementById('photoArea');
-var photoInput = document.getElementById('photoInput');
-var photoPreviews = document.getElementById('photoPreviews');
-var photoCount = document.getElementById('photoCount');
-var photos = [];
-
-photoArea.addEventListener('click', function() { photoInput.click(); });
-photoArea.addEventListener('dragover', function(e) { e.preventDefault(); photoArea.classList.add('dragover'); });
-photoArea.addEventListener('dragleave', function() { photoArea.classList.remove('dragover'); });
-photoArea.addEventListener('drop', function(e) { e.preventDefault(); photoArea.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
-photoInput.addEventListener('change', function() { handleFiles(photoInput.files); });
-
-function handleFiles(files) {
-  var activeCount = photos.filter(function(p) { return p; }).length;
+function handlePhotos(prefix, files) {
+  var arr = formPhotos[prefix];
+  var activeCount = arr.filter(function(p) { return p; }).length;
   for (var i = 0; i < files.length; i++) {
     if (activeCount >= MAX_PHOTOS) {
-      alert('Maximum ' + MAX_PHOTOS + ' photos allowed. Remove some to add more.');
+      alert('Maximum ' + MAX_PHOTOS + ' photos allowed.');
       break;
     }
     var f = files[i];
     if (!f.type.startsWith('image/')) continue;
-    var idx = photos.length;
-    photos.push(f);
+    var idx = arr.length;
+    arr.push(f);
     activeCount++;
-    (function(fileObj, index) {
+    (function(fileObj, index, pfx) {
       var reader = new FileReader();
       reader.onload = function(e) {
         var wrap = document.createElement('div');
         wrap.className = 'thumb-wrap';
         wrap.dataset.idx = index;
-        wrap.innerHTML = '<img class="thumb" src="' + e.target.result + '"><button class="remove-btn" onclick="removePhoto(' + index + ', this)">x</button>';
-        photoPreviews.appendChild(wrap);
+        wrap.innerHTML = '<img class="thumb" src="' + e.target.result + '"><button class="remove-btn" onclick="removePhoto(\'' + pfx + '\',' + index + ',this)">x</button>';
+        document.getElementById(pfx + '_thumbs').appendChild(wrap);
       };
       reader.readAsDataURL(fileObj);
-    })(f, idx);
+    })(f, idx, prefix);
   }
-  photoInput.value = '';
-  updatePhotoCount();
+  document.getElementById(prefix + '_photoInput').value = '';
+  updatePhotoCount(prefix);
 }
 
-function removePhoto(idx, btn) {
+function removePhoto(prefix, idx, btn) {
   btn.parentElement.remove();
-  photos[idx] = null;
-  updatePhotoCount();
+  formPhotos[prefix][idx] = null;
+  updatePhotoCount(prefix);
 }
 
-function updatePhotoCount() {
-  var count = photos.filter(function(p) { return p; }).length;
+function updatePhotoCount(prefix) {
+  var count = formPhotos[prefix].filter(function(p) { return p; }).length;
+  var el = document.getElementById(prefix + '_photoCount');
   if (count > 0) {
-    photoCount.textContent = count + '/' + MAX_PHOTOS + ' photo(s) attached';
-    photoCount.style.color = count >= MAX_PHOTOS ? '#f87171' : '#8899aa';
+    el.textContent = count + '/' + MAX_PHOTOS + ' photo(s) attached';
+    el.style.color = count >= MAX_PHOTOS ? '#f87171' : '#8899aa';
   } else {
-    photoCount.textContent = '';
+    el.textContent = '';
   }
 }
 
+// === COMPRESS PHOTO ===
 function compressPhoto(file) {
   return new Promise(function(resolve, reject) {
     var reader = new FileReader();
@@ -260,10 +450,8 @@ function compressPhoto(file) {
         }
         var canvas = document.createElement('canvas');
         canvas.width = w; canvas.height = h;
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, w, h);
-        var dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-        resolve(dataUrl.split(',')[1]);
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(canvas.toDataURL('image/jpeg', 0.7).split(',')[1]);
       };
       img.onerror = reject;
       img.src = e.target.result;
@@ -273,169 +461,246 @@ function compressPhoto(file) {
   });
 }
 
-// === GENERATE MESSAGE ===
-function generateMessage() {
-  var name = document.getElementById('techName').value.trim();
-  var id = document.getElementById('techId').value.trim();
-  var date = document.getElementById('workDate').value;
-  var wo = document.getElementById('workOrder').value.trim();
-  var addr = document.getElementById('address').value.trim();
-  var claimed = document.getElementById('claimed').value;
-  var inspected = document.getElementById('inspected').value;
-  var status = document.getElementById('qcStatus').value;
-  var inspNotes = document.getElementById('inspNotes').value.trim();
-  var reason = document.getElementById('disputeReason').value.trim();
-  var jobCodes = getJobCodes();
-  var photoN = photos.filter(function(p) { return p; }).length;
+// === QC REPORT: GENERATE MESSAGE ===
+function generateQR() {
+  var name = document.getElementById('qr_techName').value.trim();
+  var wo = document.getElementById('qr_workOrder').value.trim();
+  var reason = document.getElementById('qr_disputeReason').value.trim();
+  if (!name || !wo || !reason) { alert('Fill required fields: Name, Work Order, Dispute Reason.'); return; }
 
-  if (!name || !wo || !reason) { alert('Please fill in: Your Name, Work Order #, and Dispute Reason'); return; }
+  var id = document.getElementById('qr_techId').value.trim();
+  var date = document.getElementById('qr_workDate').value;
+  var addr = document.getElementById('qr_address').value.trim();
+  var claimed = document.getElementById('qr_claimed').value;
+  var inspected = document.getElementById('qr_inspected').value;
+  var status = document.getElementById('qr_qcStatus').value;
+  var inspNotes = document.getElementById('qr_inspNotes').value.trim();
+  var photoCount = formPhotos.qr.filter(function(p) { return p; }).length;
 
-  var fmtDate = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'}) : 'N/A';
-  var jcText = jobCodes.map(function(j) { return '  ' + j.code + ' x' + j.qty; }).join('\n');
+  // Job codes
+  var jcRows = document.getElementById('qr_jobCodes').querySelectorAll('.job-code-row');
+  var jcList = [];
+  jcRows.forEach(function(r) {
+    var sel = r.querySelector('select').value;
+    var qty = r.querySelector('input').value || '1';
+    jcList.push('  ' + sel + ' x' + qty);
+  });
+
+  var dateStr = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A';
+  var diff = (claimed && inspected) ? (parseInt(claimed) - parseInt(inspected)) : '';
 
   var msg = 'QC INSPECTION DISPUTE - AMG US TECHNOLOGY\n\n';
-  msg += '==================\n';
-  msg += 'TECH: ' + name + ' (' + (id || 'N/A') + ')\n';
-  msg += 'DATE: ' + fmtDate + '\n';
+  msg += '===================\n';
+  msg += 'TECH: ' + name + (id ? ' (' + id + ')' : '') + '\n';
+  msg += 'DATE: ' + dateStr + '\n';
   msg += 'WORK ORDER: ' + wo + '\n';
-  msg += 'ADDRESS: ' + (addr || 'N/A') + '\n';
-  msg += '==================\n\n';
-  msg += 'JOB CODES PERFORMED:\n' + jcText + '\n\n';
-  msg += 'SPAN COUNT DISPUTE:\n';
-  msg += '* Tech claimed: ' + (claimed || 'N/A') + ' spans\n';
-  msg += '* Inspector reported: ' + (inspected || 'N/A') + ' spans\n';
-  msg += '* Difference: ' + ((claimed && inspected) ? (claimed - inspected) : 'N/A') + ' spans\n';
-  msg += '* QC Status: ' + status + '\n';
-  if (inspNotes) { msg += '\nINSPECTOR NOTES:\n"' + inspNotes + '"\n'; }
-  msg += '\nDISPUTE REASON:\n' + reason + '\n';
-  if (photoN > 0) { msg += '\nEVIDENCE: ' + photoN + ' photo(s) attached\n'; }
-  msg += '\n==================\nPlease review and re-inspect if needed.\n- ' + name + ', AMG US TECHNOLOGY';
+  if (addr) msg += 'ADDRESS: ' + addr + '\n';
+  msg += '===================\n\n';
+  msg += 'JOB CODES PERFORMED:\n' + jcList.join('\n') + '\n\n';
+  if (claimed || inspected) {
+    msg += 'SPAN COUNT DISPUTE:\n';
+    if (claimed) msg += '* Tech claimed: ' + claimed + ' spans\n';
+    if (inspected) msg += '* Inspector reported: ' + inspected + ' spans\n';
+    if (diff) msg += '* Difference: ' + diff + ' spans\n';
+  }
+  msg += '* QC Status: ' + status + '\n\n';
+  if (inspNotes) msg += 'INSPECTOR NOTES:\n' + inspNotes + '\n\n';
+  msg += 'DISPUTE REASON:\n' + reason + '\n\n';
+  if (photoCount > 0) msg += 'EVIDENCE: ' + photoCount + ' photo(s) attached\n\n';
+  msg += '===================\n';
+  msg += 'Please review and re-inspect if needed.\n';
+  msg += '- ' + name + ', AMG US TECHNOLOGY';
 
-  document.getElementById('previewText').textContent = msg;
-  document.getElementById('previewBox').classList.add('visible');
-  document.getElementById('previewBox').scrollIntoView({ behavior: 'smooth' });
-  document.getElementById('sendStatus').textContent = '';
+  document.getElementById('qr_previewText').textContent = msg;
+  document.getElementById('qr_preview').style.display = 'block';
+  document.getElementById('qr_preview').scrollIntoView({ behavior: 'smooth' });
 }
 
-function copyMessage() {
-  var text = document.getElementById('previewText').textContent;
-  navigator.clipboard.writeText(text).then(function() { showToast('Copied to clipboard!'); }).catch(function() {
-    var range = document.createRange();
-    range.selectNode(document.getElementById('previewText'));
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
-    showToast('Copied to clipboard!');
-  });
+// === CHECKLIST STATUS ===
+function updateChecklist(prefix) {
+  // Count checked items
+  var ppeItems = ['hardhat', 'glasses', 'vest', 'gloves', 'boots'];
+  var vehItems = ['clean', 'lights', 'cones'];
+  var eqItems = ['ladder', 'tools', 'materials', 'test'];
+
+  var ppeOk = 0, vehOk = 0, eqOk = 0;
+  ppeItems.forEach(function(i) { if (document.getElementById('qt_ppe_' + i).checked) ppeOk++; });
+  vehItems.forEach(function(i) { if (document.getElementById('qt_veh_' + i).checked) vehOk++; });
+  eqItems.forEach(function(i) { if (document.getElementById('qt_eq_' + i).checked) eqOk++; });
 }
 
-function showToast(msg) {
-  var toast = document.getElementById('copyToast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(function() { toast.classList.remove('show'); }, 2500);
-}
+// === SUBMIT FORM ===
+async function submitForm(prefix) {
+  var statusEl = document.getElementById(prefix + '_status');
+  var spinnerEl = document.getElementById(prefix + '_spinner');
+  var progressWrap = document.getElementById(prefix + '_progressWrap');
+  var progressBar = document.getElementById(prefix + '_progressBar');
 
-// === SUBMIT ===
-async function submitDispute() {
-  var text = document.getElementById('previewText').textContent;
-  if (!text) { alert('Generate the message first!'); return; }
+  // Build payload
+  var payload = { form_type: prefix === 'qr' ? 'qc_report' : 'qc_tech' };
 
-  var statusEl = document.getElementById('sendStatus');
-  var progressWrap = document.getElementById('progressWrap');
-  var progressBar = document.getElementById('progressBar');
-  var activePhotos = photos.filter(function(p) { return p; });
-  var totalSteps = activePhotos.length + 1;
-  var currentStep = 0;
+  if (prefix === 'qr') {
+    var name = document.getElementById('qr_techName').value.trim();
+    var wo = document.getElementById('qr_workOrder').value.trim();
+    var reason = document.getElementById('qr_disputeReason').value.trim();
+    if (!name || !wo || !reason) { alert('Fill required fields.'); return; }
+    payload.tech_name = name;
+    payload.tech_id = document.getElementById('qr_techId').value.trim();
+    payload.work_date = document.getElementById('qr_workDate').value;
+    payload.work_order = wo;
+    payload.address = document.getElementById('qr_address').value.trim();
+    payload.claimed = document.getElementById('qr_claimed').value;
+    payload.inspected = document.getElementById('qr_inspected').value;
+    payload.qc_status = document.getElementById('qr_qcStatus').value;
+    payload.inspector_notes = document.getElementById('qr_inspNotes').value.trim();
+    payload.dispute_reason = reason;
+    payload.message = document.getElementById('qr_previewText').textContent;
+    // Job codes
+    var jcRows = document.getElementById('qr_jobCodes').querySelectorAll('.job-code-row');
+    var jcs = [];
+    jcRows.forEach(function(r) { jcs.push(r.querySelector('select').value + ' x' + (r.querySelector('input').value || '1')); });
+    payload.job_codes = jcs.join(', ');
+  } else if (prefix === 'qt') {
+    var name = document.getElementById('qt_techName').value.trim();
+    var techId = document.getElementById('qt_techId').value.trim();
+    if (!name || !techId) { alert('Fill Tech Name and Tech ID.'); return; }
+    payload.tech_name = name;
+    payload.tech_id = techId;
+    payload.report_date = document.getElementById('qt_date').value;
+    payload.week_number = document.getElementById('qt_week').value;
+    payload.notes = document.getElementById('qt_notes').value.trim();
 
-  progressWrap.classList.add('visible');
-  progressBar.style.width = '0%';
+    // Checklist data
+    var checklist = {};
+    var allItems = ['ppe_hardhat','ppe_glasses','ppe_vest','ppe_gloves','ppe_boots','veh_clean','veh_lights','veh_cones','eq_ladder','eq_tools','eq_materials','eq_test'];
+    var totalChecked = 0;
+    allItems.forEach(function(item) {
+      var checked = document.getElementById('qt_' + item).checked;
+      checklist[item] = checked;
+      if (checked) totalChecked++;
+    });
+    payload.checklist = checklist;
+    payload.checklist_score = totalChecked + '/' + allItems.length;
+    payload.overall_status = totalChecked === allItems.length ? 'PASS' : 'NEEDS ATTENTION';
 
-  var photosBase64 = [];
-  if (activePhotos.length > 0) {
-    try {
-      for (var i = 0; i < activePhotos.length; i++) {
-        statusEl.innerHTML = '<span class="spinner"></span><span style="color:#5eaaf0">Compressing photo ' + (i+1) + '/' + activePhotos.length + '...</span>';
-        currentStep++;
-        progressBar.style.width = Math.round((currentStep / totalSteps) * 80) + '%';
-        var b64 = await compressPhoto(activePhotos[i]);
-        photosBase64.push(b64);
-      }
-    } catch (err) {
-      statusEl.innerHTML = '<span style="color:#f87171">Failed to compress photos. Try removing large images.</span>';
-      progressWrap.classList.remove('visible');
-      return;
-    }
+    // Build message for channels
+    var dateStr = document.getElementById('qt_date').value ? new Date(document.getElementById('qt_date').value + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A';
+    var msg = 'WEEKLY TECH SAFETY REPORT - AMG US TECHNOLOGY\n\n';
+    msg += '===================\n';
+    msg += 'TECH: ' + name + ' (' + techId + ')\n';
+    msg += 'DATE: ' + dateStr + '\n';
+    if (payload.week_number) msg += 'WEEK: #' + payload.week_number + '\n';
+    msg += '===================\n\n';
+    msg += 'PPE CHECKLIST:\n';
+    msg += (checklist.ppe_hardhat ? '[OK]' : '[  ]') + ' Hard Hat\n';
+    msg += (checklist.ppe_glasses ? '[OK]' : '[  ]') + ' Safety Glasses\n';
+    msg += (checklist.ppe_vest ? '[OK]' : '[  ]') + ' Safety Vest\n';
+    msg += (checklist.ppe_gloves ? '[OK]' : '[  ]') + ' Work Gloves\n';
+    msg += (checklist.ppe_boots ? '[OK]' : '[  ]') + ' Safety Boots\n\n';
+    msg += 'VEHICLE & EQUIPMENT:\n';
+    msg += (checklist.veh_clean ? '[OK]' : '[  ]') + ' Vehicle Clean\n';
+    msg += (checklist.veh_lights ? '[OK]' : '[  ]') + ' Lights Working\n';
+    msg += (checklist.veh_cones ? '[OK]' : '[  ]') + ' Cones/Signs\n';
+    msg += (checklist.eq_ladder ? '[OK]' : '[  ]') + ' Ladder Secured\n';
+    msg += (checklist.eq_tools ? '[OK]' : '[  ]') + ' Tools Complete\n';
+    msg += (checklist.eq_materials ? '[OK]' : '[  ]') + ' Materials Stocked\n';
+    msg += (checklist.eq_test ? '[OK]' : '[  ]') + ' Test Equipment\n\n';
+    msg += 'SCORE: ' + payload.checklist_score + '\n';
+    msg += 'STATUS: ' + payload.overall_status + '\n';
+    var photoCount = formPhotos.qt.filter(function(p) { return p; }).length;
+    if (photoCount > 0) msg += '\nPHOTOS: ' + photoCount + ' attached\n';
+    if (payload.notes) msg += '\nNOTES: ' + payload.notes + '\n';
+    msg += '\n===================\n- ' + name + ', AMG US TECHNOLOGY';
+    payload.message = msg;
   }
 
-  statusEl.innerHTML = '<span class="spinner"></span><span style="color:#5eaaf0">Submitting dispute' + (activePhotos.length > 0 ? ' with ' + activePhotos.length + ' photo(s)' : '') + '...</span>';
-  progressBar.style.width = '85%';
-
-  var formData = {
-    tech_name: document.getElementById('techName').value.trim(),
-    tech_id: document.getElementById('techId').value.trim(),
-    work_date: document.getElementById('workDate').value,
-    work_order: document.getElementById('workOrder').value.trim(),
-    address: document.getElementById('address').value.trim(),
-    job_codes: getJobCodes(),
-    spans_claimed: document.getElementById('claimed').value,
-    spans_inspected: document.getElementById('inspected').value,
-    qc_status: document.getElementById('qcStatus').value,
-    inspector_notes: document.getElementById('inspNotes').value.trim(),
-    dispute_reason: document.getElementById('disputeReason').value.trim(),
-    photo_count: activePhotos.length,
-    photos_base64: photosBase64,
-    message_text: text
-  };
+  // Compress photos
+  var activePhotos = formPhotos[prefix].filter(function(p) { return p; });
+  statusEl.textContent = '';
+  statusEl.className = 'status-msg';
+  spinnerEl.style.display = 'block';
+  spinnerEl.innerHTML = '&#10227; Submitting with ' + activePhotos.length + ' photo(s)...';
+  progressWrap.style.display = 'block';
+  progressBar.style.width = '10%';
 
   try {
-    var res = await fetch(SUBMIT_FUNCTION_URL, {
+    var photoData = [];
+    for (var i = 0; i < activePhotos.length; i++) {
+      spinnerEl.innerHTML = '&#10227; Compressing photo ' + (i + 1) + '/' + activePhotos.length + '...';
+      progressBar.style.width = (10 + (i / activePhotos.length) * 40) + '%';
+      var b64 = await compressPhoto(activePhotos[i]);
+      photoData.push({ filename: prefix + '_photo_' + (i + 1) + '.jpg', data: b64 });
+    }
+    payload.photos = photoData;
+
+    spinnerEl.innerHTML = '&#10227; Sending to server...';
+    progressBar.style.width = '60%';
+
+    var res = await fetch(SUPABASE_URL + '/functions/v1/submit-dispute', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY },
-      body: JSON.stringify(formData)
+      body: JSON.stringify(payload)
     });
-    var result = await res.json();
-    progressBar.style.width = '100%';
 
-    if (res.ok && result.success) {
+    progressBar.style.width = '90%';
+    var data = await res.json();
+
+    if (res.ok && data.success) {
+      progressBar.style.width = '100%';
       var channels = [];
-      if (result.teams_sent) channels.push('Microsoft Teams');
-      if (result.telegram_sent) channels.push('Telegram');
-      var chText = channels.length > 0 ? ' Sent to: ' + channels.join(' + ') : '';
-      var photoText = result.photos_uploaded > 0 ? ' (' + result.photos_uploaded + ' photos)' : '';
-      statusEl.innerHTML = '<span style="color:#4ade80; font-weight:bold">Dispute submitted successfully!' + chText + photoText + '</span>';
-      showToast('Dispute submitted!');
-      setTimeout(function() { progressWrap.classList.remove('visible'); }, 2000);
+      if (data.teams_sent) channels.push('Microsoft Teams');
+      if (data.telegram_sent) channels.push('Telegram');
+      var chStr = channels.length > 0 ? ' Sent to: ' + channels.join(' + ') : '';
+      var photoStr = data.photos_uploaded ? ' (' + data.photos_uploaded + ' photos)' : '';
+      statusEl.textContent = 'Submitted successfully!' + chStr + photoStr;
+      statusEl.className = 'status-msg success';
     } else {
-      statusEl.innerHTML = '<span style="color:#f87171">Submission failed: ' + (result.error || 'Unknown error') + '. Copy the message and send manually.</span>';
-      progressWrap.classList.remove('visible');
+      statusEl.textContent = 'Error: ' + (data.error || 'Submission failed');
+      statusEl.className = 'status-msg error';
     }
-  } catch (err) {
-    statusEl.innerHTML = '<span style="color:#f87171">Network error. Copy the message and send via Telegram/Teams manually.</span>';
-    progressWrap.classList.remove('visible');
+  } catch (e) {
+    statusEl.textContent = 'Network error: ' + e.message;
+    statusEl.className = 'status-msg error';
   }
+  spinnerEl.style.display = 'none';
 }
 
-function shareToTelegram() {
-  var text = document.getElementById('previewText').textContent;
-  window.open('https://t.me/share/url?url=&text=' + encodeURIComponent(text), '_blank');
+// === SHARE VIA TELEGRAM ===
+function shareTelegram(prefix) {
+  var msg = '';
+  if (prefix === 'qr') msg = document.getElementById('qr_previewText').textContent;
+  var encoded = encodeURIComponent(msg);
+  window.open('https://t.me/share/url?url=&text=' + encoded, '_blank');
 }
 
-function clearForm() {
-  document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(function(el) { el.value = ''; });
-  document.getElementById('workDate').value = '';
-  document.getElementById('previewBox').classList.remove('visible');
-  var list = document.getElementById('jcList');
-  list.innerHTML = '<div class="jc-row" data-idx="0"><select><option value="F006">F006 - Aerial Drop</option><option value="F011">F011 - Trip Charge</option><option value="F014-7">F014-7 - Drop Removal</option><option value="F014-10">F014-10 - UG Drop/ft</option><option value="F014-1">F014-1 - Fiber Install</option><option value="1-F014-5">1-F014-5 - Fiber Service</option><option value="2-F014-5">2-F014-5 - Adtl Fiber</option><option value="F007">F007 - Service Aerial</option><option value="F008">F008 - Trouble Ticket</option><option value="F009">F009 - TT Return</option></select><div class="lbl">Qty:</div><input type="number" value="1" min="0" style="max-width:70px"></div>';
-  photos = [];
-  photoPreviews.innerHTML = '';
-  photoCount.textContent = '';
-  document.getElementById('sendStatus').textContent = '';
-  document.getElementById('progressWrap').classList.remove('visible');
+// === CLEAR FORM ===
+function clearForm(prefix) {
+  if (prefix === 'qr') {
+    ['qr_techName','qr_techId','qr_workOrder','qr_address','qr_claimed','qr_inspected','qr_inspNotes','qr_disputeReason'].forEach(function(id) {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('qr_workDate').value = today;
+    document.getElementById('qr_preview').style.display = 'none';
+    document.getElementById('qr_status').textContent = '';
+    // Reset job codes to one row
+    var jc = document.getElementById('qr_jobCodes');
+    jc.innerHTML = '<div class="job-code-row"><select><option value="F006">F006 - Aerial Drop</option><option value="F007">F007 - Underground Drop</option><option value="F008">F008 - Buried Drop</option><option value="F009">F009 - Aerial Strand</option><option value="F010">F010 - Underground Strand</option><option value="F011">F011 - Install/Repair ONT</option><option value="F012">F012 - Splice</option><option value="OTHER">Other</option></select><input type="number" value="1" min="1" placeholder="Qty" style="max-width:60px"></div>';
+  } else if (prefix === 'qt') {
+    ['qt_techName','qt_techId','qt_week','qt_notes'].forEach(function(id) {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('qt_date').value = today;
+    document.getElementById('qt_status').textContent = '';
+    // Uncheck all
+    var allItems = ['ppe_hardhat','ppe_glasses','ppe_vest','ppe_gloves','ppe_boots','veh_clean','veh_lights','veh_cones','eq_ladder','eq_tools','eq_materials','eq_test'];
+    allItems.forEach(function(item) { document.getElementById('qt_' + item).checked = false; });
+  }
+  formPhotos[prefix] = [];
+  document.getElementById(prefix + '_thumbs').innerHTML = '';
+  document.getElementById(prefix + '_photoCount').textContent = '';
+  var pw = document.getElementById(prefix + '_progressWrap');
+  if (pw) { pw.style.display = 'none'; }
 }
-
-// Init
-document.getElementById('workDate').valueAsDate = new Date();
 </script>
 </body>
 </html>
