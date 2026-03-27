@@ -165,16 +165,16 @@ body {
   <div class="jc-list" id="jcList">
     <div class="jc-row" data-idx="0">
       <select>
-        <option value="F006">F006 вЂ” Aerial Drop</option>
-        <option value="F011">F011 вЂ” Trip Charge</option>
-        <option value="F014-7">F014-7 вЂ” Drop Removal</option>
-        <option value="F014-10">F014-10 вЂ” UG Drop/ft</option>
-        <option value="F014-1">F014-1 вЂ” Fiber Install</option>
-        <option value="1-F014-5">1-F014-5 вЂ” Fiber Service</option>
-        <option value="2-F014-5">2-F014-5 вЂ” Adtl Fiber</option>
-        <option value="F007">F007 вЂ” Service Aerial</option>
-        <option value="F008">F008 вЂ” Trouble Ticket</option>
-        <option value="F009">F009 вЂ” TT Return</option>
+        <option value="F006">F006 - Aerial Drop</option>
+        <option value="F011">F011 - Trip Charge</option>
+        <option value="F014-7">F014-7 - Drop Removal</option>
+        <option value="F014-10">F014-10 - UG Drop/ft</option>
+        <option value="F014-1">F014-1 - Fiber Install</option>
+        <option value="1-F014-5">1-F014-5 - Fiber Service</option>
+        <option value="2-F014-5">2-F014-5 - Adtl Fiber</option>
+        <option value="F007">F007 - Service Aerial</option>
+        <option value="F008">F008 - Trouble Ticket</option>
+        <option value="F009">F009 - TT Return</option>
       </select>
       <div class="lbl">Qty:</div>
       <input type="number" value="1" min="0" style="max-width:70px">
@@ -200,7 +200,7 @@ body {
 
 <div class="section"><label>Inspector Notes (if any)</label><textarea id="inspNotes" placeholder="Copy inspector's notes here..."></textarea></div>
 
-<div class="section"><label>Dispute Reason *</label><textarea id="disputeReason" placeholder="Explain why you believe the QC result is incorrect. Be specific вЂ” reference spans, photos, conditions..."></textarea></div>
+<div class="section"><label>Dispute Reason *</label><textarea id="disputeReason" placeholder="Explain why you believe the QC result is incorrect. Be specific - reference spans, photos, conditions..."></textarea></div>
 
 <!-- Photos -->
 <div class="section">
@@ -234,21 +234,21 @@ body {
 <button class="btn btn-clear" onclick="clearForm()">Clear Form</button>
 
 <div class="disclaimer">
-  AMG US TECHNOLOGY вЂ” QC Dispute Form v3.0<br>
-  For 1099 Independent Contractors вЂ” Frontier FTR CA SWC<br>
+  AMG US TECHNOLOGY - QC Dispute Form v3.0<br>
+  For 1099 Independent Contractors - Frontier FTR CA SWC<br>
   <span style="color:#556677">Disputes are submitted securely to management for review.</span>
 </div>
 
 <div class="toast" id="copyToast"></div>
 
 <script>
-// в”Ђв”Ђв”Ђ CONFIGURATION в”Ђв”Ђв”Ђ
-// Supabase project URL and anon key (public вЂ” safe to expose)
+// === CONFIGURATION ===
+// Supabase project URL and anon key (public - safe to expose)
 const SUPABASE_URL = 'https://jffahgasqvtxigvlwznb.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmZmFoZ2FzcXZ0eGlndmx3em5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1OTM1MjQsImV4cCI6MjA5MDE2OTUyNH0.dsGRZy7WOQmVMQABs2epp-04Fx0xoEykx2C4M4b72h4';
 const SUBMIT_FUNCTION_URL = SUPABASE_URL + '/functions/v1/submit-dispute';
 
-// в”Ђв”Ђв”Ђ MULTI JOB CODE в”Ђв”Ђв”Ђ
+// === MULTI JOB CODE ===
 let jcCounter = 1;
 function addJobCode() {
   const list = document.getElementById('jcList');
@@ -257,20 +257,20 @@ function addJobCode() {
   div.dataset.idx = jcCounter++;
   div.innerHTML = `
     <select>
-      <option value="F006">F006 вЂ” Aerial Drop</option>
-      <option value="F011">F011 вЂ” Trip Charge</option>
-      <option value="F014-7">F014-7 вЂ” Drop Removal</option>
-      <option value="F014-10">F014-10 вЂ” UG Drop/ft</option>
-      <option value="F014-1">F014-1 вЂ” Fiber Install</option>
-      <option value="1-F014-5">1-F014-5 вЂ” Fiber Service</option>
-      <option value="2-F014-5">2-F014-5 вЂ” Adtl Fiber</option>
-      <option value="F007">F007 вЂ” Service Aerial</option>
-      <option value="F008">F008 вЂ” Trouble Ticket</option>
-      <option value="F009">F009 вЂ” TT Return</option>
+      <option value="F006">F006 - Aerial Drop</option>
+      <option value="F011">F011 - Trip Charge</option>
+      <option value="F014-7">F014-7 - Drop Removal</option>
+      <option value="F014-10">F014-10 - UG Drop/ft</option>
+      <option value="F014-1">F014-1 - Fiber Install</option>
+      <option value="1-F014-5">1-F014-5 - Fiber Service</option>
+      <option value="2-F014-5">2-F014-5 - Adtl Fiber</option>
+      <option value="F007">F007 - Service Aerial</option>
+      <option value="F008">F008 - Trouble Ticket</option>
+      <option value="F009">F009 - TT Return</option>
     </select>
     <div class="lbl">Qty:</div>
     <input type="number" value="1" min="0" style="max-width:70px">
-    <button class="jc-remove" onclick="this.parentElement.remove()">Г—</button>
+    <button class="jc-remove" onclick="this.parentElement.remove()">x</button>
   `;
   list.appendChild(div);
 }
@@ -286,7 +286,7 @@ function getJobCodes() {
   return codes;
 }
 
-// в”Ђв”Ђв”Ђ PHOTO HANDLING в”Ђв”Ђв”Ђ
+// === PHOTO HANDLING ===
 const photoArea = document.getElementById('photoArea');
 const photoInput = document.getElementById('photoInput');
 const photoPreviews = document.getElementById('photoPreviews');
@@ -309,7 +309,7 @@ function handleFiles(files) {
       const wrap = document.createElement('div');
       wrap.className = 'thumb-wrap';
       wrap.dataset.idx = idx;
-      wrap.innerHTML = `<img class="thumb" src="${e.target.result}"><button class="remove-btn" onclick="removePhoto(${idx}, this)">Г—</button>`;
+      wrap.innerHTML = `<img class="thumb" src="${e.target.result}"><button class="remove-btn" onclick="removePhoto(${idx}, this)">x</button>`;
       photoPreviews.appendChild(wrap);
     };
     reader.readAsDataURL(f);
@@ -322,7 +322,7 @@ function updatePhotoCount() {
   photoCount.textContent = count > 0 ? `${count} photo(s) attached` : '';
 }
 
-// в”Ђв”Ђв”Ђ GENERATE MESSAGE в”Ђв”Ђв”Ђ
+// === GENERATE MESSAGE ===
 function generateMessage() {
   const name = document.getElementById('techName').value.trim();
   const id = document.getElementById('techId').value.trim();
@@ -345,23 +345,23 @@ function generateMessage() {
   const fmtDate = date ? new Date(date + 'T12:00:00').toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'}) : 'N/A';
   const jcText = jobCodes.map(j => `  ${j.code} x${j.qty}`).join('\n');
 
-  let msg = `QC INSPECTION DISPUTE вЂ” AMG US TECHNOLOGY
+  let msg = `QC INSPECTION DISPUTE - AMG US TECHNOLOGY
 
-в”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓ
+==================
 TECH: ${name} (${id || 'N/A'})
 DATE: ${fmtDate}
 WORK ORDER: ${wo}
 ADDRESS: ${addr || 'N/A'}
-в”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓ
+==================
 
 JOB CODES PERFORMED:
 ${jcText}
 
 SPAN COUNT DISPUTE:
-вЂў Tech claimed: ${claimed || 'N/A'} spans
-вЂў Inspector reported: ${inspected || 'N/A'} spans
-вЂў Difference: ${(claimed && inspected) ? (claimed - inspected) : 'N/A'} spans
-вЂў QC Status: ${status}
+* Tech claimed: ${claimed || 'N/A'} spans
+* Inspector reported: ${inspected || 'N/A'} spans
+* Difference: ${(claimed && inspected) ? (claimed - inspected) : 'N/A'} spans
+* QC Status: ${status}
 `;
 
   if (inspNotes) {
@@ -371,10 +371,10 @@ SPAN COUNT DISPUTE:
   msg += `\nDISPUTE REASON:\n${reason}\n`;
 
   if (photoN > 0) {
-    msg += `\nEVIDENCE: ${photoN} photo(s) вЂ” sending in next message\n`;
+    msg += `\nEVIDENCE: ${photoN} photo(s) - sending in next message\n`;
   }
 
-  msg += `\nв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓв”Ѓ\nPlease review and re-inspect if needed.\nвЂ” ${name}, AMG US TECHNOLOGY`;
+  msg += `\n==================\nPlease review and re-inspect if needed.\n- ${name}, AMG US TECHNOLOGY`;
 
   document.getElementById('previewText').textContent = msg;
   document.getElementById('previewBox').classList.add('visible');
@@ -401,7 +401,7 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
-// в”Ђв”Ђв”Ђ SUBMIT TO BACKEND (Supabase Edge Function) в”Ђв”Ђв”Ђ
+// === SUBMIT TO BACKEND (Supabase Edge Function) ===
 async function submitDispute() {
   const text = document.getElementById('previewText').textContent;
   if (!text) { alert('Generate the message first!'); return; }
@@ -464,16 +464,16 @@ function clearForm() {
   const list = document.getElementById('jcList');
   list.innerHTML = `<div class="jc-row" data-idx="0">
     <select>
-      <option value="F006">F006 вЂ” Aerial Drop</option>
-      <option value="F011">F011 вЂ” Trip Charge</option>
-      <option value="F014-7">F014-7 вЂ” Drop Removal</option>
-      <option value="F014-10">F014-10 вЂ” UG Drop/ft</option>
-      <option value="F014-1">F014-1 вЂ” Fiber Install</option>
-      <option value="1-F014-5">1-F014-5 вЂ” Fiber Service</option>
-      <option value="2-F014-5">2-F014-5 вЂ” Adtl Fiber</option>
-      <option value="F007">F007 вЂ” Service Aerial</option>
-      <option value="F008">F008 вЂ” Trouble Ticket</option>
-      <option value="F009">F009 вЂ” TT Return</option>
+      <option value="F006">F006 - Aerial Drop</option>
+      <option value="F011">F011 - Trip Charge</option>
+      <option value="F014-7">F014-7 - Drop Removal</option>
+      <option value="F014-10">F014-10 - UG Drop/ft</option>
+      <option value="F014-1">F014-1 - Fiber Install</option>
+      <option value="1-F014-5">1-F014-5 - Fiber Service</option>
+      <option value="2-F014-5">2-F014-5 - Adtl Fiber</option>
+      <option value="F007">F007 - Service Aerial</option>
+      <option value="F008">F008 - Trouble Ticket</option>
+      <option value="F009">F009 - TT Return</option>
     </select>
     <div class="lbl">Qty:</div>
     <input type="number" value="1" min="0" style="max-width:70px">
