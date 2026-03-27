@@ -223,12 +223,13 @@ async function loadConfig() {
       method: 'GET',
       headers: { 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'X-Admin-Token': adminToken }
     });
-    var cfg = await res.json();
+    var data = await res.json();
+    var cfg = data.config || data;
     if (cfg.teams_webhook) document.getElementById('teamsUrl').value = cfg.teams_webhook;
-    document.getElementById('teamsEnabled').checked = cfg.teams_enabled !== false;
+    document.getElementById('teamsEnabled').checked = (cfg.teams_enabled === true || cfg.teams_enabled === 'true');
     if (cfg.tg_bot_token) document.getElementById('tgBotToken').value = cfg.tg_bot_token;
     if (cfg.tg_chat_id) document.getElementById('tgChatId').value = cfg.tg_chat_id;
-    document.getElementById('tgEnabled').checked = !!cfg.tg_enabled;
+    document.getElementById('tgEnabled').checked = (cfg.tg_enabled === true || cfg.tg_enabled === 'true');
     updateStatuses();
   } catch (e) { console.error('Load config error:', e); }
 }
