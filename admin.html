@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AMG Admin Panel вЂ” QC Dispute Config</title>
+  <title>AMG Admin Panel Ð²Ðâ QC Dispute Config</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0f18; color: #fff; min-height: 100vh; padding: 20px; max-width: 700px; margin: 0 auto; }
@@ -72,6 +72,39 @@
     .group-option .id { font-size: 11px; color: #556677; }
     .group-option .select-btn { padding: 4px 12px; background: #1f4e79; color: #fff; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; }
     .section-divider { height: 1px; background: #2b3e50; margin: 16px 0; }
+
+    /* Technician Management */
+    .tech-card { background: #0d1520; border: 1px solid #2b3e50; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+    .tech-card.frozen { opacity: 0.5; border-color: #f59e0b; }
+    .tech-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .tech-name { font-weight: 700; color: #e2e8f0; font-size: 15px; }
+    .tech-id-badge { background: #1e293b; color: #94a3b8; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-family: monospace; }
+    .tech-status { font-size: 11px; font-weight: 700; padding: 2px 10px; border-radius: 10px; }
+    .tech-status.active { background: rgba(74,222,128,0.15); color: #4ade80; }
+    .tech-status.frozen { background: rgba(245,158,11,0.15); color: #f59e0b; }
+    .tech-perms { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+    .tech-perm { font-size: 11px; padding: 2px 8px; border-radius: 6px; background: #1a2535; color: #64748b; }
+    .tech-perm.on { color: #4ade80; border: 1px solid rgba(74,222,128,0.3); }
+    .tech-perm.off { color: #64748b; border: 1px solid #2b3e50; text-decoration: line-through; }
+    .tech-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+    .tech-actions button { padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600; border: 1px solid; }
+    .btn-edit-tech { background: transparent; color: #5eaaf0; border-color: #5eaaf0; }
+    .btn-freeze-tech { background: transparent; color: #f59e0b; border-color: #f59e0b; }
+    .btn-unfreeze-tech { background: transparent; color: #4ade80; border-color: #4ade80; }
+    .btn-delete-tech { background: transparent; color: #f87171; border-color: #f87171; }
+    .tech-form { background: #111a27; border: 1px solid #5eaaf0; border-radius: 12px; padding: 18px; margin-bottom: 16px; }
+    .tech-form h4 { color: #5eaaf0; margin-bottom: 12px; font-size: 15px; }
+    .tech-form label { display: block; color: #94a3b8; font-size: 12px; margin-bottom: 4px; margin-top: 10px; }
+    .tech-form input { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #2b3e50; background: #0a0f18; color: #fff; font-size: 14px; }
+    .tech-form input:focus { border-color: #5eaaf0; outline: none; }
+    .perm-toggles { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+    .perm-toggle { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .perm-toggle input[type="checkbox"] { width: 18px; height: 18px; accent-color: #4ade80; }
+    .perm-toggle span { color: #e2e8f0; font-size: 13px; }
+    .tech-form-actions { display: flex; gap: 10px; margin-top: 16px; }
+    .btn-save-tech { padding: 10px 24px; background: #4ade80; color: #0a0f18; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .btn-cancel-tech { padding: 10px 24px; background: transparent; color: #94a3b8; border: 1px solid #94a3b8; border-radius: 8px; font-size: 14px; cursor: pointer; }
+    .tech-empty { color: #64748b; text-align: center; padding: 20px; font-size: 13px; }
   </style>
 </head>
 <body>
@@ -92,7 +125,7 @@
   <div class="admin-content" id="adminPanel">
     <div class="header">
       <h1>AMG ADMIN PANEL</h1>
-      <p>AMG Project SWC 1099 вЂ” Multi-Channel Configuration</p>
+      <p>AMG Project SWC 1099 Ð²Ðâ Multi-Channel Configuration</p>
       <div class="badge-admin">ADMIN ONLY</div>
     </div>
 
@@ -155,6 +188,19 @@
       <div id="disputeLog" style="color:#888; font-size:13px;">Loading...</div>
     </div>
 
+
+    <!-- Technician Management -->
+    <div class="card">
+      <h3>&#128100; Technician Management</h3>
+      <p style="color:#94a3b8;font-size:12px;margin-bottom:14px">Create, edit, freeze/unfreeze, and delete technician accounts. Manage permissions for each technician.</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <span style="color:#64748b;font-size:12px" id="techCount">Loading...</span>
+        <button class="btn-add" onclick="showAddTechForm()">+ Add Technician</button>
+      </div>
+      <div id="techFormArea"></div>
+      <div id="techList"><div class="tech-empty">Loading technicians...</div></div>
+    </div>
+
     <button class="btn-logout" onclick="doLogout()">Logout</button>
   </div>
 
@@ -184,6 +230,7 @@ async function doLogin() {
       showAdmin();
       loadConfig();
       loadDisputes();
+  loadTechnicians();
     } else {
       document.getElementById('loginError').style.display = 'block';
     }
@@ -520,7 +567,218 @@ async function loadDisputes() {
 
 // Check saved session
 var savedToken = sessionStorage.getItem('amg_admin_token');
-if (savedToken) { adminToken = savedToken; showAdmin(); loadConfig(); loadDisputes(); }
+if (savedToken) { adminToken = savedToken; showAdmin(); loadConfig(); loadDisputes();
+  loadTechnicians(); }
+
+
+// ========== TECHNICIAN MANAGEMENT ==========
+var techniciansList = [];
+var editingTechId = null;
+
+async function loadTechnicians() {
+  try {
+    const token = sessionStorage.getItem('amg_admin_token');
+    const resp = await fetch(SUPABASE_URL + '/functions/v1/admin-technicians', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'X-Admin-Token': token
+      }
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+    techniciansList = data.technicians || [];
+    renderTechnicians();
+    document.getElementById('techCount').textContent = techniciansList.length + ' technician(s)';
+  } catch(e) {
+    document.getElementById('techList').innerHTML = '<div class="tech-empty" style="color:#f87171">Error loading technicians: ' + e.message + '</div>';
+  }
+}
+
+function renderTechnicians() {
+  const container = document.getElementById('techList');
+  if (!techniciansList.length) {
+    container.innerHTML = '<div class="tech-empty">No technicians yet. Click "+ Add Technician" to create one.</div>';
+    return;
+  }
+  container.innerHTML = techniciansList.map(t => {
+    const perms = t.permissions || {};
+    const statusClass = t.active ? 'active' : 'frozen';
+    const statusText = t.active ? 'Active' : 'Frozen';
+    return '<div class="tech-card ' + (t.active ? '' : 'frozen') + '">' +
+      '<div class="tech-header">' +
+        '<div><span class="tech-name">' + escHtml(t.name) + '</span> <span class="tech-id-badge">' + escHtml(t.tech_id) + '</span></div>' +
+        '<span class="tech-status ' + statusClass + '">' + statusText + '</span>' +
+      '</div>' +
+      '<div class="tech-perms">' +
+        '<span class="tech-perm ' + (perms.qc_report ? 'on' : 'off') + '">QC Report</span>' +
+        '<span class="tech-perm ' + (perms.qc_tech ? 'on' : 'off') + '">QC Tech</span>' +
+        '<span class="tech-perm ' + (perms.f011 ? 'on' : 'off') + '">F-011</span>' +
+      '</div>' +
+      '<div class="tech-actions">' +
+        '<button class="btn-edit-tech" onclick="editTechnician(\'' + t.id + '\')">Edit</button>' +
+        (t.active
+          ? '<button class="btn-freeze-tech" onclick="toggleTechActive(\'' + t.id + '\', false)">Freeze</button>'
+          : '<button class="btn-unfreeze-tech" onclick="toggleTechActive(\'' + t.id + '\', true)">Unfreeze</button>') +
+        '<button class="btn-delete-tech" onclick="deleteTechnician(\'' + t.id + '\', \'' + escHtml(t.name) + '\')">Delete</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showAddTechForm() {
+  editingTechId = null;
+  const area = document.getElementById('techFormArea');
+  area.innerHTML = '<div class="tech-form">' +
+    '<h4>Add New Technician</h4>' +
+    '<label>Tech ID (e.g. TECH002)</label>' +
+    '<input type="text" id="tfTechId" placeholder="TECH002" style="text-transform:uppercase">' +
+    '<label>Full Name</label>' +
+    '<input type="text" id="tfName" placeholder="John Smith">' +
+    '<label>Password</label>' +
+    '<input type="password" id="tfPassword" placeholder="Create password">' +
+    '<label>Permissions</label>' +
+    '<div class="perm-toggles">' +
+      '<label class="perm-toggle"><input type="checkbox" id="tfPermQc" checked><span>QC Report</span></label>' +
+      '<label class="perm-toggle"><input type="checkbox" id="tfPermTech" checked><span>QC Tech</span></label>' +
+      '<label class="perm-toggle"><input type="checkbox" id="tfPermF011"><span>F-011</span></label>' +
+    '</div>' +
+    '<div class="tech-form-actions">' +
+      '<button class="btn-save-tech" onclick="saveTechnician()">Create Technician</button>' +
+      '<button class="btn-cancel-tech" onclick="cancelTechForm()">Cancel</button>' +
+    '</div>' +
+    '<div id="techFormError" style="color:#f87171;font-size:12px;margin-top:8px;display:none"></div>' +
+  '</div>';
+}
+
+function editTechnician(id) {
+  const tech = techniciansList.find(t => t.id === id);
+  if (!tech) return;
+  editingTechId = id;
+  const perms = tech.permissions || {};
+  const area = document.getElementById('techFormArea');
+  area.innerHTML = '<div class="tech-form">' +
+    '<h4>Edit Technician: ' + escHtml(tech.tech_id) + '</h4>' +
+    '<label>Full Name</label>' +
+    '<input type="text" id="tfName" value="' + escHtml(tech.name) + '">' +
+    '<label>New Password (leave blank to keep current)</label>' +
+    '<input type="password" id="tfPassword" placeholder="Leave blank to keep current">' +
+    '<label>Permissions</label>' +
+    '<div class="perm-toggles">' +
+      '<label class="perm-toggle"><input type="checkbox" id="tfPermQc" ' + (perms.qc_report ? 'checked' : '') + '><span>QC Report</span></label>' +
+      '<label class="perm-toggle"><input type="checkbox" id="tfPermTech" ' + (perms.qc_tech ? 'checked' : '') + '><span>QC Tech</span></label>' +
+      '<label class="perm-toggle"><input type="checkbox" id="tfPermF011" ' + (perms.f011 ? 'checked' : '') + '><span>F-011</span></label>' +
+    '</div>' +
+    '<div class="tech-form-actions">' +
+      '<button class="btn-save-tech" onclick="saveTechnician()">Save Changes</button>' +
+      '<button class="btn-cancel-tech" onclick="cancelTechForm()">Cancel</button>' +
+    '</div>' +
+    '<div id="techFormError" style="color:#f87171;font-size:12px;margin-top:8px;display:none"></div>' +
+  '</div>';
+}
+
+function cancelTechForm() {
+  document.getElementById('techFormArea').innerHTML = '';
+  editingTechId = null;
+}
+
+async function saveTechnician() {
+  const errEl = document.getElementById('techFormError');
+  errEl.style.display = 'none';
+  const token = sessionStorage.getItem('amg_admin_token');
+  const name = document.getElementById('tfName').value.trim();
+  const password = document.getElementById('tfPassword').value;
+  const permissions = {
+    qc_report: document.getElementById('tfPermQc').checked,
+    qc_tech: document.getElementById('tfPermTech').checked,
+    f011: document.getElementById('tfPermF011').checked
+  };
+
+  if (!name) { errEl.textContent = 'Name is required'; errEl.style.display = 'block'; return; }
+
+  try {
+    let method, body;
+    if (editingTechId) {
+      method = 'PUT';
+      body = { id: editingTechId, name, permissions };
+      if (password) body.password = password;
+    } else {
+      const techId = document.getElementById('tfTechId').value.trim().toUpperCase();
+      if (!techId) { errEl.textContent = 'Tech ID is required'; errEl.style.display = 'block'; return; }
+      if (!password) { errEl.textContent = 'Password is required'; errEl.style.display = 'block'; return; }
+      method = 'POST';
+      body = { tech_id: techId, name, password, permissions };
+    }
+
+    const resp = await fetch(SUPABASE_URL + '/functions/v1/admin-technicians', {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'X-Admin-Token': token
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+    cancelTechForm();
+    loadTechnicians();
+  } catch(e) {
+    errEl.textContent = e.message;
+    errEl.style.display = 'block';
+  }
+}
+
+async function toggleTechActive(id, active) {
+  const token = sessionStorage.getItem('amg_admin_token');
+  try {
+    const resp = await fetch(SUPABASE_URL + '/functions/v1/admin-technicians', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'X-Admin-Token': token
+      },
+      body: JSON.stringify({ id, active })
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+    loadTechnicians();
+  } catch(e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+async function deleteTechnician(id, name) {
+  if (!confirm('Are you sure you want to permanently delete technician "' + name + '"? This cannot be undone.')) return;
+  const token = sessionStorage.getItem('amg_admin_token');
+  try {
+    const resp = await fetch(SUPABASE_URL + '/functions/v1/admin-technicians', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'X-Admin-Token': token
+      },
+      body: JSON.stringify({ id })
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+    loadTechnicians();
+  } catch(e) {
+    alert('Error: ' + e.message);
+  }
+}
+
 </script>
 </body>
 </html>
