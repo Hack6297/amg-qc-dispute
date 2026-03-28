@@ -11,6 +11,26 @@
     .app-header h1 { font-size: 22px; color: #5eaaf0; letter-spacing: 2px; }
     .app-header .sub { font-size: 11px; color: #667; margin-top: 2px; }
     .badge { display: inline-block; background: #1f4e79; color: #8ecdf7; padding: 3px 14px; border-radius: 12px; font-size: 10px; margin-top: 6px; letter-spacing: 1px; font-weight: 700; }
+    .user-bar { display: flex; justify-content: space-between; align-items: center; max-width: 700px; margin: 10px auto 0; padding: 8px 14px; background: #111a27; border-radius: 10px; border: 1px solid #2b3e50; }
+    .user-bar .user-info { font-size: 12px; color: #8ecdf7; }
+    .user-bar .user-info strong { color: #5eaaf0; }
+    .user-bar .logout-btn { background: none; border: 1px solid #c0392b; color: #e74c3c; padding: 4px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; }
+    .user-bar .logout-btn:hover { background: #c0392b; color: #fff; }
+
+    /* === LOGIN SCREEN === */
+    .login-screen { max-width: 380px; margin: 60px auto; padding: 0 16px; }
+    .login-box { background: #111a27; border: 1px solid #2b3e50; border-radius: 16px; padding: 30px 24px; }
+    .login-box h2 { color: #5eaaf0; font-size: 20px; text-align: center; margin-bottom: 6px; }
+    .login-box .login-sub { color: #667; font-size: 12px; text-align: center; margin-bottom: 24px; }
+    .login-box .field { margin-bottom: 16px; }
+    .login-box .field label { display: block; font-size: 11px; color: #8899aa; margin-bottom: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .login-box .field input { width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid #2b3e50; background: #0a0f18; color: #fff; font-size: 15px; }
+    .login-box .field input:focus { border-color: #5eaaf0; outline: none; }
+    .login-box .login-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #1f4e79, #2e75b6); color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 8px; }
+    .login-box .login-btn:hover { opacity: 0.9; }
+    .login-box .login-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .login-error { color: #f87171; font-size: 13px; text-align: center; margin-top: 10px; display: none; }
+    .login-logo { text-align: center; margin-bottom: 20px; font-size: 40px; }
 
     /* === TABS === */
     .tab-bar { display: flex; margin: 16px auto 0; max-width: 700px; padding: 0 10px; gap: 4px; }
@@ -19,6 +39,8 @@
     .tab-btn.active { background: #0d1520; color: #5eaaf0; border-color: #5eaaf0; }
     .tab-btn.active::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 2px; background: #0d1520; }
     .tab-btn .tab-icon { display: block; font-size: 18px; margin-bottom: 2px; }
+    .tab-btn.disabled { opacity: 0.35; pointer-events: none; }
+    .tab-btn.disabled::before { content: 'рџ”’'; position: absolute; top: 4px; right: 6px; font-size: 10px; }
     .tab-content { display: none; max-width: 700px; margin: 0 auto; padding: 0 10px 20px; border-top: 1px solid #2b3e50; }
     .tab-content.active { display: block; }
 
@@ -53,7 +75,6 @@
     .btn-secondary { width: 100%; padding: 12px; background: #111a27; color: #667; border: 1px solid #2b3e50; border-radius: 12px; font-size: 14px; cursor: pointer; margin-top: 8px; }
     .btn-green { background: linear-gradient(135deg, #1a6b3c, #27ae60); }
     .btn-teal { background: linear-gradient(135deg, #0e7490, #06b6d4); }
-    .btn-purple { background: linear-gradient(135deg, #6b21a8, #9333ea); }
 
     /* Preview & submit */
     .preview-box { background: #0a0f18; border: 1px solid #2b3e50; border-radius: 10px; padding: 14px; margin-top: 12px; }
@@ -74,9 +95,6 @@
     .checklist-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: #4ade80; cursor: pointer; flex-shrink: 0; }
     .checklist-item .item-label { flex: 1; font-size: 14px; }
     .checklist-item .item-icon { font-size: 20px; width: 28px; text-align: center; }
-    .checklist-item .item-status { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
-    .checklist-item .item-status.ok { background: rgba(74,222,128,0.15); color: #4ade80; }
-    .checklist-item .item-status.miss { background: rgba(248,113,113,0.15); color: #f87171; }
     .checklist-category { font-size: 12px; color: #5eaaf0; font-weight: 700; text-transform: uppercase; padding: 8px 0 4px; margin-top: 8px; border-bottom: 1px solid #2b3e50; letter-spacing: 1px; }
 
     /* Coming soon */
@@ -96,14 +114,54 @@
     .app-footer { text-align: center; padding: 20px; margin-top: 20px; border-top: 1px solid #1a2535; }
     .app-footer p { font-size: 11px; color: #445; }
     .app-footer a { color: #5eaaf0; text-decoration: none; font-size: 12px; }
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
+<!-- ======================= LOGIN SCREEN ======================= -->
+<div id="loginScreen" class="login-screen">
+  <div style="text-align:center; margin-bottom:20px;">
+    <h1 style="color:#5eaaf0; font-size:22px; letter-spacing:2px;">AMG US TECHNOLOGY</h1>
+    <div style="font-size:11px; color:#667; margin-top:2px;">AMG Project SWC 1099</div>
+  </div>
+  <div class="login-box">
+    <div class="login-logo">&#128274;</div>
+    <h2>Sign In</h2>
+    <p class="login-sub">Enter your Tech ID and password</p>
+    <div class="field">
+      <label>Tech ID</label>
+      <input type="text" id="login_techId" placeholder="Your Tech ID" autocomplete="username">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="login_password" placeholder="Password" autocomplete="current-password">
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+  <div style="text-align:center; margin-top:16px;">
+    <p style="font-size:11px; color:#445;">Contact your admin for credentials</p>
+  </div>
+</div>
+
+<!-- ======================= MAIN APP (hidden until login) ======================= -->
+<div id="mainApp" class="hidden">
+
 <div class="app-header">
   <h1>AMG US TECHNOLOGY</h1>
   <div class="sub">AMG Project SWC 1099</div>
-  <div class="badge">1099 Independent Contractor - Frontier FTR CA SWC</div>
+  <div class="badge">AMG US TECHNOLOGY вЂ” QC System</div>
+</div>
+
+<!-- User bar -->
+<div class="user-bar" id="userBar">
+  <div class="user-info">
+    <strong id="userDisplayName">-</strong>
+    <span id="userDisplayId" style="color:#667; font-size:11px;"></span>
+  </div>
+  <button class="logout-btn" onclick="doLogout()">Logout</button>
 </div>
 
 <!-- TAB BAR -->
@@ -129,10 +187,10 @@
     <h3>QC Inspection Dispute</h3>
     <div class="row">
       <div class="col">
-        <div class="field"><label>Your Name *</label><input type="text" id="qr_techName" placeholder="Full Name"></div>
+        <div class="field"><label>Your Name *</label><input type="text" id="qr_techName" placeholder="Full Name" readonly></div>
       </div>
       <div class="col">
-        <div class="field"><label>Tech ID</label><input type="text" id="qr_techId" placeholder="ID / CESWC#"></div>
+        <div class="field"><label>Tech ID</label><input type="text" id="qr_techId" placeholder="ID" readonly></div>
       </div>
     </div>
     <div class="row">
@@ -153,14 +211,7 @@
       <div id="qr_jobCodes">
         <div class="job-code-row">
           <select>
-            <option value="F006">F006 - Aerial Drop</option>
-            <option value="F007">F007 - Underground Drop</option>
-            <option value="F008">F008 - Buried Drop</option>
-            <option value="F009">F009 - Aerial Strand</option>
-            <option value="F010">F010 - Underground Strand</option>
-            <option value="F011">F011 - Install/Repair ONT</option>
-            <option value="F012">F012 - Splice</option>
-            <option value="OTHER">Other</option>
+            <option value="F006">F006</option><option value="F011">F011</option><option value="F014-7">F014-7</option><option value="F014-10">F014-10</option><option value="F031">F031</option><option value="PD">PD</option>
           </select>
           <input type="number" value="1" min="1" placeholder="Qty" style="max-width:60px">
         </div>
@@ -225,10 +276,10 @@
     <h3>Weekly Tech Safety Report</h3>
     <div class="row">
       <div class="col">
-        <div class="field"><label>Tech Name *</label><input type="text" id="qt_techName" placeholder="Full Name"></div>
+        <div class="field"><label>Tech Name *</label><input type="text" id="qt_techName" placeholder="Full Name" readonly></div>
       </div>
       <div class="col">
-        <div class="field"><label>Tech ID *</label><input type="text" id="qt_techId" placeholder="CESWC#"></div>
+        <div class="field"><label>Tech ID *</label><input type="text" id="qt_techId" placeholder="CESWC#" readonly></div>
       </div>
     </div>
     <div class="row">
@@ -244,75 +295,25 @@
   <div class="form-section">
     <h3>PPE Checklist (Personal Protective Equipment)</h3>
     <div class="checklist-category">Head & Eye Protection</div>
-    <div class="checklist-item">
-      <span class="item-icon">&#9937;</span>
-      <span class="item-label">Hard Hat (ANSI Z89.1)</span>
-      <input type="checkbox" id="qt_ppe_hardhat" onchange="updateChecklist('qt')">
-    </div>
-    <div class="checklist-item">
-      <span class="item-icon">&#128083;</span>
-      <span class="item-label">Safety Glasses / Eye Protection</span>
-      <input type="checkbox" id="qt_ppe_glasses" onchange="updateChecklist('qt')">
-    </div>
-
+    <div class="checklist-item"><span class="item-icon">&#9937;</span><span class="item-label">Hard Hat (ANSI Z89.1)</span><input type="checkbox" id="qt_ppe_hardhat" onchange="updateChecklist('qt')"></div>
+    <div class="checklist-item"><span class="item-icon">&#128083;</span><span class="item-label">Safety Glasses / Eye Protection</span><input type="checkbox" id="qt_ppe_glasses" onchange="updateChecklist('qt')"></div>
     <div class="checklist-category">Body Protection</div>
-    <div class="checklist-item">
-      <span class="item-icon">&#129509;</span>
-      <span class="item-label">High-Visibility Safety Vest (ANSI Class 2+)</span>
-      <input type="checkbox" id="qt_ppe_vest" onchange="updateChecklist('qt')">
-    </div>
-    <div class="checklist-item">
-      <span class="item-icon">&#129534;</span>
-      <span class="item-label">Work Gloves</span>
-      <input type="checkbox" id="qt_ppe_gloves" onchange="updateChecklist('qt')">
-    </div>
-    <div class="checklist-item">
-      <span class="item-icon">&#128094;</span>
-      <span class="item-label">Steel-Toe / Safety Boots</span>
-      <input type="checkbox" id="qt_ppe_boots" onchange="updateChecklist('qt')">
-    </div>
+    <div class="checklist-item"><span class="item-icon">&#129509;</span><span class="item-label">High-Visibility Safety Vest (ANSI Class 2+)</span><input type="checkbox" id="qt_ppe_vest" onchange="updateChecklist('qt')"></div>
+    <div class="checklist-item"><span class="item-icon">&#129534;</span><span class="item-label">Work Gloves</span><input type="checkbox" id="qt_ppe_gloves" onchange="updateChecklist('qt')"></div>
+    <div class="checklist-item"><span class="item-icon">&#128094;</span><span class="item-label">Steel-Toe / Safety Boots</span><input type="checkbox" id="qt_ppe_boots" onchange="updateChecklist('qt')"></div>
   </div>
 
   <div class="form-section">
     <h3>Vehicle & Equipment Checklist</h3>
     <div class="checklist-category">Vehicle Condition</div>
-    <div class="checklist-item">
-      <span class="item-icon">&#128663;</span>
-      <span class="item-label">Vehicle Clean & Presentable</span>
-      <input type="checkbox" id="qt_veh_clean" onchange="updateChecklist('qt')">
-    </div>
-    <div class="checklist-item">
-      <span class="item-icon">&#128161;</span>
-      <span class="item-label">Lights & Signals Working</span>
-      <input type="checkbox" id="qt_veh_lights" onchange="updateChecklist('qt')">
-    </div>
-    <div class="checklist-item">
-      <span class="item-icon">&#9970;</span>
-      <span class="item-label">Cones / Warning Signs Available</span>
-      <input type="checkbox" id="qt_veh_cones" onchange="updateChecklist('qt')">
-    </div>
-
+    <div class="checklist-item"><span class="item-icon">&#128663;</span><span class="item-label">Vehicle Clean & Presentable</span><input type="checkbox" id="qt_veh_clean" onchange="updateChecklist('qt')"></div>
+    <div class="checklist-item"><span class="item-icon">&#128161;</span><span class="item-label">Lights & Signals Working</span><input type="checkbox" id="qt_veh_lights" onchange="updateChecklist('qt')"></div>
+    <div class="checklist-item"><span class="item-icon">&#9970;</span><span class="item-label">Cones / Warning Signs Available</span><input type="checkbox" id="qt_veh_cones" onchange="updateChecklist('qt')"></div>
     <div class="checklist-category">Equipment</div>
-    <div class="checklist-item">
-      <span class="item-icon">&#128703;</span>
-      <span class="item-label">Ladder Secured & Good Condition</span>
-      <input type="checkbox" id="qt_eq_ladder" onchange="updateChecklist('qt')">
-    </div>
-    <div class="checklist-item">
-      <span class="item-icon">&#128295;</span>
-      <span class="item-label">Tools Organized & Complete</span>
-      <input type="checkbox" id="qt_eq_tools" onchange="updateChecklist('qt')">
-    </div>
-    <div class="checklist-item">
-      <span class="item-icon">&#128230;</span>
-      <span class="item-label">Fiber Materials Stocked</span>
-      <input type="checkbox" id="qt_eq_materials" onchange="updateChecklist('qt')">
-    </div>
-    <div class="checklist-item">
-      <span class="item-icon">&#128267;</span>
-      <span class="item-label">Test Equipment (OPM / VFL / OTDR)</span>
-      <input type="checkbox" id="qt_eq_test" onchange="updateChecklist('qt')">
-    </div>
+    <div class="checklist-item"><span class="item-icon">&#128703;</span><span class="item-label">Ladder Secured & Good Condition</span><input type="checkbox" id="qt_eq_ladder" onchange="updateChecklist('qt')"></div>
+    <div class="checklist-item"><span class="item-icon">&#128295;</span><span class="item-label">Tools Organized & Complete</span><input type="checkbox" id="qt_eq_tools" onchange="updateChecklist('qt')"></div>
+    <div class="checklist-item"><span class="item-icon">&#128230;</span><span class="item-label">Fiber Materials Stocked</span><input type="checkbox" id="qt_eq_materials" onchange="updateChecklist('qt')"></div>
+    <div class="checklist-item"><span class="item-icon">&#128267;</span><span class="item-label">Test Equipment (OPM / VFL / OTDR)</span><input type="checkbox" id="qt_eq_test" onchange="updateChecklist('qt')"></div>
   </div>
 
   <div class="form-section">
@@ -350,10 +351,11 @@
   </div>
 </div>
 
+</div><!-- end mainApp -->
+
 <!-- FOOTER -->
 <div class="app-footer">
-  <p>AMG US TECHNOLOGY - AMG Project SWC 1099</p>
-  <p>For 1099 Independent Contractors - Frontier FTR CA SWC</p>
+  <p>AMG US TECHNOLOGY вЂ” AMG Project SWC 1099</p>
   <p>All submissions are sent securely to management.</p>
   <a href="admin.html">Admin Panel</a>
 </div>
@@ -362,41 +364,191 @@
 var SUPABASE_URL = 'https://jffahgasqvtxigvlwznb.supabase.co';
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmZmFoZ2FzcXZ0eGlndmx3em5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1OTM1MjQsImV4cCI6MjA5MDE2OTUyNH0.dsGRZy7WOQmVMQABs2epp-04Fx0xoEykx2C4M4b72h4';
 var MAX_PHOTOS = 15;
+var JOB_CODES_HTML = '<option value="F006">F006</option><option value="F011">F011</option><option value="F014-7">F014-7</option><option value="F014-10">F014-10</option><option value="F031">F031</option><option value="PD">PD</option>';
 
-// Photo storage per form
+// Session data
+var currentUser = null; // {tech_id, name, permissions, token}
 var formPhotos = { qr: [], qt: [], f011: [] };
 
-// Set today's date
+// Set today
 var today = new Date().toISOString().split('T')[0];
-if (document.getElementById('qr_workDate')) document.getElementById('qr_workDate').value = today;
-if (document.getElementById('qt_date')) document.getElementById('qt_date').value = today;
 
-// === TAB SWITCHING ===
+// =============================================
+// AUTH SYSTEM (via Supabase RPC)
+// =============================================
+async function hashPassword(password, techId) {
+  var data = new TextEncoder().encode(password + techId.toUpperCase());
+  var hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hashBuffer)).map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+}
+
+function checkSession() {
+  var saved = localStorage.getItem('amg_session');
+  if (!saved) { showLogin(); return; }
+  try {
+    var session = JSON.parse(saved);
+    // Use cached session (re-verify on next login)
+    if (session.tech_id && session.name && session.permissions) {
+      currentUser = session;
+      showApp();
+    } else {
+      localStorage.removeItem('amg_session');
+      showLogin();
+    }
+  } catch (e) {
+    localStorage.removeItem('amg_session');
+    showLogin();
+  }
+}
+
+function showLogin() {
+  document.getElementById('loginScreen').style.display = 'block';
+  document.getElementById('mainApp').classList.add('hidden');
+}
+
+function showApp() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').classList.remove('hidden');
+
+  // Fill user info
+  document.getElementById('userDisplayName').textContent = currentUser.name;
+  document.getElementById('userDisplayId').textContent = ' (' + currentUser.tech_id + ')';
+
+  // Auto-fill name/id in forms (readonly)
+  document.getElementById('qr_techName').value = currentUser.name;
+  document.getElementById('qr_techId').value = currentUser.tech_id;
+  document.getElementById('qt_techName').value = currentUser.name;
+  document.getElementById('qt_techId').value = currentUser.tech_id;
+
+  // Set dates
+  if (document.getElementById('qr_workDate')) document.getElementById('qr_workDate').value = today;
+  if (document.getElementById('qt_date')) document.getElementById('qt_date').value = today;
+
+  // Apply permissions
+  applyPermissions();
+}
+
+function applyPermissions() {
+  if (!currentUser || !currentUser.permissions) return;
+  var perms = currentUser.permissions;
+  var tabs = {
+    'qc-report': perms.qc_report !== false,
+    'qc-tech': perms.qc_tech !== false,
+    'f011': perms.f011 !== false
+  };
+
+  Object.keys(tabs).forEach(function(tabKey) {
+    var tabBtn = document.getElementById('tab-' + tabKey);
+    if (!tabs[tabKey]) {
+      tabBtn.classList.add('disabled');
+    } else {
+      tabBtn.classList.remove('disabled');
+    }
+  });
+
+  // If current active tab is disabled, switch to first enabled
+  var activeTab = document.querySelector('.tab-btn.active');
+  if (activeTab && activeTab.classList.contains('disabled')) {
+    var firstEnabled = document.querySelector('.tab-btn:not(.disabled)');
+    if (firstEnabled) firstEnabled.click();
+  }
+}
+
+async function doLogin() {
+  var techId = document.getElementById('login_techId').value.trim();
+  var password = document.getElementById('login_password').value;
+  var errorEl = document.getElementById('loginError');
+  var btn = document.getElementById('loginBtn');
+
+  if (!techId || !password) {
+    errorEl.textContent = 'Enter Tech ID and Password';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in...';
+  errorEl.style.display = 'none';
+
+  try {
+    // Hash password client-side: SHA-256(password + TECH_ID)
+    var hash = await hashPassword(password, techId);
+
+    // Call Supabase RPC function
+    var res = await fetch(SUPABASE_URL + '/rest/v1/rpc/tech_login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+      },
+      body: JSON.stringify({ p_tech_id: techId, p_hash: hash })
+    });
+    var data = await res.json();
+
+    if (data && data.success) {
+      currentUser = { tech_id: data.tech_id, name: data.name, permissions: data.permissions };
+      localStorage.setItem('amg_session', JSON.stringify(currentUser));
+      showApp();
+    } else {
+      errorEl.textContent = (data && data.error) || 'Invalid credentials';
+      errorEl.style.display = 'block';
+    }
+  } catch (e) {
+    errorEl.textContent = 'Network error: ' + e.message;
+    errorEl.style.display = 'block';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Sign In';
+}
+
+function doLogout() {
+  localStorage.removeItem('amg_session');
+  currentUser = null;
+  showLogin();
+  document.getElementById('login_techId').value = '';
+  document.getElementById('login_password').value = '';
+}
+
+// Enter key on login
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') {
+    doLogin();
+  }
+});
+
+// =============================================
+// TAB SWITCHING
+// =============================================
 function switchTab(tab) {
+  var tabBtn = document.getElementById('tab-' + tab);
+  if (tabBtn.classList.contains('disabled')) return;
   document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
   document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
-  document.getElementById('tab-' + tab).classList.add('active');
+  tabBtn.classList.add('active');
   document.getElementById('content-' + tab).classList.add('active');
 }
 
-// === JOB CODES ===
+// =============================================
+// JOB CODES
+// =============================================
 function addJobCode(prefix) {
   var container = document.getElementById(prefix + '_jobCodes');
   var row = document.createElement('div');
   row.className = 'job-code-row';
-  row.innerHTML = '<select><option value="F006">F006 - Aerial Drop</option><option value="F007">F007 - Underground Drop</option><option value="F008">F008 - Buried Drop</option><option value="F009">F009 - Aerial Strand</option><option value="F010">F010 - Underground Strand</option><option value="F011">F011 - Install/Repair ONT</option><option value="F012">F012 - Splice</option><option value="OTHER">Other</option></select><input type="number" value="1" min="1" placeholder="Qty" style="max-width:60px"><button class="remove-jc" onclick="this.parentElement.remove()">x</button>';
+  row.innerHTML = '<select>' + JOB_CODES_HTML + '</select><input type="number" value="1" min="1" placeholder="Qty" style="max-width:60px"><button class="remove-jc" onclick="this.parentElement.remove()">x</button>';
   container.appendChild(row);
 }
 
-// === PHOTO HANDLING ===
+// =============================================
+// PHOTO HANDLING
+// =============================================
 function handlePhotos(prefix, files) {
   var arr = formPhotos[prefix];
   var activeCount = arr.filter(function(p) { return p; }).length;
   for (var i = 0; i < files.length; i++) {
-    if (activeCount >= MAX_PHOTOS) {
-      alert('Maximum ' + MAX_PHOTOS + ' photos allowed.');
-      break;
-    }
+    if (activeCount >= MAX_PHOTOS) { alert('Maximum ' + MAX_PHOTOS + ' photos allowed.'); break; }
     var f = files[i];
     if (!f.type.startsWith('image/')) continue;
     var idx = arr.length;
@@ -430,12 +582,12 @@ function updatePhotoCount(prefix) {
   if (count > 0) {
     el.textContent = count + '/' + MAX_PHOTOS + ' photo(s) attached';
     el.style.color = count >= MAX_PHOTOS ? '#f87171' : '#8899aa';
-  } else {
-    el.textContent = '';
-  }
+  } else { el.textContent = ''; }
 }
 
-// === COMPRESS PHOTO ===
+// =============================================
+// COMPRESS PHOTO
+// =============================================
 function compressPhoto(file) {
   return new Promise(function(resolve, reject) {
     var reader = new FileReader();
@@ -461,7 +613,9 @@ function compressPhoto(file) {
   });
 }
 
-// === QC REPORT: GENERATE MESSAGE ===
+// =============================================
+// QC REPORT: GENERATE MESSAGE
+// =============================================
 function generateQR() {
   var name = document.getElementById('qr_techName').value.trim();
   var wo = document.getElementById('qr_workOrder').value.trim();
@@ -477,7 +631,6 @@ function generateQR() {
   var inspNotes = document.getElementById('qr_inspNotes').value.trim();
   var photoCount = formPhotos.qr.filter(function(p) { return p; }).length;
 
-  // Job codes
   var jcRows = document.getElementById('qr_jobCodes').querySelectorAll('.job-code-row');
   var jcList = [];
   jcRows.forEach(function(r) {
@@ -516,27 +669,28 @@ function generateQR() {
   document.getElementById('qr_preview').scrollIntoView({ behavior: 'smooth' });
 }
 
-// === CHECKLIST STATUS ===
+// =============================================
+// CHECKLIST STATUS
+// =============================================
 function updateChecklist(prefix) {
-  // Count checked items
   var ppeItems = ['hardhat', 'glasses', 'vest', 'gloves', 'boots'];
   var vehItems = ['clean', 'lights', 'cones'];
   var eqItems = ['ladder', 'tools', 'materials', 'test'];
-
   var ppeOk = 0, vehOk = 0, eqOk = 0;
   ppeItems.forEach(function(i) { if (document.getElementById('qt_ppe_' + i).checked) ppeOk++; });
   vehItems.forEach(function(i) { if (document.getElementById('qt_veh_' + i).checked) vehOk++; });
   eqItems.forEach(function(i) { if (document.getElementById('qt_eq_' + i).checked) eqOk++; });
 }
 
-// === SUBMIT FORM ===
+// =============================================
+// SUBMIT FORM
+// =============================================
 async function submitForm(prefix) {
   var statusEl = document.getElementById(prefix + '_status');
   var spinnerEl = document.getElementById(prefix + '_spinner');
   var progressWrap = document.getElementById(prefix + '_progressWrap');
   var progressBar = document.getElementById(prefix + '_progressBar');
 
-  // Build payload
   var payload = { form_type: prefix === 'qr' ? 'qc_report' : 'qc_tech' };
 
   if (prefix === 'qr') {
@@ -549,13 +703,12 @@ async function submitForm(prefix) {
     payload.work_date = document.getElementById('qr_workDate').value;
     payload.work_order = wo;
     payload.address = document.getElementById('qr_address').value.trim();
-    payload.claimed_spans = document.getElementById('qr_claimed').value;
-    payload.inspector_spans = document.getElementById('qr_inspected').value;
+    payload.claimed = document.getElementById('qr_claimed').value;
+    payload.inspected = document.getElementById('qr_inspected').value;
     payload.qc_status = document.getElementById('qr_qcStatus').value;
     payload.inspector_notes = document.getElementById('qr_inspNotes').value.trim();
     payload.dispute_reason = reason;
     payload.message = document.getElementById('qr_previewText').textContent;
-    // Job codes
     var jcRows = document.getElementById('qr_jobCodes').querySelectorAll('.job-code-row');
     var jcs = [];
     jcRows.forEach(function(r) { jcs.push(r.querySelector('select').value + ' x' + (r.querySelector('input').value || '1')); });
@@ -569,8 +722,6 @@ async function submitForm(prefix) {
     payload.report_date = document.getElementById('qt_date').value;
     payload.week_number = document.getElementById('qt_week').value;
     payload.notes = document.getElementById('qt_notes').value.trim();
-
-    // Checklist data
     var checklist = {};
     var allItems = ['ppe_hardhat','ppe_glasses','ppe_vest','ppe_gloves','ppe_boots','veh_clean','veh_lights','veh_cones','eq_ladder','eq_tools','eq_materials','eq_test'];
     var totalChecked = 0;
@@ -583,15 +734,11 @@ async function submitForm(prefix) {
     payload.checklist_score = totalChecked + '/' + allItems.length;
     payload.overall_status = totalChecked === allItems.length ? 'PASS' : 'NEEDS ATTENTION';
 
-    // Build message for channels
     var dateStr = document.getElementById('qt_date').value ? new Date(document.getElementById('qt_date').value + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A';
     var msg = 'WEEKLY TECH SAFETY REPORT - AMG US TECHNOLOGY\n\n';
-    msg += '===================\n';
-    msg += 'TECH: ' + name + ' (' + techId + ')\n';
-    msg += 'DATE: ' + dateStr + '\n';
+    msg += '===================\nTECH: ' + name + ' (' + techId + ')\nDATE: ' + dateStr + '\n';
     if (payload.week_number) msg += 'WEEK: #' + payload.week_number + '\n';
-    msg += '===================\n\n';
-    msg += 'PPE CHECKLIST:\n';
+    msg += '===================\n\nPPE CHECKLIST:\n';
     msg += (checklist.ppe_hardhat ? '[OK]' : '[  ]') + ' Hard Hat\n';
     msg += (checklist.ppe_glasses ? '[OK]' : '[  ]') + ' Safety Glasses\n';
     msg += (checklist.ppe_vest ? '[OK]' : '[  ]') + ' Safety Vest\n';
@@ -605,8 +752,7 @@ async function submitForm(prefix) {
     msg += (checklist.eq_tools ? '[OK]' : '[  ]') + ' Tools Complete\n';
     msg += (checklist.eq_materials ? '[OK]' : '[  ]') + ' Materials Stocked\n';
     msg += (checklist.eq_test ? '[OK]' : '[  ]') + ' Test Equipment\n\n';
-    msg += 'SCORE: ' + payload.checklist_score + '\n';
-    msg += 'STATUS: ' + payload.overall_status + '\n';
+    msg += 'SCORE: ' + payload.checklist_score + '\nSTATUS: ' + payload.overall_status + '\n';
     var photoCount = formPhotos.qt.filter(function(p) { return p; }).length;
     if (photoCount > 0) msg += '\nPHOTOS: ' + photoCount + ' attached\n';
     if (payload.notes) msg += '\nNOTES: ' + payload.notes + '\n';
@@ -614,7 +760,7 @@ async function submitForm(prefix) {
     payload.message = msg;
   }
 
-  // Compress photos
+  // Compress & send photos
   var activePhotos = formPhotos[prefix].filter(function(p) { return p; });
   statusEl.textContent = '';
   statusEl.className = 'status-msg';
@@ -647,12 +793,7 @@ async function submitForm(prefix) {
 
     if (res.ok && data.success) {
       progressBar.style.width = '100%';
-      var channels = [];
-      if (data.teams_sent) channels.push('Microsoft Teams');
-      if (data.telegram_sent) channels.push('Telegram');
-      var chStr = channels.length > 0 ? ' Sent to: ' + channels.join(' + ') : '';
-      var photoStr = data.photos_uploaded ? ' (' + data.photos_uploaded + ' photos)' : '';
-      statusEl.textContent = 'Submitted successfully!' + chStr + photoStr;
+      statusEl.textContent = 'Submitted successfully! Photos: ' + (data.photos_uploaded || 0);
       statusEl.className = 'status-msg success';
     } else {
       statusEl.textContent = 'Error: ' + (data.error || 'Submission failed');
@@ -665,7 +806,9 @@ async function submitForm(prefix) {
   spinnerEl.style.display = 'none';
 }
 
-// === SHARE VIA TELEGRAM ===
+// =============================================
+// SHARE VIA TELEGRAM
+// =============================================
 function shareTelegram(prefix) {
   var msg = '';
   if (prefix === 'qr') msg = document.getElementById('qr_previewText').textContent;
@@ -673,25 +816,23 @@ function shareTelegram(prefix) {
   window.open('https://t.me/share/url?url=&text=' + encoded, '_blank');
 }
 
-// === CLEAR FORM ===
+// =============================================
+// CLEAR FORM
+// =============================================
 function clearForm(prefix) {
   if (prefix === 'qr') {
-    ['qr_techName','qr_techId','qr_workOrder','qr_address','qr_claimed','qr_inspected','qr_inspNotes','qr_disputeReason'].forEach(function(id) {
+    ['qr_workOrder','qr_address','qr_claimed','qr_inspected','qr_inspNotes','qr_disputeReason'].forEach(function(id) {
       document.getElementById(id).value = '';
     });
     document.getElementById('qr_workDate').value = today;
     document.getElementById('qr_preview').style.display = 'none';
     document.getElementById('qr_status').textContent = '';
-    // Reset job codes to one row
     var jc = document.getElementById('qr_jobCodes');
-    jc.innerHTML = '<div class="job-code-row"><select><option value="F006">F006 - Aerial Drop</option><option value="F007">F007 - Underground Drop</option><option value="F008">F008 - Buried Drop</option><option value="F009">F009 - Aerial Strand</option><option value="F010">F010 - Underground Strand</option><option value="F011">F011 - Install/Repair ONT</option><option value="F012">F012 - Splice</option><option value="OTHER">Other</option></select><input type="number" value="1" min="1" placeholder="Qty" style="max-width:60px"></div>';
+    jc.innerHTML = '<div class="job-code-row"><select>' + JOB_CODES_HTML + '</select><input type="number" value="1" min="1" placeholder="Qty" style="max-width:60px"></div>';
   } else if (prefix === 'qt') {
-    ['qt_techName','qt_techId','qt_week','qt_notes'].forEach(function(id) {
-      document.getElementById(id).value = '';
-    });
+    ['qt_week','qt_notes'].forEach(function(id) { document.getElementById(id).value = ''; });
     document.getElementById('qt_date').value = today;
     document.getElementById('qt_status').textContent = '';
-    // Uncheck all
     var allItems = ['ppe_hardhat','ppe_glasses','ppe_vest','ppe_gloves','ppe_boots','veh_clean','veh_lights','veh_cones','eq_ladder','eq_tools','eq_materials','eq_test'];
     allItems.forEach(function(item) { document.getElementById('qt_' + item).checked = false; });
   }
@@ -701,6 +842,11 @@ function clearForm(prefix) {
   var pw = document.getElementById(prefix + '_progressWrap');
   if (pw) { pw.style.display = 'none'; }
 }
+
+// =============================================
+// INIT
+// =============================================
+checkSession();
 </script>
 </body>
 </html>
