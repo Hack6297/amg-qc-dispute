@@ -191,10 +191,10 @@
     <h3>Photo Evidence (up to 15 photos)</h3>
     <div class="photo-area" onclick="document.getElementById('qr_photoInput').click()">
       <div class="cam-icon">&#128247;</div>
-      <p>Tap to take photo or upload</p>
-      <div class="hint">Select multiple photos at once or add one by one</div>
+      <p>Tap to take photo or choose from gallery</p>
+      <div class="hint">Camera or gallery. Select multiple or add one by one</div>
     </div>
-    <input type="file" id="qr_photoInput" accept="image/*" multiple capture="environment" style="display:none" onchange="handlePhotos('qr', this.files)">
+    <input type="file" id="qr_photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos('qr', this.files)">
     <div class="thumbs" id="qr_thumbs"></div>
     <div class="photo-count" id="qr_photoCount"></div>
   </div>
@@ -320,10 +320,10 @@
     <p style="font-size:12px; color:#8899aa; margin-bottom:10px;">Take photos showing: yourself in PPE, vehicle with ladder, tools, materials</p>
     <div class="photo-area" onclick="document.getElementById('qt_photoInput').click()">
       <div class="cam-icon">&#128247;</div>
-      <p>Tap to take photo or upload</p>
+      <p>Tap to take photo or choose from gallery</p>
       <div class="hint">Selfie in vest + hard hat, vehicle, ladder, tools</div>
     </div>
-    <input type="file" id="qt_photoInput" accept="image/*" multiple capture="environment" style="display:none" onchange="handlePhotos('qt', this.files)">
+    <input type="file" id="qt_photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos('qt', this.files)">
     <div class="thumbs" id="qt_thumbs"></div>
     <div class="photo-count" id="qt_photoCount"></div>
   </div>
