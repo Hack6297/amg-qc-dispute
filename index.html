@@ -549,8 +549,8 @@ async function submitForm(prefix) {
     payload.work_date = document.getElementById('qr_workDate').value;
     payload.work_order = wo;
     payload.address = document.getElementById('qr_address').value.trim();
-    payload.claimed = document.getElementById('qr_claimed').value;
-    payload.inspected = document.getElementById('qr_inspected').value;
+    payload.claimed_spans = document.getElementById('qr_claimed').value;
+    payload.inspector_spans = document.getElementById('qr_inspected').value;
     payload.qc_status = document.getElementById('qr_qcStatus').value;
     payload.inspector_notes = document.getElementById('qr_inspNotes').value.trim();
     payload.dispute_reason = reason;
