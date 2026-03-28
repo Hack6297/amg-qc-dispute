@@ -775,7 +775,7 @@ async function submitForm(prefix) {
       spinnerEl.innerHTML = '&#10227; Compressing photo ' + (i + 1) + '/' + activePhotos.length + '...';
       progressBar.style.width = (10 + (i / activePhotos.length) * 40) + '%';
       var b64 = await compressPhoto(activePhotos[i]);
-      photoData.push({ filename: prefix + '_photo_' + (i + 1) + '.jpg', data: b64 });
+      photoData.push(b64);
     }
     payload.photos = photoData;
 
