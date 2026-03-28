@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AMG Admin Panel - QC Dispute Config</title>
+  <title>AMG Admin Panel вЂ” QC Dispute Config</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0f18; color: #fff; min-height: 100vh; padding: 20px; max-width: 700px; margin: 0 auto; }
@@ -28,15 +28,9 @@
     .field input, .field select { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #2b3e50; background: #0a0f18; color: #fff; font-size: 14px; }
     .field input:focus { border-color: #5eaaf0; outline: none; }
     .field .help { font-size: 11px; color: #556677; margin-top: 4px; line-height: 1.4; }
-    .field .help a { color: #5eaaf0; text-decoration: none; }
-    .field .help a:hover { text-decoration: underline; }
     .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #1a2535; }
     .toggle-row:last-child { border-bottom: none; }
-    .toggle-row .label { font-size: 14px; }
-    .toggle-row .status { font-size: 12px; }
-    .toggle-row .status.on { color: #4ade80; }
-    .toggle-row .status.off { color: #888; }
-    .switch { position: relative; width: 48px; height: 26px; }
+    .switch { position: relative; width: 48px; height: 26px; flex-shrink: 0; }
     .switch input { display: none; }
     .switch .slider { position: absolute; cursor: pointer; inset: 0; background: #333; border-radius: 13px; transition: 0.3s; }
     .switch .slider:before { content: ''; position: absolute; width: 20px; height: 20px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: 0.3s; }
@@ -46,10 +40,24 @@
     .btn-save:hover { opacity: 0.9; }
     .btn-test { padding: 10px 20px; background: #2b3e50; color: #5eaaf0; border: 1px solid #5eaaf0; border-radius: 8px; font-size: 13px; cursor: pointer; font-weight: 600; }
     .btn-test:hover { background: rgba(94,170,240,0.1); }
+    .btn-add { padding: 8px 16px; background: #1a2535; color: #4ade80; border: 1px solid #4ade80; border-radius: 8px; font-size: 13px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .btn-add:hover { background: rgba(74,222,128,0.1); }
+    .btn-remove { padding: 4px 10px; background: transparent; color: #f87171; border: 1px solid #f87171; border-radius: 6px; font-size: 11px; cursor: pointer; flex-shrink: 0; }
+    .btn-remove:hover { background: rgba(248,113,113,0.1); }
     .btn-detect { padding: 8px 16px; background: #1a2535; color: #ffcc00; border: 1px solid #ffcc00; border-radius: 8px; font-size: 12px; cursor: pointer; font-weight: 600; margin-top: 8px; }
     .btn-detect:hover { background: rgba(255,204,0,0.1); }
     .btn-logout { width: 100%; padding: 12px; background: transparent; color: #888; border: 1px solid #333; border-radius: 10px; cursor: pointer; margin-top: 20px; }
     #saveStatus { text-align: center; margin-top: 12px; font-size: 14px; }
+    .channel-item { background: #0a0f18; border: 1px solid #2b3e50; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+    .channel-item .ch-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .channel-item .ch-name { font-weight: 600; color: #fff; font-size: 14px; }
+    .channel-item .ch-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+    .channel-item .ch-badge.on { background: rgba(74,222,128,0.15); color: #4ade80; }
+    .channel-item .ch-badge.off { background: rgba(136,136,136,0.15); color: #888; }
+    .channel-item input { width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid #2b3e50; background: #111a27; color: #fff; font-size: 13px; margin-bottom: 6px; }
+    .channel-item input:focus { border-color: #5eaaf0; outline: none; }
+    .channel-item .ch-row { display: flex; gap: 8px; align-items: center; }
+    .channel-item .ch-row input { flex: 1; margin-bottom: 0; }
     .log-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .log-table th { text-align: left; color: #8899aa; font-size: 11px; padding: 8px; border-bottom: 1px solid #2b3e50; }
     .log-table td { padding: 8px; border-bottom: 1px solid #1a2535; color: #ccc; }
@@ -63,16 +71,17 @@
     .group-option .name { font-size: 14px; color: #fff; }
     .group-option .id { font-size: 11px; color: #556677; }
     .group-option .select-btn { padding: 4px 12px; background: #1f4e79; color: #fff; border: none; border-radius: 6px; font-size: 12px; cursor: pointer; }
+    .section-divider { height: 1px; background: #2b3e50; margin: 16px 0; }
   </style>
 </head>
 <body>
-  <a href="index.html" class="back-link">&larr; Back to Dispute Form</a>
+  <a href="index.html" class="back-link">&larr; Back to Form</a>
 
   <!-- Login Screen -->
   <div id="loginScreen">
     <div class="login-box">
       <h2>ADMIN ACCESS</h2>
-      <p style="color:#888; margin-bottom:20px;">AMG QC Dispute System</p>
+      <p style="color:#888; margin-bottom:20px;">AMG Project SWC 1099</p>
       <input type="password" id="adminPassword" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()">
       <button class="btn-login" onclick="doLogin()">Login</button>
       <div class="login-error" id="loginError">Invalid password. Try again.</div>
@@ -83,68 +92,44 @@
   <div class="admin-content" id="adminPanel">
     <div class="header">
       <h1>AMG ADMIN PANEL</h1>
-      <p>QC Dispute Form - Channel Configuration</p>
+      <p>AMG Project SWC 1099 вЂ” Multi-Channel Configuration</p>
       <div class="badge-admin">ADMIN ONLY</div>
     </div>
 
-    <!-- TELEGRAM CONFIG -->
+    <!-- TEAMS CHANNELS -->
     <div class="card">
-      <h3><span class="icon">&#9992;</span> Telegram</h3>
-      <div class="toggle-row">
-        <div>
-          <div class="label">Send disputes to Telegram</div>
-          <div class="status" id="tgStatus">Not configured</div>
-        </div>
-        <label class="switch"><input type="checkbox" id="tgEnabled"><span class="slider"></span></label>
-      </div>
-
-      <div class="field" style="margin-top:14px;">
-        <label>Telegram Group Link or Chat ID</label>
-        <input type="text" id="tgChatId" placeholder="Paste group link: https://t.me/+xxxxx  or Chat ID: -100123...">
-        <div class="help">Paste your Telegram group invite link OR the numeric Chat ID</div>
-      </div>
-
-      <button class="btn-detect" onclick="detectTelegramGroups()">Auto-Detect Groups (find Chat ID)</button>
-      <div id="tgDetectResult" class="detected-groups"></div>
-
-      <div class="field" style="margin-top:14px;">
-        <label>Bot Token</label>
-        <input type="text" id="tgBotToken" placeholder="123456789:ABCdefGHI...">
-        <div class="help">Already configured? Leave as is. Need new bot? Message <a href="https://t.me/BotFather" target="_blank">@BotFather</a> on Telegram</div>
-      </div>
-
-      <div class="step-box">
-        <div style="color:#5eaaf0; font-weight:600; font-size:12px; margin-bottom:6px;">Quick Setup:</div>
-        <div class="step"><span class="num">1.</span> Add your bot to the Telegram group</div>
-        <div class="step"><span class="num">2.</span> Send any message in the group</div>
-        <div class="step"><span class="num">3.</span> Click "Auto-Detect Groups" above</div>
-        <div class="step"><span class="num">4.</span> Select the group from the list</div>
+      <h3><span class="icon">&#128172;</span> Microsoft Teams Channels</h3>
+      <div id="teamsChannelsList"></div>
+      <button class="btn-add" onclick="addTeamsChannel()" style="margin-top:10px;">
+        <span style="font-size:18px;">+</span> Add Teams Channel
+      </button>
+      <div class="step-box" style="margin-top:12px;">
+        <div style="color:#5eaaf0; font-weight:600; font-size:12px; margin-bottom:6px;">How to get Webhook URL:</div>
+        <div class="step"><span class="num">1.</span> Open Teams channel/chat</div>
+        <div class="step"><span class="num">2.</span> Click "..." > Workflows > "Post to a channel when a webhook request is received"</div>
+        <div class="step"><span class="num">3.</span> Copy the webhook URL and paste above</div>
       </div>
     </div>
 
-    <!-- TEAMS CONFIG -->
+    <!-- TELEGRAM CHANNELS -->
     <div class="card">
-      <h3><span class="icon">&#128172;</span> Microsoft Teams</h3>
-      <div class="toggle-row">
-        <div>
-          <div class="label">Send disputes to Teams</div>
-          <div class="status" id="teamsStatus">Not configured</div>
-        </div>
-        <label class="switch"><input type="checkbox" id="teamsEnabled" checked><span class="slider"></span></label>
+      <h3><span class="icon">&#9992;</span> Telegram Destinations</h3>
+
+      <div class="field">
+        <label>Bot Token (shared for all destinations)</label>
+        <input type="text" id="tgBotToken" placeholder="123456789:ABCdefGHI...">
+        <div class="help">Need new bot? Message <a href="https://t.me/BotFather" target="_blank" style="color:#5eaaf0;">@BotFather</a> on Telegram</div>
       </div>
 
-      <div class="field" style="margin-top:14px;">
-        <label>Teams Webhook URL</label>
-        <input type="url" id="teamsUrl" placeholder="Paste webhook URL from Power Automate...">
-        <div class="help">This is the URL from Power Automate Workflow (not Teams channel link)</div>
-      </div>
+      <button class="btn-detect" onclick="detectTelegramGroups()">Auto-Detect Groups</button>
+      <div id="tgDetectResult" class="detected-groups"></div>
 
-      <div class="step-box">
-        <div style="color:#5eaaf0; font-weight:600; font-size:12px; margin-bottom:6px;">How to get Webhook URL:</div>
-        <div class="step"><span class="num">1.</span> Open Teams channel where you want notifications</div>
-        <div class="step"><span class="num">2.</span> Click "..." menu > Workflows > "Post to a channel when a webhook request is received"</div>
-        <div class="step"><span class="num">3.</span> Copy the webhook URL and paste above</div>
-      </div>
+      <div class="section-divider"></div>
+
+      <div id="tgChannelsList"></div>
+      <button class="btn-add" onclick="addTgChannel()" style="margin-top:10px;">
+        <span style="font-size:18px;">+</span> Add Telegram Destination
+      </button>
     </div>
 
     <!-- Security -->
@@ -158,15 +143,15 @@
 
     <!-- Save -->
     <button class="btn-save" onclick="saveConfig()">Save Configuration</button>
-    <div style="display:flex; gap:10px; margin-top:12px;">
-      <button class="btn-test" onclick="testTeams()">Test Teams</button>
-      <button class="btn-test" onclick="testTelegram()">Test Telegram</button>
+    <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+      <button class="btn-test" onclick="testAllTeams()">Test All Teams</button>
+      <button class="btn-test" onclick="testAllTelegram()">Test All Telegram</button>
     </div>
     <div id="saveStatus"></div>
 
-    <!-- Recent Disputes -->
+    <!-- Recent Submissions -->
     <div class="card" style="margin-top:24px;">
-      <h3><span class="icon">&#128203;</span> Recent Disputes</h3>
+      <h3><span class="icon">&#128203;</span> Recent Submissions</h3>
       <div id="disputeLog" style="color:#888; font-size:13px;">Loading...</div>
     </div>
 
@@ -178,7 +163,11 @@ var SUPABASE_URL = 'https://jffahgasqvtxigvlwznb.supabase.co';
 var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpmZmFoZ2FzcXZ0eGlndmx3em5iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1OTM1MjQsImV4cCI6MjA5MDE2OTUyNH0.dsGRZy7WOQmVMQABs2epp-04Fx0xoEykx2C4M4b72h4';
 var adminToken = null;
 
-// === LOGIN ===
+// ===== CHANNEL DATA =====
+var teamsChannels = [];
+var tgChannels = [];
+
+// ===== LOGIN =====
 async function doLogin() {
   var pw = document.getElementById('adminPassword').value;
   if (!pw) return;
@@ -216,7 +205,104 @@ function showAdmin() {
   document.getElementById('adminPanel').style.display = 'block';
 }
 
-// === LOAD CONFIG ===
+// ===== RENDER TEAMS CHANNELS =====
+function renderTeamsChannels() {
+  var container = document.getElementById('teamsChannelsList');
+  if (teamsChannels.length === 0) {
+    container.innerHTML = '<div style="color:#556677; font-size:13px; padding:10px 0;">No Teams channels configured. Click "Add" below.</div>';
+    return;
+  }
+  var html = '';
+  teamsChannels.forEach(function(ch, i) {
+    html += '<div class="channel-item">';
+    html += '<div class="ch-header">';
+    html += '<div style="display:flex; align-items:center; gap:8px;">';
+    html += '<span class="ch-badge ' + (ch.enabled ? 'on' : 'off') + '">' + (ch.enabled ? 'ON' : 'OFF') + '</span>';
+    html += '<span class="ch-name">' + (ch.name || 'Channel ' + (i+1)) + '</span>';
+    html += '</div>';
+    html += '<div style="display:flex; gap:6px; align-items:center;">';
+    html += '<label class="switch" style="width:40px;height:22px;"><input type="checkbox" ' + (ch.enabled ? 'checked' : '') + ' onchange="toggleTeamsCh(' + i + ', this.checked)"><span class="slider" style="border-radius:11px;"></span></label>';
+    html += '<button class="btn-remove" onclick="removeTeamsCh(' + i + ')">Remove</button>';
+    html += '</div></div>';
+    html += '<input type="text" value="' + (ch.name || '') + '" placeholder="Channel name (e.g. General, QC SWC Report)" onchange="teamsChannels[' + i + '].name=this.value">';
+    html += '<input type="url" value="' + (ch.url || '') + '" placeholder="Webhook URL from Power Automate..." onchange="teamsChannels[' + i + '].url=this.value" style="font-size:12px;">';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function addTeamsChannel() {
+  teamsChannels.push({ name: '', url: '', enabled: true });
+  renderTeamsChannels();
+  // Focus the last name input
+  var items = document.querySelectorAll('#teamsChannelsList .channel-item');
+  if (items.length > 0) {
+    var inputs = items[items.length - 1].querySelectorAll('input[type="text"]');
+    if (inputs.length > 0) inputs[0].focus();
+  }
+}
+
+function removeTeamsCh(index) {
+  if (confirm('Remove this Teams channel?')) {
+    teamsChannels.splice(index, 1);
+    renderTeamsChannels();
+  }
+}
+
+function toggleTeamsCh(index, val) {
+  teamsChannels[index].enabled = val;
+  renderTeamsChannels();
+}
+
+// ===== RENDER TELEGRAM CHANNELS =====
+function renderTgChannels() {
+  var container = document.getElementById('tgChannelsList');
+  if (tgChannels.length === 0) {
+    container.innerHTML = '<div style="color:#556677; font-size:13px; padding:10px 0;">No Telegram destinations configured. Click "Add" below.</div>';
+    return;
+  }
+  var html = '';
+  tgChannels.forEach(function(ch, i) {
+    html += '<div class="channel-item">';
+    html += '<div class="ch-header">';
+    html += '<div style="display:flex; align-items:center; gap:8px;">';
+    html += '<span class="ch-badge ' + (ch.enabled ? 'on' : 'off') + '">' + (ch.enabled ? 'ON' : 'OFF') + '</span>';
+    html += '<span class="ch-name">' + (ch.name || 'Destination ' + (i+1)) + '</span>';
+    html += '</div>';
+    html += '<div style="display:flex; gap:6px; align-items:center;">';
+    html += '<label class="switch" style="width:40px;height:22px;"><input type="checkbox" ' + (ch.enabled ? 'checked' : '') + ' onchange="toggleTgCh(' + i + ', this.checked)"><span class="slider" style="border-radius:11px;"></span></label>';
+    html += '<button class="btn-remove" onclick="removeTgCh(' + i + ')">Remove</button>';
+    html += '</div></div>';
+    html += '<input type="text" value="' + (ch.name || '') + '" placeholder="Name (e.g. AMG SWC Bot, QC Alerts)" onchange="tgChannels[' + i + '].name=this.value">';
+    html += '<input type="text" value="' + (ch.chat_id || '') + '" placeholder="Chat ID (e.g. -100123456789 or 5968332763)" onchange="tgChannels[' + i + '].chat_id=this.value">';
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+function addTgChannel() {
+  tgChannels.push({ name: '', chat_id: '', enabled: true });
+  renderTgChannels();
+  var items = document.querySelectorAll('#tgChannelsList .channel-item');
+  if (items.length > 0) {
+    var inputs = items[items.length - 1].querySelectorAll('input[type="text"]');
+    if (inputs.length > 0) inputs[0].focus();
+  }
+}
+
+function removeTgCh(index) {
+  if (confirm('Remove this Telegram destination?')) {
+    tgChannels.splice(index, 1);
+    renderTgChannels();
+  }
+}
+
+function toggleTgCh(index, val) {
+  tgChannels[index].enabled = val;
+  renderTgChannels();
+}
+
+// ===== LOAD CONFIG =====
 async function loadConfig() {
   try {
     var res = await fetch(SUPABASE_URL + '/functions/v1/admin-config', {
@@ -225,34 +311,40 @@ async function loadConfig() {
     });
     var data = await res.json();
     var cfg = data.config || data;
-    if (cfg.teams_webhook) document.getElementById('teamsUrl').value = cfg.teams_webhook;
-    document.getElementById('teamsEnabled').checked = (cfg.teams_enabled === true || cfg.teams_enabled === 'true');
+
+    // Bot token
     if (cfg.tg_bot_token) document.getElementById('tgBotToken').value = cfg.tg_bot_token;
-    if (cfg.tg_chat_id) document.getElementById('tgChatId').value = cfg.tg_chat_id;
-    document.getElementById('tgEnabled').checked = (cfg.tg_enabled === true || cfg.tg_enabled === 'true');
-    updateStatuses();
+
+    // Load multi-channel Teams
+    try {
+      if (cfg.teams_channels) {
+        teamsChannels = JSON.parse(cfg.teams_channels);
+      }
+    } catch(e) {}
+
+    // Fallback: legacy single webhook
+    if (teamsChannels.length === 0 && cfg.teams_webhook) {
+      teamsChannels = [{ name: 'General', url: cfg.teams_webhook, enabled: cfg.teams_enabled === true || cfg.teams_enabled === 'true' }];
+    }
+
+    // Load multi-channel Telegram
+    try {
+      if (cfg.tg_channels) {
+        tgChannels = JSON.parse(cfg.tg_channels);
+      }
+    } catch(e) {}
+
+    // Fallback: legacy single chat
+    if (tgChannels.length === 0 && cfg.tg_chat_id) {
+      tgChannels = [{ name: 'Main', chat_id: cfg.tg_chat_id, enabled: cfg.tg_enabled === true || cfg.tg_enabled === 'true' }];
+    }
+
+    renderTeamsChannels();
+    renderTgChannels();
   } catch (e) { console.error('Load config error:', e); }
 }
 
-function updateStatuses() {
-  var teamsUrl = document.getElementById('teamsUrl').value;
-  var tgToken = document.getElementById('tgBotToken').value;
-  var tgChat = document.getElementById('tgChatId').value;
-  var teamsOn = document.getElementById('teamsEnabled').checked;
-  var tgOn = document.getElementById('tgEnabled').checked;
-
-  var ts = document.getElementById('teamsStatus');
-  if (teamsUrl && teamsOn) { ts.textContent = 'Active'; ts.className = 'status on'; }
-  else if (teamsUrl) { ts.textContent = 'Configured (disabled)'; ts.className = 'status off'; }
-  else { ts.textContent = 'Not configured'; ts.className = 'status off'; }
-
-  var tgs = document.getElementById('tgStatus');
-  if (tgToken && tgChat && tgOn) { tgs.textContent = 'Active'; tgs.className = 'status on'; }
-  else if (tgToken) { tgs.textContent = 'Bot set, need Chat ID'; tgs.className = 'status off'; }
-  else { tgs.textContent = 'Not configured'; tgs.className = 'status off'; }
-}
-
-// === AUTO-DETECT TELEGRAM GROUPS ===
+// ===== AUTO-DETECT TELEGRAM GROUPS =====
 async function detectTelegramGroups() {
   var token = document.getElementById('tgBotToken').value.trim();
   if (!token) { alert('Enter the Bot Token first, then click Auto-Detect.'); return; }
@@ -265,7 +357,7 @@ async function detectTelegramGroups() {
     var data = await res.json();
 
     if (!data.ok) {
-      result.innerHTML = '<span style="color:#f87171; font-size:13px;">Invalid bot token. Check and try again.</span>';
+      result.innerHTML = '<span style="color:#f87171; font-size:13px;">Invalid bot token.</span>';
       return;
     }
 
@@ -284,47 +376,61 @@ async function detectTelegramGroups() {
 
     var chatList = Object.values(chats);
     if (chatList.length === 0) {
-      result.innerHTML = '<span style="color:#ffcc00; font-size:13px;">No groups found. Make sure:<br>1) Bot is added to the group<br>2) Someone sent a message in the group after adding the bot<br>3) Try again in a few seconds</span>';
+      result.innerHTML = '<span style="color:#ffcc00; font-size:13px;">No groups found. Make sure bot is added to the group and someone sent a message.</span>';
       return;
     }
 
-    var html = '<div style="font-size:12px; color:#8899aa; margin-bottom:8px;">Found ' + chatList.length + ' group(s). Click to select:</div>';
+    var html = '<div style="font-size:12px; color:#8899aa; margin-bottom:8px;">Found ' + chatList.length + ' group(s). Click to add:</div>';
     chatList.forEach(function(c) {
-      html += '<div class="group-option" onclick="selectGroup(\'' + c.id + '\', \'' + c.title.replace(/'/g, "\\'") + '\')">';
+      html += '<div class="group-option" onclick="addDetectedTgGroup(\'' + c.id + '\', \'' + c.title.replace(/'/g, "\\'") + '\')">';
       html += '<div><div class="name">' + c.title + '</div><div class="id">' + c.type + ' | ID: ' + c.id + '</div></div>';
-      html += '<button class="select-btn">Select</button>';
+      html += '<button class="select-btn">+ Add</button>';
       html += '</div>';
     });
     result.innerHTML = html;
-
   } catch (e) {
-    result.innerHTML = '<span style="color:#f87171; font-size:13px;">Network error. Check your connection.</span>';
+    result.innerHTML = '<span style="color:#f87171; font-size:13px;">Network error.</span>';
   }
 }
 
-function selectGroup(chatId, title) {
-  document.getElementById('tgChatId').value = chatId;
-  document.getElementById('tgDetectResult').innerHTML = '<span style="color:#4ade80; font-size:13px;">Selected: ' + title + ' (ID: ' + chatId + ')</span>';
-  updateStatuses();
+function addDetectedTgGroup(chatId, title) {
+  // Check if already added
+  for (var i = 0; i < tgChannels.length; i++) {
+    if (tgChannels[i].chat_id === chatId) {
+      alert('This group is already added.');
+      return;
+    }
+  }
+  tgChannels.push({ name: title, chat_id: chatId, enabled: true });
+  renderTgChannels();
+  document.getElementById('tgDetectResult').innerHTML = '<span style="color:#4ade80; font-size:13px;">Added: ' + title + '</span>';
 }
 
-// === SAVE CONFIG ===
+// ===== SAVE CONFIG =====
 async function saveConfig() {
-  var chatIdInput = document.getElementById('tgChatId').value.trim();
-  var chatId = chatIdInput;
-
-  // If user pasted a t.me link, show help
-  if (chatIdInput.indexOf('t.me/') !== -1) {
-    alert('Telegram group links cannot be converted to Chat ID automatically.\n\nPlease use "Auto-Detect Groups" button instead:\n1. Add the bot to your group\n2. Send a message in the group\n3. Click Auto-Detect');
-    return;
+  // Validate Teams channels
+  for (var i = 0; i < teamsChannels.length; i++) {
+    if (teamsChannels[i].url && !teamsChannels[i].name) {
+      teamsChannels[i].name = 'Channel ' + (i + 1);
+    }
+  }
+  // Validate TG channels
+  for (var i = 0; i < tgChannels.length; i++) {
+    if (tgChannels[i].chat_id && !tgChannels[i].name) {
+      tgChannels[i].name = 'Destination ' + (i + 1);
+    }
   }
 
   var cfg = {
-    teams_webhook: document.getElementById('teamsUrl').value.trim(),
-    teams_enabled: document.getElementById('teamsEnabled').checked,
+    // Multi-channel (new format)
+    teams_channels: JSON.stringify(teamsChannels),
+    tg_channels: JSON.stringify(tgChannels),
     tg_bot_token: document.getElementById('tgBotToken').value.trim(),
-    tg_chat_id: chatId,
-    tg_enabled: document.getElementById('tgEnabled').checked
+    // Legacy compatibility
+    teams_webhook: teamsChannels.length > 0 ? teamsChannels[0].url : '',
+    teams_enabled: teamsChannels.some(function(c) { return c.enabled && c.url; }),
+    tg_chat_id: tgChannels.length > 0 ? tgChannels[0].chat_id : '',
+    tg_enabled: tgChannels.some(function(c) { return c.enabled && c.chat_id; })
   };
 
   var newPw = document.getElementById('newPassword').value;
@@ -341,7 +447,6 @@ async function saveConfig() {
     });
     if (res.ok) {
       statusEl.innerHTML = '<span style="color:#4ade80; font-weight:bold">Configuration saved!</span>';
-      updateStatuses();
       if (newPw) document.getElementById('newPassword').value = '';
     } else {
       var err = await res.json();
@@ -352,10 +457,13 @@ async function saveConfig() {
   }
 }
 
-// === TEST CHANNELS ===
-async function testTeams() {
+// ===== TEST CHANNELS =====
+async function testAllTeams() {
   var statusEl = document.getElementById('saveStatus');
-  statusEl.innerHTML = '<span style="color:#5eaaf0">Sending test to Teams...</span>';
+  var active = teamsChannels.filter(function(c) { return c.enabled && c.url; });
+  if (active.length === 0) { statusEl.innerHTML = '<span style="color:#ffcc00">No active Teams channels to test.</span>'; return; }
+
+  statusEl.innerHTML = '<span style="color:#5eaaf0">Testing ' + active.length + ' Teams channel(s)...</span>';
   try {
     var res = await fetch(SUPABASE_URL + '/functions/v1/admin-config', {
       method: 'PUT',
@@ -363,14 +471,17 @@ async function testTeams() {
       body: JSON.stringify({ test_channel: 'teams' })
     });
     var data = await res.json();
-    if (data.success) statusEl.innerHTML = '<span style="color:#4ade80">Teams test sent! Check your channel.</span>';
-    else statusEl.innerHTML = '<span style="color:#f87171">Teams test failed: ' + data.error + '</span>';
+    if (data.success) statusEl.innerHTML = '<span style="color:#4ade80">Teams test sent! Check your channels.</span>';
+    else statusEl.innerHTML = '<span style="color:#f87171">Teams test failed: ' + (data.error || 'unknown') + '</span>';
   } catch (e) { statusEl.innerHTML = '<span style="color:#f87171">Test failed</span>'; }
 }
 
-async function testTelegram() {
+async function testAllTelegram() {
   var statusEl = document.getElementById('saveStatus');
-  statusEl.innerHTML = '<span style="color:#5eaaf0">Sending test to Telegram...</span>';
+  var active = tgChannels.filter(function(c) { return c.enabled && c.chat_id; });
+  if (active.length === 0) { statusEl.innerHTML = '<span style="color:#ffcc00">No active Telegram destinations to test.</span>'; return; }
+
+  statusEl.innerHTML = '<span style="color:#5eaaf0">Testing ' + active.length + ' Telegram destination(s)...</span>';
   try {
     var res = await fetch(SUPABASE_URL + '/functions/v1/admin-config', {
       method: 'PUT',
@@ -378,12 +489,12 @@ async function testTelegram() {
       body: JSON.stringify({ test_channel: 'telegram' })
     });
     var data = await res.json();
-    if (data.success) statusEl.innerHTML = '<span style="color:#4ade80">Telegram test sent! Check your chat.</span>';
-    else statusEl.innerHTML = '<span style="color:#f87171">Telegram test failed: ' + data.error + '</span>';
+    if (data.success) statusEl.innerHTML = '<span style="color:#4ade80">Telegram test sent! Check your chats.</span>';
+    else statusEl.innerHTML = '<span style="color:#f87171">Telegram test failed: ' + (data.error || 'unknown') + '</span>';
   } catch (e) { statusEl.innerHTML = '<span style="color:#f87171">Test failed</span>'; }
 }
 
-// === LOAD DISPUTES ===
+// ===== LOAD DISPUTES =====
 async function loadDisputes() {
   try {
     var res = await fetch(SUPABASE_URL + '/functions/v1/admin-disputes', {
@@ -391,32 +502,25 @@ async function loadDisputes() {
     });
     var data = await res.json();
     if (!data.disputes || data.disputes.length === 0) {
-      document.getElementById('disputeLog').innerHTML = '<span style="color:#556677">No disputes submitted yet.</span>';
+      document.getElementById('disputeLog').innerHTML = '<span style="color:#556677">No submissions yet.</span>';
       return;
     }
-    var html = '<table class="log-table"><tr><th>Date</th><th>Tech</th><th>WO#</th><th>Status</th><th>Photos</th><th>Channels</th></tr>';
+    var html = '<table class="log-table"><tr><th>Date</th><th>Type</th><th>Tech</th><th>Status</th><th>Photos</th></tr>';
     data.disputes.forEach(function(d) {
       var dt = new Date(d.created_at).toLocaleDateString('en-US', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
-      var ch = [];
-      if (d.teams_sent) ch.push('Teams');
-      if (d.telegram_sent) ch.push('TG');
+      var type = d.form_type || 'qc_report';
+      var typeBadge = type === 'qc_tech' ? '<span style="color:#4ade80;">TECH</span>' : type === 'f011' ? '<span style="color:#ffcc00;">F011</span>' : '<span style="color:#5eaaf0;">QC</span>';
       var photos = d.photo_urls ? (Array.isArray(d.photo_urls) ? d.photo_urls.length : 0) : 0;
-      html += '<tr><td>' + dt + '</td><td>' + d.tech_name + '</td><td>' + d.work_order + '</td><td>' + d.qc_status + '</td><td>' + photos + '</td><td>' + (ch.join(', ') || '-') + '</td></tr>';
+      html += '<tr><td>' + dt + '</td><td>' + typeBadge + '</td><td>' + (d.tech_name || '-') + '</td><td>' + (d.qc_status || '-') + '</td><td>' + photos + '</td></tr>';
     });
     html += '</table>';
     document.getElementById('disputeLog').innerHTML = html;
-  } catch (e) { document.getElementById('disputeLog').innerHTML = 'Error loading disputes'; }
+  } catch (e) { document.getElementById('disputeLog').innerHTML = 'Error loading'; }
 }
 
 // Check saved session
 var savedToken = sessionStorage.getItem('amg_admin_token');
 if (savedToken) { adminToken = savedToken; showAdmin(); loadConfig(); loadDisputes(); }
-
-// Update statuses on change
-['teamsUrl', 'tgBotToken', 'tgChatId', 'teamsEnabled', 'tgEnabled'].forEach(function(id) {
-  document.getElementById(id).addEventListener('change', updateStatuses);
-  document.getElementById(id).addEventListener('input', updateStatuses);
-});
 </script>
 </body>
 </html>
