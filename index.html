@@ -399,10 +399,16 @@ function checkSession() {
   if (!saved) { showLogin(); return; }
   try {
     var session = JSON.parse(saved);
-    // Use cached session (re-verify on next login)
-    if (session.tech_id && session.name && session.permissions) {
-      currentUser = session;
-      showApp();
+      // Check session TTL (72 hours)
+      var SESSION_TTL = 72 * 60 * 60 * 1000;
+      if (session.tech_id && session.name && session.permissions) {
+        if (session.loginAt && (Date.now() - session.loginAt) > SESSION_TTL) {
+          localStorage.removeItem('amg_session');
+          showLogin();
+          return;
+        }
+        currentUser = session;
+        showApp();
     } else {
       localStorage.removeItem('amg_session');
       showLogin();
@@ -500,6 +506,7 @@ async function doLogin() {
 
     if (data && data.success) {
       currentUser = { tech_id: data.tech_id, name: data.name, permissions: data.permissions };
+      currentUser.loginAt = Date.now();
       localStorage.setItem('amg_session', JSON.stringify(currentUser));
       showApp();
     } else {
