@@ -55,6 +55,11 @@
     .field input:focus, .field select:focus, .field textarea:focus { border-color: #5eaaf0; outline: none; }
     .field textarea { min-height: 80px; resize: vertical; font-family: inherit; }
     .field select { -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23667' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+    /* Date field fix: prevent overflow on iOS Safari */
+    .field { overflow: hidden; max-width: 100%; }
+    .form-section { overflow: hidden; }
+    input[type="date"], input[type="datetime-local"] { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; -webkit-text-size-adjust: 100%; }
+    input[type="date"]::-webkit-date-and-time-value { text-align: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 
     /* Photo upload */
     .photo-area { border: 2px dashed #2b3e50; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 8px; cursor: pointer; transition: border-color 0.2s; }
@@ -119,8 +124,8 @@
 @media (max-width: 500px) {
       .row { flex-direction: column; gap: 6px; }
       .row > .col { flex: none; width: 100%; }
-      input, select, textarea { font-size: 16px !important; max-width: 100%; box-sizing: border-box; }
-      input[type="date"] { width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+      input, select, textarea { font-size: 16px !important; max-width: 100% !important; box-sizing: border-box; }
+      input[type="date"], input[type="datetime-local"] { width: 100% !important; min-width: 0 !important; max-width: 100% !important; overflow: hidden !important; text-overflow: ellipsis; white-space: nowrap; padding: 10px 8px !important; font-size: 14px !important; }
       .card { padding: 14px; }
     }
   </style>
